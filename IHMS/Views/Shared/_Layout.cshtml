@@ -20,7 +20,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin 2 - Dashboard</title>
+        <title>IHMS 後台</title>
 
         <!-- Custom fonts for this template-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -45,7 +45,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                    <div class="sidebar-brand-text mx-3">IHMS </div>
                 </a>
 
                 <!-- Divider -->
@@ -55,7 +55,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="index.html">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
+                        <span>首頁</span>
                     </a>
                 </li>
 
@@ -63,28 +63,44 @@
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
-                <div class="sidebar-heading">
-                    Interface
-                </div>
+                <div class="sidebar-heading"></div>
+
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
+                    <a class="nav-link" href="charts.html">
+                        <i class="bi bi-people-fill"></i>
+                        <span>會員</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+               @* <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
                         <span>Components</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Custom Components:</h6>
                             <a class="collapse-item" href="buttons.html">Buttons</a>
                             <a class="collapse-item" href="cards.html">Cards</a>
                         </div>
                     </div>
-                </li>
+                </li>*@
 
                 <!-- Nav Item - Utilities Collapse Menu -->
+
                 <li class="nav-item">
+                    <a class="nav-link" href="charts.html">
+                        <i class="bi bi-currency-dollar"></i>
+                        <span>訂單</span>
+                    </a>
+                </li>
+
+
+               @* <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-fw fa-wrench"></i>
@@ -100,18 +116,28 @@
                             <a class="collapse-item" href="utilities-other.html">Other</a>
                         </div>
                     </div>
-                </li>
+                </li>*@
 
-                <!-- Divider -->
+              @*  <!-- Divider -->
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Addons
-                </div>
+                </div>*@
 
                 <!-- Nav Item - Pages Collapse Menu -->
+
                 <li class="nav-item">
+                    <a class="nav-link" href="charts.html">
+                        <i class="bi bi-calendar3"></i>
+                        <span>課程</span>
+                    </a>
+                </li>
+
+
+
+               @* <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                        aria-expanded="true" aria-controls="collapsePages">
                         <i class="fas fa-fw fa-folder"></i>
@@ -129,13 +155,13 @@
                             <a class="collapse-item" href="blank.html">Blank Page</a>
                         </div>
                     </div>
-                </li>
+                </li>*@
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
                     <a class="nav-link" href="charts.html">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Charts</span>
+                        <span>教練</span>
                     </a>
                 </li>
 
@@ -143,7 +169,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="tables.html">
                         <i class="fas fa-fw fa-table"></i>
-                        <span>Tables</span>
+                        <span>文章</span>
                     </a>
                 </li>
 
@@ -174,7 +200,7 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    @*    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                        aria-label="Search" aria-describedby="basic-addon2">
@@ -184,13 +210,13 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </form>*@
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
 
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                            <li class="nav-item dropdown no-arrow d-sm-none">
+                         @*   <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-search fa-fw"></i>
@@ -211,7 +237,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </li>
+                            </li>*@
 
                             <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow mx-1">
@@ -219,7 +245,7 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
                                     <!-- Counter - Alerts -->
-                                    <span class="badge badge-danger badge-counter">3+</span>
+                                    @*<span class="badge badge-danger badge-counter"></span>*@
                                 </a>
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -227,7 +253,7 @@
                                     <h6 class="dropdown-header">
                                         Alerts Center
                                     </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                 @*   <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="mr-3">
                                             <div class="icon-circle bg-primary">
                                                 <i class="fas fa-file-alt text-white"></i>
@@ -259,7 +285,7 @@
                                             <div class="small text-gray-500">December 2, 2019</div>
                                             Spending Alert: We've noticed unusually high spending for your account.
                                         </div>
-                                    </a>
+                                    </a>*@
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                 </div>
                             </li>
@@ -270,7 +296,7 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-envelope fa-fw"></i>
                                     <!-- Counter - Messages -->
-                                    <span class="badge badge-danger badge-counter">7</span>
+                                   @* <span class="badge badge-danger badge-counter">7</span>*@
                                 </a>
                                 <!-- Dropdown - Messages -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -278,12 +304,12 @@
                                     <h6 class="dropdown-header">
                                         Message Center
                                     </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                       @* <div class="dropdown-list-image mr-3">
+                                 @*   <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="dropdown-list-image mr-3">
                                             <img class="rounded-circle" src="~/img/undraw_profile_1.svg"
                                                  alt="...">
                                             <div class="status-indicator bg-success"></div>
-                                        </div>*@
+                                        </div>
                                         <div class="font-weight-bold">
                                             <div class="text-truncate">
                                                 Hi there! I am wondering if you can help me with a
@@ -333,12 +359,12 @@
                                             </div>
                                             <div class="small text-gray-500">Chicken the Dog · 2w</div>
                                         </div>
-                                    </a>
+                                    </a>*@
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                                 </div>
                             </li>
 
-                            <div class="topbar-divider d-none d-sm-block"></div>
+              @*              <div class="topbar-divider d-none d-sm-block"></div>*@
 
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
@@ -375,7 +401,8 @@
 
                     </nav>
                     <!-- End of Topbar -->
-                    <!-- 在這邊塞主要內容 -->
+
+                    <!-- 在下面塞主要內容 -->
                     <div class="container-fluid">
                         <div id="content">
                             @RenderBody()
@@ -383,6 +410,7 @@
                         
                     </div>
                     <!-- 在上面塞主要內容 -->
+
                     <!-- Footer -->
                     <footer class="sticky-footer bg-white">
                         <div class="container my-auto">
