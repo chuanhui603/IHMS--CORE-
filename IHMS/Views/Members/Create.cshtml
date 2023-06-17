@@ -1,0 +1,126 @@
+﻿@model IHMS.Models.Member
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>新增會員</h1>
+
+<h4>請輸入會員資訊</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="MName" class="control-label"></label>
+                <input asp-for="MName" class="form-control" />
+                <span asp-validation-for="MName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MEmail" class="control-label"></label>
+                <input asp-for="MEmail" class="form-control" />
+                <span asp-validation-for="MEmail" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="MAccount" class="control-label"></label>
+                <input asp-for="MAccount" class="form-control" />
+                <span asp-validation-for="MAccount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MPassword" class="control-label"></label>
+                <input asp-for="MPassword" class="form-control" />
+                <span asp-validation-for="MPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MPhone" class="control-label"></label>
+                <input asp-for="MPhone" class="form-control" />
+                <span asp-validation-for="MPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MBirthday" class="control-label"></label>
+                <input asp-for="MBirthday" class="form-control" type="date" />
+                <span asp-validation-for="MBirthday" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="MGender" class="control-label"></label>
+                <select asp-for="MGender" class="form-control">
+                    <option value="null">請選擇性別</option>
+                    <option value="True">男</option>
+                    <option value="False">女</option>
+                </select>
+                <span asp-validation-for="MGender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MMaritalStatus" class="control-label"></label>
+                <select asp-for="MMaritalStatus" class="form-control">
+                    <option value="null">請選擇婚姻狀態</option>
+                    <option value="True">已婚</option>
+                    <option value="False">未婚</option>
+                </select>
+                <span asp-validation-for="MMaritalStatus" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="MNickname" class="control-label"></label>
+                <input asp-for="MNickname" class="form-control" />
+                <span asp-validation-for="MNickname" class="text-danger"></span>
+            </div>           
+            
+            <div class="form-group">
+                <label asp-for="MAvatarImage" class="control-label"></label>
+                <input asp-for="MAvatarImage"  class="form-control" />
+                <span asp-validation-for="MAvatarImage" class="text-danger"></span>
+            </div>
+
+            
+            
+            <div class="form-group">
+                <label asp-for="MResidentialCity" class="control-label"></label>
+                <input asp-for="MResidentialCity" class="form-control" />
+                <span asp-validation-for="MResidentialCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MPermission" class="control-label"></label>
+                <select asp-for="MPermission" class="form-control">
+                    <option value="0">選擇權限</option>
+                    <option value="1">管理者</option>
+                    <option value="1000">老師</option>
+                    <option value="3000">會員</option>
+                </select>
+                <span asp-validation-for="MPermission" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MOccupation" class="control-label"></label>
+                <input asp-for="MOccupation" class="form-control" />
+                <span asp-validation-for="MOccupation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MDiseaseDescription" class="control-label"></label>
+                <input asp-for="MDiseaseDescription" class="form-control" />
+                <span asp-validation-for="MDiseaseDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MAllergyDescription" class="control-label"></label>
+                <input asp-for="MAllergyDescription" class="form-control" />
+                <span asp-validation-for="MAllergyDescription" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="List">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
