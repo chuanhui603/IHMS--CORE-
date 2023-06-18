@@ -16,12 +16,8 @@ namespace IHMS.Controllers
             _logger = logger;
         }
 
+   
         public IActionResult Index()
-        {
-
-            return View();
-        }
-        public IActionResult Index2()
         {
             var announcement = GetLatestAnnouncementFromDatabase();
             if (announcement != null)
