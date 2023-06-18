@@ -35,6 +35,12 @@ public partial class Member
 
     public DateTime? MLoginTime { get; set; }
 
+    public string? MPhone { get; set; }
+
+    public string? MDiseaseDescription { get; set; }
+
+    public string? MAllergyDescription { get; set; }
+
     public virtual Allergy? Allergy { get; set; }
 
     public virtual HealthInfo? HealthInfo { get; set; }

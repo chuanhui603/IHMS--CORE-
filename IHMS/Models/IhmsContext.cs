@@ -217,6 +217,14 @@ public partial class IhmsContext : DbContext
         {
             entity.HasKey(e => e.MMemberId).HasName("PK__Members__BF51BC45B3902C63");
 
+            entity.HasIndex(e => e.MAccount, "UQ__Members__80FC9F79456ED206").IsUnique();
+
+            entity.HasIndex(e => e.MAccount, "UQ__Members__80FC9F79E26F87D2").IsUnique();
+
+            entity.HasIndex(e => e.MEmail, "UQ__Members__D12C572A4E894587").IsUnique();
+
+            entity.HasIndex(e => e.MEmail, "UQ__Members__D12C572AA77AE704").IsUnique();
+
             entity.Property(e => e.MMemberId)
                 .ValueGeneratedNever()
                 .HasColumnName("m_member_id");
@@ -224,6 +232,9 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("m_account");
+            entity.Property(e => e.MAllergyDescription)
+                .HasMaxLength(300)
+                .HasColumnName("m_allergy_description");
             entity.Property(e => e.MAvatarImage)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -231,6 +242,9 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.MBirthday)
                 .HasColumnType("date")
                 .HasColumnName("m_birthday");
+            entity.Property(e => e.MDiseaseDescription)
+                .HasMaxLength(300)
+                .HasColumnName("m_disease_description");
             entity.Property(e => e.MEmail)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -257,6 +271,10 @@ public partial class IhmsContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("m_password");
             entity.Property(e => e.MPermission).HasColumnName("m_permission");
+            entity.Property(e => e.MPhone)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("m_phone");
             entity.Property(e => e.MPoints).HasColumnName("m_points");
             entity.Property(e => e.MResidentialCity)
                 .HasMaxLength(50)
