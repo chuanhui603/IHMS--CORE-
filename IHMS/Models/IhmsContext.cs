@@ -17,7 +17,11 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Allergy> Allergies { get; set; }
 
+    public virtual DbSet<Announcement> Announcements { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
+
+    public virtual DbSet<Course> Courses { get; set; }
 
     public virtual DbSet<CourseOrder> CourseOrders { get; set; }
 
@@ -73,6 +77,28 @@ public partial class IhmsContext : DbContext
                 .HasConstraintName("FK__Allergies__a_mem__29572725");
         });
 
+        modelBuilder.Entity<Announcement>(entity =>
+        {
+            entity.HasKey(e => e.AnAnnouncemetId);
+
+            entity.ToTable("Announcement");
+
+            entity.Property(e => e.AnAnnouncemetId).HasColumnName("an_announcemet_id");
+            entity.Property(e => e.AnContent)
+                .HasMaxLength(1500)
+                .HasColumnName("an_content");
+            entity.Property(e => e.AnImage)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("an_image");
+            entity.Property(e => e.AnTime)
+                .HasColumnType("datetime")
+                .HasColumnName("an_time");
+            entity.Property(e => e.AnTitle)
+                .HasMaxLength(100)
+                .HasColumnName("an_title");
+        });
+
         modelBuilder.Entity<Cart>(entity =>
         {
             entity.HasKey(e => e.CCartId);
@@ -88,6 +114,28 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.CUpdatetime)
                 .HasColumnType("datetime")
                 .HasColumnName("c_updatetime");
+        });
+
+        modelBuilder.Entity<Course>(entity =>
+        {
+            entity.HasKey(e => e.CCourseId);
+
+            entity.ToTable("Course");
+
+            entity.Property(e => e.CCourseId).HasColumnName("c_course_id");
+            entity.Property(e => e.CIntro)
+                .HasMaxLength(100)
+                .HasColumnName("c_intro");
+            entity.Property(e => e.CName)
+                .HasMaxLength(50)
+                .HasColumnName("c_name");
+            entity.Property(e => e.CTeacherId).HasColumnName("c_teacher_id");
+            entity.Property(e => e.CType)
+                .HasMaxLength(50)
+                .HasColumnName("c_type");
+            entity.Property(e => e.CVideo)
+                .HasMaxLength(100)
+                .HasColumnName("c_video");
         });
 
         modelBuilder.Entity<CourseOrder>(entity =>
@@ -386,19 +434,23 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Schedule>(entity =>
         {
-            entity.HasKey(e => e.SScheduleId);
+            entity.HasKey(e => e.SScheduleId).HasName("PK_Table_1");
 
             entity.ToTable("Schedule");
 
             entity.Property(e => e.SScheduleId).HasColumnName("s_schedule_id");
-            entity.Property(e => e.SBooking).HasColumnName("s_booking");
+            entity.Property(e => e.SCourseId).HasColumnName("s_course_id");
             entity.Property(e => e.SEndTime)
                 .HasColumnType("datetime")
                 .HasColumnName("s_endTime");
+            entity.Property(e => e.SMonth)
+                .HasColumnType("date")
+                .HasColumnName("s_month");
+            entity.Property(e => e.SPoint).HasColumnName("s_point");
+            entity.Property(e => e.SScore).HasColumnName("s_score");
             entity.Property(e => e.SStartTime)
                 .HasColumnType("datetime")
                 .HasColumnName("s_startTime");
-            entity.Property(e => e.STeacherId).HasColumnName("s_teacher_id");
         });
 
         modelBuilder.Entity<Sport>(entity =>
@@ -433,7 +485,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Teacher>(entity =>
         {
-            entity.HasKey(e => e.TTeacherId).HasName("PK_eacher");
+            entity.HasKey(e => e.TTeacherId).HasName("PK_Table_2");
 
             entity.ToTable("Teacher");
 
@@ -442,15 +494,28 @@ public partial class IhmsContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("t_applytime");
             entity.Property(e => e.TCommission).HasColumnName("t_commission");
+            entity.Property(e => e.TCondition).HasColumnName("t_condition");
+            entity.Property(e => e.TConfirmtime)
+                .HasColumnType("datetime")
+                .HasColumnName("t_confirmtime");
+            entity.Property(e => e.TImage)
+                .HasMaxLength(50)
+                .HasColumnName("t_image");
             entity.Property(e => e.TIntro)
                 .HasMaxLength(200)
                 .HasColumnName("t_intro");
             entity.Property(e => e.TLevel).HasColumnName("t_level");
-            entity.Property(e => e.TMajor)
-                .HasMaxLength(50)
-                .HasColumnName("t_major");
             entity.Property(e => e.TMemberId).HasColumnName("t_member_id");
-            entity.Property(e => e.TPrice).HasColumnName("t_price");
+            entity.Property(e => e.TReason)
+                .HasMaxLength(100)
+                .HasColumnName("t_reason");
+            entity.Property(e => e.TResume)
+                .HasMaxLength(100)
+                .HasColumnName("t_resume");
+            entity.Property(e => e.TScore).HasColumnName("t_score");
+            entity.Property(e => e.TVideo)
+                .HasMaxLength(100)
+                .HasColumnName("t_video");
         });
 
         modelBuilder.Entity<Water>(entity =>

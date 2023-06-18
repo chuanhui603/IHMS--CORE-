@@ -19,7 +19,7 @@ namespace IHMS.Controllers
         public IActionResult Index()
         {
 
-            return View(); 
+            return View();
         }
         public IActionResult Index2()
         {
@@ -46,6 +46,7 @@ namespace IHMS.Controllers
         {
             return View();
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

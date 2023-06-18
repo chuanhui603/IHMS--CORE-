@@ -1,0 +1,47 @@
+﻿@model IHMS.Models.Teacher
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>編輯測試</h1>
+
+<h4>教練個人資料</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-10">
+                <div class="form-group col-md-10">
+                    <label asp-for="TIntro" class="control-label"></label>
+                    <input asp-for="TIntro" class="form-control" />
+                    <span asp-validation-for="TIntro" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-10">
+                    個人照片
+                    <div class="col-md-10">
+                        <input type="file" name="photo" />
+                    </div>
+                </div>
+                <div class="form-group col-md-10">
+                    履歷上傳
+                    <div class="col-md-10">
+                        <input type="file" name="resume" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-10">
+                <input type="submit" value="送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="List_Done">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
