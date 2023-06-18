@@ -44,7 +44,7 @@ public partial class Member
     public string? MAllergyDescription { get; set; }
     [DisplayName("最後登入時間")]
     public DateTime? MLoginTime { get; set; }
-    public int? MPoints { get; set; }  
+    //public int? MPoints { get; set; }  
 
     public virtual Allergy? Allergy { get; set; }
 

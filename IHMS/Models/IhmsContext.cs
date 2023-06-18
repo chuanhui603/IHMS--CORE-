@@ -323,7 +323,7 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("m_phone");
-            entity.Property(e => e.MPoints).HasColumnName("m_points");
+            //entity.Property(e => e.MPoints).HasColumnName("m_points");
             entity.Property(e => e.MResidentialCity)
                 .HasMaxLength(50)
                 .IsUnicode(false)

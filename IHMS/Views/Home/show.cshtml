@@ -1,0 +1,70 @@
+﻿@model AnnouncementView
+
+@{
+    bool showPopup = TempData["ShowPopup"] as bool? ?? false;
+    var announcement = TempData["PopupContent"] as AnnouncementView;
+    Layout = "_Layout";
+}
+
+@if (showPopup && announcement != null)
+{
+    <!-- 公告彈出視窗的內容 -->
+    <!-- 使用 Model 屬性獲取公告資料 -->
+    <div class="modal" id="announcementModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@announcement.an_title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@announcement.an_content</p>
+                    @if (!string.IsNullOrEmpty(announcement.an_image))
+                    {
+                        <img src="~/AnnouncementImage/@announcement.an_image" alt="公告圖片" class="img-fluid"  />
+                    }
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-primary" id="disableButton">不再顯示</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 當頁面載入完成後顯示彈出視窗
+        $(document).ready(function () {
+            $('#announcementModal').modal('show');
+        });
+
+        // 點擊關閉按鈕時關閉彈出視窗
+        $('#announcementModal').on('hidden.bs.modal', function () {
+            // 在此處理關閉後的相應動作
+        });
+
+        // 點擊不再顯示按鈕時隱藏彈出視窗並記錄到 cookie
+        $('#disableButton').click(function () {
+            $('#announcementModal').modal('hide');
+
+            // 將不再顯示的狀態保存在 cookie 中
+            document.cookie = "disableAnnouncement=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        });
+
+        // 點擊關閉按鈕時觸發關閉彈出視窗動作
+        $('.modal .close').click(function () {
+            $('#announcementModal').modal('hide');
+        });
+
+        // 檢查是否存在不再顯示的 cookie
+        if (document.cookie.includes("disableAnnouncement=true")) {
+            $('#announcementModal').modal('hide');
+        }
+    </script>
+}
+

@@ -16,8 +16,13 @@ namespace IHMS.Controllers
             _logger = logger;
         }
 
-   
+
         public IActionResult Index()
+        {
+
+            return View();
+        }
+        public IActionResult show()
         {
             var announcement = GetLatestAnnouncementFromDatabase();
             if (announcement != null)
@@ -28,6 +33,7 @@ namespace IHMS.Controllers
 
             return View(announcement);
         }
+
         private AnnouncementView GetLatestAnnouncementFromDatabase()
         {
             using (var connection = new SqlConnection(connectionString))
@@ -48,7 +54,6 @@ namespace IHMS.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
 
 
     }
