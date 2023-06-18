@@ -31,9 +31,11 @@ public partial class Member
 
     public string? MOccupation { get; set; }
 
-    public int? MPoints { get; set; }
+  
 
     public DateTime? MLoginTime { get; set; }
+
+    public int? MPoints { get; set; }
 
     public string? MPhone { get; set; }
 
