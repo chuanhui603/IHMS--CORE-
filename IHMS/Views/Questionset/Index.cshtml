@@ -1,0 +1,35 @@
+﻿@model List<IHMS.Models.Questionset>
+
+<h1>Questionset</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var questionset in Model)
+        {
+            <tr>
+                <td>@questionset.q_question</td>
+                <td>@questionset.q_category</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>加入一個預設問題</h2>
+
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label>Category:</label>
+        <input type="text" name="q_category" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Question:</label>
+        <textarea name="q_question" class="form-control" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
