@@ -55,13 +55,13 @@ public partial class IhmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Allergy>(entity =>
         {
-            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE05428828005DA4");
+            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE0542880B8263BE");
 
             entity.Property(e => e.AMemberId)
                 .ValueGeneratedNever()
@@ -89,7 +89,6 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("an_content");
             entity.Property(e => e.AnImage)
                 .HasMaxLength(50)
-                .IsUnicode(false)
                 .HasColumnName("an_image");
             entity.Property(e => e.AnTime)
                 .HasColumnType("datetime")
@@ -208,7 +207,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCB18660F9");
+            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCD9D2916D");
 
             entity.ToTable("HealthInfo");
 
@@ -243,7 +242,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<MedicalHistory>(entity =>
         {
-            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D541309767A");
+            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D54C5D301D3");
 
             entity.ToTable("MedicalHistory");
 
@@ -273,9 +272,7 @@ public partial class IhmsContext : DbContext
 
             entity.HasIndex(e => e.MEmail, "UQ__Members__D12C572AA77AE704").IsUnique();
 
-            entity.Property(e => e.MMemberId)
-                .ValueGeneratedNever()
-                .HasColumnName("m_member_id");
+            entity.Property(e => e.MMemberId).HasColumnName("m_member_id");
             entity.Property(e => e.MAccount)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -323,7 +320,6 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("m_phone");
-            //entity.Property(e => e.MPoints).HasColumnName("m_points");
             entity.Property(e => e.MResidentialCity)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -527,7 +523,9 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("w_date");
             entity.Property(e => e.WDrinkId).HasColumnName("w_drink_id");
             entity.Property(e => e.WPlanId).HasColumnName("w_plan_id");
-            entity.Property(e => e.WWaterId).HasColumnName("w_water_id");
+            entity.Property(e => e.WWaterId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("w_water_id");
         });
 
         OnModelCreatingPartial(modelBuilder);
