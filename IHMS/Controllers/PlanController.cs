@@ -19,22 +19,22 @@ namespace IHMS.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Member t)
+        public IActionResult Create(Plan t)
         {
             IhmsContext db = new IhmsContext();
-            db.Members.Add(t);
+            db.Plans.Add(t);
             db.SaveChanges();
-            return RedirectToAction("List");
+            return RedirectToAction("List"); 
         }
         public IActionResult Delete(int? id)
         {
             if (id != null)
             {
                 IhmsContext db = new IhmsContext();
-                Member cust = db.Members.FirstOrDefault(p => p.MMemberId == id);
+                Plan cust = db.Plans.FirstOrDefault(p => p.PPlanId == id);
                 if (cust != null)
                 {
-                    db.Members.Remove(cust);
+                    db.Plans.Remove(cust);
                     db.SaveChanges();
                 }
             }
@@ -42,14 +42,13 @@ namespace IHMS.Controllers
         }
         public ActionResult Edit(int? id)
         {
-            Member cust = new Member();
-
+            Plan cust = new Plan();
             if (id == null)
             {
                 return RedirectToAction("List");
             }
             IhmsContext db = new IhmsContext();
-            cust = db.Members.FirstOrDefault(p => p.MMemberId == id);
+            cust = db.Plans.FirstOrDefault(p => p.PPlanId == id);
             return View(cust);
         }
         [HttpPost]
