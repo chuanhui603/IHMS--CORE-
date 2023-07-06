@@ -9,13 +9,15 @@ public partial class Plan
 
     public int MemberId { get; set; }
 
+    public string Pname { get; set; } = null!;
+
     public int Weight { get; set; }
 
-    public int BodyPercentage { get; set; }
+    public double BodyPercentage { get; set; }
 
-    public DateTime? Registerdate { get; set; }
+    public DateTime RegisterDate { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
 

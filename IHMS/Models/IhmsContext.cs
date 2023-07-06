@@ -166,9 +166,7 @@ public partial class IhmsContext : DbContext
         {
             entity.ToTable("Diet");
 
-            entity.Property(e => e.DietId)
-                .ValueGeneratedNever()
-                .HasColumnName("diet_id");
+            entity.Property(e => e.DietId).HasColumnName("diet_id");
             entity.Property(e => e.Date)
                 .HasColumnType("date")
                 .HasColumnName("date");
@@ -196,6 +194,9 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("decription");
             entity.Property(e => e.DietId).HasColumnName("diet_id");
+            entity.Property(e => e.Fname)
+                .HasMaxLength(50)
+                .HasColumnName("fname");
             entity.Property(e => e.FoodType)
                 .HasMaxLength(50)
                 .HasColumnName("food_type");
@@ -203,9 +204,6 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("img");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
                 .HasColumnName("type");
@@ -386,17 +384,18 @@ public partial class IhmsContext : DbContext
 
             entity.ToTable("Plan");
 
-            entity.Property(e => e.PlanId)
-                .ValueGeneratedNever()
-                .HasColumnName("plan_id");
+            entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.BodyPercentage).HasColumnName("body_percentage");
             entity.Property(e => e.EndDate)
-                .HasColumnType("date")
+                .HasColumnType("datetime")
                 .HasColumnName("end_date");
             entity.Property(e => e.MemberId).HasColumnName("member_id");
-            entity.Property(e => e.Registerdate)
+            entity.Property(e => e.Pname)
+                .HasMaxLength(50)
+                .HasColumnName("pname");
+            entity.Property(e => e.RegisterDate)
                 .HasColumnType("datetime")
-                .HasColumnName("registerdate");
+                .HasColumnName("register_date");
             entity.Property(e => e.Weight).HasColumnName("weight");
 
             entity.HasOne(d => d.Member).WithMany(p => p.Plans)
@@ -484,9 +483,7 @@ public partial class IhmsContext : DbContext
         {
             entity.ToTable("Sport");
 
-            entity.Property(e => e.SportId)
-                .ValueGeneratedNever()
-                .HasColumnName("sport_id");
+            entity.Property(e => e.SportId).HasColumnName("sport_id");
             entity.Property(e => e.Date)
                 .HasColumnType("date")
                 .HasColumnName("date");
@@ -496,14 +493,14 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Image)
                 .HasMaxLength(50)
                 .HasColumnName("image");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
             entity.Property(e => e.Number).HasColumnName("number");
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
+            entity.Property(e => e.Sname)
+                .HasMaxLength(50)
+                .HasColumnName("sname");
             entity.Property(e => e.Time).HasColumnName("time");
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
@@ -552,9 +549,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Water>(entity =>
         {
-            entity.Property(e => e.WaterId)
-                .ValueGeneratedNever()
-                .HasColumnName("water_id");
+            entity.Property(e => e.WaterId).HasColumnName("water_id");
             entity.Property(e => e.Date)
                 .HasColumnType("date")
                 .HasColumnName("date");

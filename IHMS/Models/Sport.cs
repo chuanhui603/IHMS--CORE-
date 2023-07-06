@@ -11,7 +11,7 @@ public partial class Sport
 
     public string Type { get; set; } = null!;
 
-    public string Name { get; set; } = null!;
+    public string Sname { get; set; } = null!;
 
     public TimeSpan? Time { get; set; }
 

@@ -1,28 +1,45 @@
 ﻿using IHMS.Models;
+using IHMS.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Matching;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.Collections.Generic;
 using System.Numerics;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace IHMS.Controllers
 {
     public class PlanController : Controller
     {
-        public IActionResult List( )
+        IhmsContext db = new IhmsContext();
+
+        public IActionResult List()
         {
-            IhmsContext db = new IhmsContext();
-            IEnumerable<Plan> datas = null;     
-                datas = from p in db.Plans select p;         
-            return View(datas);
+           
+            List<PPlanListViewModel> list = new List<PPlanListViewModel>();          
+            var planlist = (from p in db.Plans select p).ToList();      //不ToList會觸發重複使用資料庫    
+            foreach (var p in planlist)
+            {
+                PPlanListViewModel plan = new PPlanListViewModel();
+                plan.PlanId = p.PlanId;
+                plan.Name = db.Members.Include("Plans").Where(m => m.MMemberId.Equals(p.MemberId)).FirstOrDefault().MName;
+                plan.Registerdate =p.RegisterDate;
+                plan.EndDate = p.EndDate;
+                list.Add(plan);
+            }
+            return View(list);
         }
     
         public IActionResult Delete(int? id)
         {
             if (id != null)
             {
-                IhmsContext db = new IhmsContext();
-                Member cust = db.Members.FirstOrDefault(p => p.MMemberId == id);
+
+                Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == id);
                 if (cust != null)
                 {
-                    db.Members.Remove(cust);
+                    db.Plans.Remove(cust);
                     db.SaveChanges();
                 }
             }
@@ -30,26 +47,25 @@ namespace IHMS.Controllers
         }
         public ActionResult Edit(int? id)
         {
-            Member cust = new Member();
+            PPlanViewModel cust = new PPlanViewModel();
 
             if (id == null)
             {
                 return RedirectToAction("List");
             }
-            IhmsContext db = new IhmsContext();
-            cust = db.Members.FirstOrDefault(p => p.MMemberId == id);
+           
+            
             return View(cust);
         }
         [HttpPost]
         public ActionResult Edit(Plan t)
         {
-            IhmsContext db = new IhmsContext();
             Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == t.PlanId);
             if (cust != null)
             {
                 cust.Weight = t.Weight;
                 cust.BodyPercentage = t.BodyPercentage;
-                cust.Registerdate = t.Registerdate;
+                cust.RegisterDate = t.RegisterDate;
                 cust.EndDate = t.EndDate;
                 db.SaveChanges();
             }
