@@ -5,17 +5,21 @@ namespace IHMS.Models;
 
 public partial class DietDetail
 {
-    public int DdDietDetailId { get; set; }
+    public int DietDetailId { get; set; }
 
-    public int DdDietId { get; set; }
+    public int DietId { get; set; }
 
-    public string? DName { get; set; }
+    public string? Name { get; set; }
 
-    public string? DFoodType { get; set; }
+    public string? FoodType { get; set; }
 
-    public string? DType { get; set; }
+    public string? Type { get; set; }
 
-    public int? DCalories { get; set; }
+    public int? Calories { get; set; }
 
-    public string? DDecription { get; set; }
+    public string? Decription { get; set; }
+
+    public string? Img { get; set; }
+
+    public virtual Diet Diet { get; set; } = null!;
 }

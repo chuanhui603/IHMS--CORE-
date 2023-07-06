@@ -45,6 +45,8 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<PointRecord> PointRecords { get; set; }
 
+    public virtual DbSet<Questionset> Questionsets { get; set; }
+
     public virtual DbSet<Schedule> Schedules { get; set; }
 
     public virtual DbSet<Sport> Sports { get; set; }
@@ -89,7 +91,6 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("an_content");
             entity.Property(e => e.AnImage)
                 .HasMaxLength(50)
-                .IsUnicode(false)
                 .HasColumnName("an_image");
             entity.Property(e => e.AnTime)
                 .HasColumnType("datetime")
@@ -163,47 +164,56 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Diet>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Diet");
+            entity.ToTable("Diet");
 
-            entity.Property(e => e.DDate)
+            entity.Property(e => e.DietId)
+                .ValueGeneratedNever()
+                .HasColumnName("diet_id");
+            entity.Property(e => e.Date)
                 .HasColumnType("date")
-                .HasColumnName("d_date");
-            entity.Property(e => e.DDietId).HasColumnName("d_diet_id");
-            entity.Property(e => e.DImage)
+                .HasColumnName("date");
+            entity.Property(e => e.Image)
                 .HasMaxLength(150)
-                .HasColumnName("d_image");
-            entity.Property(e => e.DPlanId).HasColumnName("d_plan_id");
-            entity.Property(e => e.DRegisterdate)
+                .HasColumnName("image");
+            entity.Property(e => e.PlanId).HasColumnName("plan_id");
+            entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
-                .HasColumnName("d_registerdate");
+                .HasColumnName("registerdate");
+
+            entity.HasOne(d => d.Plan).WithMany(p => p.Diets)
+                .HasForeignKey(d => d.PlanId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Diet_Plan");
         });
 
         modelBuilder.Entity<DietDetail>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("DietDetail");
+            entity.ToTable("DietDetail");
 
-            entity.Property(e => e.DCalories).HasColumnName("d_calories");
-            entity.Property(e => e.DDecription)
+            entity.Property(e => e.DietDetailId).HasColumnName("diet_detail_id");
+            entity.Property(e => e.Calories).HasColumnName("calories");
+            entity.Property(e => e.Decription)
                 .HasMaxLength(100)
-                .HasColumnName("d_decription");
-            entity.Property(e => e.DFoodType)
+                .HasColumnName("decription");
+            entity.Property(e => e.DietId).HasColumnName("diet_id");
+            entity.Property(e => e.FoodType)
                 .HasMaxLength(50)
-                .HasColumnName("d_food_type");
-            entity.Property(e => e.DName)
+                .HasColumnName("food_type");
+            entity.Property(e => e.Img)
                 .HasMaxLength(50)
-                .IsFixedLength()
-                .HasColumnName("d_name");
-            entity.Property(e => e.DType)
+                .IsUnicode(false)
+                .HasColumnName("img");
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .HasColumnName("d_type");
-            entity.Property(e => e.DdDietDetailId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("dd_diet_detail_id");
-            entity.Property(e => e.DdDietId).HasColumnName("dd_diet_id");
+                .HasColumnName("name");
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .HasColumnName("type");
+
+            entity.HasOne(d => d.Diet).WithMany(p => p.DietDetails)
+                .HasForeignKey(d => d.DietId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DietDetail_Diet");
         });
 
         modelBuilder.Entity<HealthInfo>(entity =>
@@ -273,9 +283,7 @@ public partial class IhmsContext : DbContext
 
             entity.HasIndex(e => e.MEmail, "UQ__Members__D12C572AA77AE704").IsUnique();
 
-            entity.Property(e => e.MMemberId)
-                .ValueGeneratedNever()
-                .HasColumnName("m_member_id");
+            entity.Property(e => e.MMemberId).HasColumnName("m_member_id");
             entity.Property(e => e.MAccount)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -323,7 +331,6 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("m_phone");
-            entity.Property(e => e.MPoints).HasColumnName("m_points");
             entity.Property(e => e.MResidentialCity)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -375,22 +382,27 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Plan>(entity =>
         {
-            entity.HasKey(e => e.PPlanId).HasName("PK_plan");
+            entity.HasKey(e => e.PlanId).HasName("PK_plan");
 
             entity.ToTable("Plan");
 
-            entity.Property(e => e.PPlanId)
+            entity.Property(e => e.PlanId)
                 .ValueGeneratedNever()
-                .HasColumnName("p_plan_id");
-            entity.Property(e => e.PBodyPercentage).HasColumnName("p_body_percentage");
-            entity.Property(e => e.PEndDate)
+                .HasColumnName("plan_id");
+            entity.Property(e => e.BodyPercentage).HasColumnName("body_percentage");
+            entity.Property(e => e.EndDate)
                 .HasColumnType("date")
-                .HasColumnName("p_end_date");
-            entity.Property(e => e.PMemberId).HasColumnName("p_member_id");
-            entity.Property(e => e.PRegisterdate)
+                .HasColumnName("end_date");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
-                .HasColumnName("p_registerdate");
-            entity.Property(e => e.PWeight).HasColumnName("p_weight");
+                .HasColumnName("registerdate");
+            entity.Property(e => e.Weight).HasColumnName("weight");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.Plans)
+                .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Plan_Members");
         });
 
         modelBuilder.Entity<Point>(entity =>
@@ -432,6 +444,21 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("p_updatetime");
         });
 
+        modelBuilder.Entity<Questionset>(entity =>
+        {
+            entity.HasKey(e => e.QQuestionsetId);
+
+            entity.ToTable("Questionset");
+
+            entity.Property(e => e.QQuestionsetId).HasColumnName("q_questionset_id");
+            entity.Property(e => e.QCategory)
+                .HasMaxLength(50)
+                .HasColumnName("q_category");
+            entity.Property(e => e.QQuestion)
+                .HasMaxLength(500)
+                .HasColumnName("q_question");
+        });
+
         modelBuilder.Entity<Schedule>(entity =>
         {
             entity.HasKey(e => e.SScheduleId).HasName("PK_Table_1");
@@ -455,32 +482,37 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Sport>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Sport");
+            entity.ToTable("Sport");
 
-            entity.Property(e => e.SDate)
+            entity.Property(e => e.SportId)
+                .ValueGeneratedNever()
+                .HasColumnName("sport_id");
+            entity.Property(e => e.Date)
                 .HasColumnType("date")
-                .HasColumnName("s_date");
-            entity.Property(e => e.SDescription)
+                .HasColumnName("date");
+            entity.Property(e => e.Description)
                 .HasMaxLength(50)
-                .HasColumnName("s_description");
-            entity.Property(e => e.SImage)
+                .HasColumnName("description");
+            entity.Property(e => e.Image)
                 .HasMaxLength(50)
-                .HasColumnName("s_image");
-            entity.Property(e => e.SName)
+                .HasColumnName("image");
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .HasColumnName("s_name");
-            entity.Property(e => e.SNumber).HasColumnName("s_number");
-            entity.Property(e => e.SPlanId).HasColumnName("s_plan_id");
-            entity.Property(e => e.SRegisterdate)
+                .HasColumnName("name");
+            entity.Property(e => e.Number).HasColumnName("number");
+            entity.Property(e => e.PlanId).HasColumnName("plan_id");
+            entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
-                .HasColumnName("s_registerdate");
-            entity.Property(e => e.SSportId).HasColumnName("s_sport_id");
-            entity.Property(e => e.STime).HasColumnName("s_time");
-            entity.Property(e => e.SType)
+                .HasColumnName("registerdate");
+            entity.Property(e => e.Time).HasColumnName("time");
+            entity.Property(e => e.Type)
                 .HasMaxLength(50)
-                .HasColumnName("s_type");
+                .HasColumnName("type");
+
+            entity.HasOne(d => d.Plan).WithMany(p => p.Sports)
+                .HasForeignKey(d => d.PlanId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sport_Plan");
         });
 
         modelBuilder.Entity<Teacher>(entity =>
@@ -520,14 +552,19 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Water>(entity =>
         {
-            entity.HasNoKey();
-
-            entity.Property(e => e.WDate)
+            entity.Property(e => e.WaterId)
+                .ValueGeneratedNever()
+                .HasColumnName("water_id");
+            entity.Property(e => e.Date)
                 .HasColumnType("date")
-                .HasColumnName("w_date");
-            entity.Property(e => e.WDrinkId).HasColumnName("w_drink_id");
-            entity.Property(e => e.WPlanId).HasColumnName("w_plan_id");
-            entity.Property(e => e.WWaterId).HasColumnName("w_water_id");
+                .HasColumnName("date");
+            entity.Property(e => e.Drink).HasColumnName("drink");
+            entity.Property(e => e.PlanId).HasColumnName("plan_id");
+
+            entity.HasOne(d => d.Plan).WithMany(p => p.Water)
+                .HasForeignKey(d => d.PlanId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Water_Plan");
         });
 
         OnModelCreatingPartial(modelBuilder);

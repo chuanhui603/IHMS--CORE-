@@ -13,19 +13,7 @@ namespace IHMS.Controllers
                 datas = from p in db.Plans select p;         
             return View(datas);
         }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Create(Member t)
-        {
-            IhmsContext db = new IhmsContext();
-            db.Members.Add(t);
-            db.SaveChanges();
-            return RedirectToAction("List");
-        }
+    
         public IActionResult Delete(int? id)
         {
             if (id != null)
@@ -56,13 +44,13 @@ namespace IHMS.Controllers
         public ActionResult Edit(Plan t)
         {
             IhmsContext db = new IhmsContext();
-            Plan cust = db.Plans.FirstOrDefault(p => p.PPlanId == t.PPlanId);
+            Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == t.PlanId);
             if (cust != null)
             {
-                cust.PWeight = t.PWeight;
-                cust.PBodyPercentage = t.PBodyPercentage;
-                cust.PRegisterdate = t.PRegisterdate;
-                cust.PEndDate = t.PEndDate;
+                cust.Weight = t.Weight;
+                cust.BodyPercentage = t.BodyPercentage;
+                cust.Registerdate = t.Registerdate;
+                cust.EndDate = t.EndDate;
                 db.SaveChanges();
             }
 

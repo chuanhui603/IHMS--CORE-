@@ -1,0 +1,65 @@
+﻿@model IEnumerable<IHMS.Models.Plan>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               編號
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+               會員姓名
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BodyPercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Registerdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            int count = 0;
+            <tr>
+            <td>
+                    count++
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodyPercentage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Registerdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.PlanId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.PlanId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
