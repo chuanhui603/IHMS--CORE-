@@ -15,8 +15,7 @@ namespace IHMS.Controllers
         IhmsContext db = new IhmsContext();
 
         public IActionResult List()
-        {
-           
+        {          
             List<PPlanListViewModel> list = new List<PPlanListViewModel>();          
             var planlist = (from p in db.Plans select p).ToList();      //不ToList會觸發重複使用資料庫    
             foreach (var p in planlist)
@@ -35,7 +34,6 @@ namespace IHMS.Controllers
         {
             if (id != null)
             {
-
                 Plan plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
                 if (plan != null)
                 {
@@ -45,7 +43,7 @@ namespace IHMS.Controllers
             }
             return RedirectToAction("List");
         }
-        public ActionResult Edit(int? id)
+        public ActionResult Detail(int? id)
         {
             PPlanViewModel cust = new PPlanViewModel();
 
@@ -58,7 +56,7 @@ namespace IHMS.Controllers
             return View(cust);
         }
         [HttpPost]
-        public ActionResult Edit(Plan t)
+        public ActionResult Detail(Plan t)
         {
             Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == t.PlanId);
             if (cust != null)
