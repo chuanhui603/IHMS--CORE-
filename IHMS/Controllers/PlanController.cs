@@ -36,10 +36,10 @@ namespace IHMS.Controllers
             if (id != null)
             {
 
-                Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == id);
-                if (cust != null)
+                Plan plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
+                if (plan != null)
                 {
-                    db.Plans.Remove(cust);
+                    db.Plans.Remove(plan);
                     db.SaveChanges();
                 }
             }
