@@ -4,52 +4,108 @@
     ViewData["Title"] = "Detail";
 }
 
-<h1>Detail</h1>
+<div class="container ">
+    <h1>Detail</h1>
 
-<h4>細項</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Detail">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
-            <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
+    <h4>細項</h4>
+    <hr />
+
+    <div class="row d-md-flex flex-column align-items-md-center">
+        <div class="col-md-12">
+            <div class="accordion" id="planList">
+                <div class="accordion-item ">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            計畫細項
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#planList">
+                        <div class="accordion-body">
+                            <form asp-action="Detail">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="MemberName" class="control-label"></label>
+                                    <input asp-for="MemberName" class="form-control" />
+                                    <span asp-validation-for="MemberName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Pname" class="control-label"></label>
+                                    <input asp-for="Pname" class="form-control" />
+                                    <span asp-validation-for="Pname" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Weight" class="control-label"></label>
+                                    <input asp-for="Weight" class="form-control" />
+                                    <span asp-validation-for="Weight" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BodyPercentage" class="control-label"></label>
+                                    <input asp-for="BodyPercentage" class="form-control" />
+                                    <span asp-validation-for="BodyPercentage" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="RegisterDate" class="control-label"></label>
+                                    <input asp-for="RegisterDate" class="form-control" />
+                                    <span asp-validation-for="RegisterDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="EndDate" class="control-label"></label>
+                                    <input asp-for="EndDate" class="form-control" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            飲食清單
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#planList">
+                        <div class="accordion-body">
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#planList">
+                                <div class="accordion-body">
+
+                                  
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            運動清單
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#planList">
+                        <div class="accordion-body">
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#planList">
+                                <div class="accordion-body">
+
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Pname" class="control-label"></label>
-                <input asp-for="Pname" class="form-control" />
-                <span asp-validation-for="Pname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
-                <span asp-validation-for="Weight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BodyPercentage" class="control-label"></label>
-                <input asp-for="BodyPercentage" class="form-control" />
-                <span asp-validation-for="BodyPercentage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegisterDate" class="control-label"></label>
-                <input asp-for="RegisterDate" class="form-control" />
-                <span asp-validation-for="RegisterDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>         
-        </form>
+
+            <a asp-action="List" class="btn btn-primary mt-3" style="left:auto">Back to List</a>
+
+        </div>
+
     </div>
+
 </div>
 
-<div>
-    <a asp-action="List" class="btn btn-primary mt-3">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="~/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    }
 }

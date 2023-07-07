@@ -53,8 +53,7 @@ namespace IHMS.Controllers
         }
         public ActionResult Detail(int? id)
         {
-            PPlanViewModel vm = new PPlanViewModel();
-
+            PPlanViewModel vm = new PPlanViewModel();          
             if (id == null)
             {
                 return RedirectToAction("List");
@@ -66,6 +65,8 @@ namespace IHMS.Controllers
             vm.RegisterDate = plan.RegisterDate;
             vm.EndDate = plan.EndDate;
             vm.Pname = plan.Pname;
+            vm.Diets = db.Diets.Include("Plans").Where(d=>d.DietId ==id).ToList();
+            vm.Sports = db.Sports.Include("Plans").Where(s => s.SportId==id).ToList();
             return View(vm);
         }
 
