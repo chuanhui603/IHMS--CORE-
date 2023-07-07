@@ -6,7 +6,7 @@ namespace IHMS.ViewModel
     {
         public int PlanId { get; set; }
 
-        public int MemberId { get; set; }
+        public string MemberName { get; set; }
 
         public string Pname { get; set; } = null!;
 
@@ -17,5 +17,7 @@ namespace IHMS.ViewModel
         public DateTime RegisterDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+
     }
 }

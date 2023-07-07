@@ -6,21 +6,16 @@
 
 <h1>Detail</h1>
 
-<h4>PPlanViewModel</h4>
+<h4>細項</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Detail">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
             <div class="form-group">
-                <label asp-for="PlanId" class="control-label"></label>
-                <input asp-for="PlanId" class="form-control" />
-                <span asp-validation-for="PlanId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MemberId" class="control-label"></label>
-                <input asp-for="MemberId" class="form-control" />
-                <span asp-validation-for="MemberId" class="text-danger"></span>
+                <label asp-for="MemberName" class="control-label"></label>
+                <input asp-for="MemberName" class="form-control" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Pname" class="control-label"></label>
@@ -46,16 +41,13 @@
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            </div>         
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="List" class="btn btn-primary mt-3">Back to List</a>
 </div>
 
 @section Scripts {

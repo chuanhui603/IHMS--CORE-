@@ -17,12 +17,13 @@ namespace IHMS.Controllers
         public IActionResult List()
         {          
             List<PPlanListViewModel> list = new List<PPlanListViewModel>();          
-            var planlist = (from p in db.Plans select p).ToList();      //不ToList會觸發重複使用資料庫    
+            List<Plan> planlist = (from p in db.Plans select p).ToList();      //不ToList會觸發重複使用資料庫
+          
             foreach (var p in planlist)
             {
                 PPlanListViewModel plan = new PPlanListViewModel();
                 plan.PlanId = p.PlanId;
-                plan.Name = db.Members.Include("Plans").Where(m => m.MMemberId.Equals(p.MemberId)).FirstOrDefault().MName;
+                plan.Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(p.MemberId)).MName;
                 plan.Registerdate =p.RegisterDate;
                 plan.EndDate = p.EndDate;
                 list.Add(plan);
@@ -45,30 +46,20 @@ namespace IHMS.Controllers
         }
         public ActionResult Detail(int? id)
         {
-            PPlanViewModel cust = new PPlanViewModel();
+            PPlanViewModel vm = new PPlanViewModel();
 
             if (id == null)
             {
                 return RedirectToAction("List");
             }
-           
-            
-            return View(cust);
-        }
-        [HttpPost]
-        public ActionResult Detail(Plan t)
-        {
-            Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == t.PlanId);
-            if (cust != null)
-            {
-                cust.Weight = t.Weight;
-                cust.BodyPercentage = t.BodyPercentage;
-                cust.RegisterDate = t.RegisterDate;
-                cust.EndDate = t.EndDate;
-                db.SaveChanges();
-            }
-
-            return RedirectToAction("List");
+            var plan =db.Plans.FirstOrDefault(p => p.PlanId == id);
+            vm.PlanId = plan.PlanId;
+            vm.MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(plan.MemberId)).MName;
+            vm.BodyPercentage = plan.BodyPercentage;
+            vm.RegisterDate = plan.RegisterDate;
+            vm.EndDate = plan.EndDate;
+            vm.Pname = plan.Pname;
+            return View(vm);
         }
 
     }

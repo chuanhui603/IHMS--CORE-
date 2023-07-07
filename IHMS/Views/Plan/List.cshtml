@@ -8,6 +8,7 @@
 
 
 <table class="table">
+
     <thead>
         <tr>
             <th>
@@ -46,8 +47,8 @@
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.PlanId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.PlanId })
+                        @Html.ActionLink("Detail", "Detail", new { id=item.PlanId }, new{@class="btn btn-success"}) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.PlanId },new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-danger" })
                 </td>
             </tr>
         }
