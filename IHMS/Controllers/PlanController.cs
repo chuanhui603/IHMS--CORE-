@@ -14,6 +14,7 @@ namespace IHMS.Controllers
     {
         IhmsContext db = new IhmsContext();
 
+       
 
         public IActionResult List()
         {
@@ -64,9 +65,7 @@ namespace IHMS.Controllers
             vm.BodyPercentage = plan.BodyPercentage;
             vm.RegisterDate = plan.RegisterDate;
             vm.EndDate = plan.EndDate;
-            vm.Pname = plan.Pname;
-            vm.Diets = db.Diets.Include("Plans").Where(d=>d.DietId ==id).ToList();
-            vm.Sports = db.Sports.Include("Plans").Where(s => s.SportId==id).ToList();
+            vm.Pname = plan.Pname;          
             return View(vm);
         }
     }

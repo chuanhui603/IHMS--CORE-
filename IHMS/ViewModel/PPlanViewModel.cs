@@ -18,9 +18,5 @@ namespace IHMS.ViewModel
 
         public DateTime EndDate { get; set; }
 
-        public List<Diet> Diets { get; set; }
-
-        public List<Sport> Sports { get; set; }
-
     }
 }
