@@ -14,23 +14,30 @@ namespace IHMS.Controllers
     {
         IhmsContext db = new IhmsContext();
 
+
         public IActionResult List()
-        {          
-            List<PPlanListViewModel> list = new List<PPlanListViewModel>();          
-            List<Plan> planlist = (from p in db.Plans select p).ToList();      //不ToList會觸發重複使用資料庫
-          
-            foreach (var p in planlist)
+        {
+            List<PPlanListViewModel> list = new List<PPlanListViewModel>();
+            // var planlist = (from p in db.Plans select p);      //不ToList會觸發重複使用資料庫         
+            //foreach (var p in planlist)
+            //{
+            //    PPlanListViewModel plan = new PPlanListViewModel();
+            //    plan.PlanId = p.PlanId;
+            //    plan.Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(p.MemberId)).MName;
+            //    plan.Registerdate =p.RegisterDate;
+            //    plan.EndDate = p.EndDate;
+            //    list.Add(plan);
+            //}
+            var query = db.Plans.Select(p => new PPlanListViewModel
             {
-                PPlanListViewModel plan = new PPlanListViewModel();
-                plan.PlanId = p.PlanId;
-                plan.Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(p.MemberId)).MName;
-                plan.Registerdate =p.RegisterDate;
-                plan.EndDate = p.EndDate;
-                list.Add(plan);
-            }
-            return View(list);
+                PlanId = p.PlanId,
+                Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(p.MemberId)).MName,
+                Registerdate = p.RegisterDate,
+                EndDate = p.EndDate,
+            }); ;
+            return View(query);
         }
-    
+
         public IActionResult Delete(int? id)
         {
             if (id != null)
@@ -52,7 +59,7 @@ namespace IHMS.Controllers
             {
                 return RedirectToAction("List");
             }
-            var plan =db.Plans.FirstOrDefault(p => p.PlanId == id);
+            var plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
             vm.PlanId = plan.PlanId;
             vm.MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(plan.MemberId)).MName;
             vm.BodyPercentage = plan.BodyPercentage;
