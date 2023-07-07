@@ -31,7 +31,7 @@ namespace IHMS.Controllers
             var query = db.Plans.Select(p => new PPlanListViewModel
             {
                 PlanId = p.PlanId,
-                Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(p.MemberId)).MName,
+                Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==p.MemberId).MName,
                 Registerdate = p.RegisterDate,
                 EndDate = p.EndDate,
             }); ;
@@ -60,7 +60,7 @@ namespace IHMS.Controllers
             }
             var plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
             vm.PlanId = plan.PlanId;
-            vm.MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId.Equals(plan.MemberId)).MName;
+            vm.MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==plan.MemberId).MName;
             vm.BodyPercentage = plan.BodyPercentage;
             vm.RegisterDate = plan.RegisterDate;
             vm.EndDate = plan.EndDate;
@@ -69,6 +69,5 @@ namespace IHMS.Controllers
             vm.Sports = db.Sports.Include("Plans").Where(s => s.SportId==id).ToList();
             return View(vm);
         }
-
     }
 }
