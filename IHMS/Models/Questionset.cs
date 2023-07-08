@@ -2,9 +2,9 @@
 {
     public class Questionset
     {
-        public int q_questionset_id { get; set; }
-        public string q_question { get; set; }
-        public string q_category { get; set; }
+        public int questionset_id { get; set; }
+        public string question { get; set; }
+        public string category { get; set; }
         public string q_api_url { get; set; }
     }
 }
