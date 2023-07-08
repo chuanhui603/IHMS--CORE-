@@ -51,6 +51,8 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Sport> Sports { get; set; }
 
+    public virtual DbSet<SportDetail> SportDetails { get; set; }
+
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     public virtual DbSet<Water> Water { get; set; }
@@ -63,7 +65,7 @@ public partial class IhmsContext : DbContext
     {
         modelBuilder.Entity<Allergy>(entity =>
         {
-            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE0542881CD86289");
+            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE05428828005DA4");
 
             entity.Property(e => e.AMemberId)
                 .ValueGeneratedNever()
@@ -170,9 +172,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Date)
                 .HasColumnType("date")
                 .HasColumnName("date");
-            entity.Property(e => e.Image)
-                .HasMaxLength(150)
-                .HasColumnName("image");
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
@@ -197,9 +196,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Fname)
                 .HasMaxLength(50)
                 .HasColumnName("fname");
-            entity.Property(e => e.FoodType)
-                .HasMaxLength(50)
-                .HasColumnName("food_type");
             entity.Property(e => e.Img)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -216,7 +212,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCD0B9F965");
+            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCB18660F9");
 
             entity.ToTable("HealthInfo");
 
@@ -251,7 +247,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<MedicalHistory>(entity =>
         {
-            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D548007E6F4");
+            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D541309767A");
 
             entity.ToTable("MedicalHistory");
 
@@ -485,31 +481,41 @@ public partial class IhmsContext : DbContext
 
             entity.Property(e => e.SportId).HasColumnName("sport_id");
             entity.Property(e => e.Date)
-                .HasColumnType("date")
+                .HasColumnType("datetime")
                 .HasColumnName("date");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
-            entity.Property(e => e.Image)
-                .HasMaxLength(50)
-                .HasColumnName("image");
-            entity.Property(e => e.Number).HasColumnName("number");
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
-            entity.Property(e => e.Sname)
-                .HasMaxLength(50)
-                .HasColumnName("sname");
-            entity.Property(e => e.Time).HasColumnName("time");
-            entity.Property(e => e.Type)
-                .HasMaxLength(50)
-                .HasColumnName("type");
 
             entity.HasOne(d => d.Plan).WithMany(p => p.Sports)
                 .HasForeignKey(d => d.PlanId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Sport_Plan");
+        });
+
+        modelBuilder.Entity<SportDetail>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Sport_Detail");
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Frequency).HasColumnName("frequency");
+            entity.Property(e => e.Image)
+                .HasMaxLength(50)
+                .HasColumnName("image");
+            entity.Property(e => e.Sname)
+                .HasMaxLength(50)
+                .HasColumnName("sname");
+            entity.Property(e => e.SportDetailId).HasColumnName("sport_detail_id");
+            entity.Property(e => e.SportId).HasColumnName("sport_id");
+            entity.Property(e => e.Sporttime).HasColumnName("sporttime");
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .HasColumnName("type");
         });
 
         modelBuilder.Entity<Teacher>(entity =>

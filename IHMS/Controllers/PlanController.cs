@@ -18,7 +18,6 @@ namespace IHMS.Controllers
 
         public IActionResult List()
         {
-            List<PPlanListViewModel> list = new List<PPlanListViewModel>();
             // var planlist = (from p in db.Plans select p);      //不ToList會觸發重複使用資料庫         
             //foreach (var p in planlist)
             //{
@@ -29,13 +28,14 @@ namespace IHMS.Controllers
             //    plan.EndDate = p.EndDate;
             //    list.Add(plan);
             //}
+            List<PPlanListViewModel> list = new List<PPlanListViewModel>();
             var query = db.Plans.Select(p => new PPlanListViewModel
             {
                 PlanId = p.PlanId,
                 Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==p.MemberId).MName,
                 Registerdate = p.RegisterDate,
                 EndDate = p.EndDate,
-            }); ;
+            });
             return View(query);
         }
 
@@ -52,20 +52,36 @@ namespace IHMS.Controllers
             }
             return RedirectToAction("List");
         }
-        public ActionResult Detail(int? id)
-        {
-            PPlanViewModel vm = new PPlanViewModel();          
+        public IActionResult Detail(int? id)
+        {                   
             if (id == null)
             {
                 return RedirectToAction("List");
             }
             var plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
-            vm.PlanId = plan.PlanId;
-            vm.MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==plan.MemberId).MName;
-            vm.BodyPercentage = plan.BodyPercentage;
-            vm.RegisterDate = plan.RegisterDate;
-            vm.EndDate = plan.EndDate;
-            vm.Pname = plan.Pname;          
+            var dietquery = db.Diets.Include("Plans").Where(d => d.PlanId == plan.PlanId).ToList();
+            var sportquery = db.Sports.Include("Plans").Where(s => s.PlanId == plan.PlanId).ToList();
+            PPlanViewModel vm = new PPlanViewModel
+            {
+                PlanId = plan.PlanId,
+                MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId == plan.MemberId).MName,
+                BodyPercentage = plan.BodyPercentage,
+                RegisterDate = plan.RegisterDate,
+                EndDate = plan.EndDate,
+                Pname = plan.Pname,
+            };
+            foreach (var diet in dietquery)
+            {
+                vm.DietDate.Add(diet.Date);
+                vm.DietRegisterDate.Add(diet.Registerdate);
+            }
+
+            foreach (var sport in sportquery)
+            {
+                vm.DietDate.Add(sport.Date);
+                vm.DietRegisterDate.Add(sport.Registerdate);
+            }
+
             return View(vm);
         }
     }

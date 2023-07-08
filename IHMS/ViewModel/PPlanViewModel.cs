@@ -6,7 +6,7 @@ namespace IHMS.ViewModel
     {
         public int PlanId { get; set; }
 
-        public string MemberName { get; set; }
+        public string? MemberName { get; set; }
 
         public string Pname { get; set; } = null!;
 
@@ -14,9 +14,12 @@ namespace IHMS.ViewModel
 
         public double BodyPercentage { get; set; }
 
-        public DateTime RegisterDate { get; set; }
-
-        public DateTime EndDate { get; set; }
+        public DateTime? RegisterDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public List<DateTime> DietDate { get; set; }
+        public List<DateTime> DietRegisterDate { get; set; }
+        public List<DateTime> SportDate { get; set; }
+        public List<DateTime> SportRegisterDate { get; set; }
 
     }
 }

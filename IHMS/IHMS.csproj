@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Diet\" />
+    <Folder Include="Views\Sport\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

@@ -9,9 +9,7 @@ public partial class Diet
 
     public int PlanId { get; set; }
 
-    public DateTime? Date { get; set; }
-
-    public string? Image { get; set; }
+    public DateTime Date { get; set; }
 
     public DateTime Registerdate { get; set; }
 
