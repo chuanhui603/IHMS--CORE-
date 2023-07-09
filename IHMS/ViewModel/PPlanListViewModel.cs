@@ -7,13 +7,13 @@ namespace IHMS.ViewModel
     {
 
        
-        public int PlanId { get; set; }
+        public int? PlanId { get; set; }
         [DisplayName("開始日期")]
-        public DateTime Registerdate { get; set; }
+        public DateTime? Registerdate { get; set; }
         [DisplayName("結束日期")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         [DisplayName("會員姓名")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
     }
 }

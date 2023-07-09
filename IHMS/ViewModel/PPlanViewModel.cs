@@ -16,10 +16,11 @@ namespace IHMS.ViewModel
 
         public DateTime? RegisterDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public List<DateTime> DietDate { get; set; }
-        public List<DateTime> DietRegisterDate { get; set; }
-        public List<DateTime> SportDate { get; set; }
-        public List<DateTime> SportRegisterDate { get; set; }
+        public List<DateTime>? DietDate { get; set; }
+
+        public List<int>? DietId { get; set; }
+        public List<DateTime>? SportDate { get; set; }
+        public List<int>? SportId { get; set; }
 
     }
 }

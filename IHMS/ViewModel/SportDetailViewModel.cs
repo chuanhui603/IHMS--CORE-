@@ -1,7 +1,6 @@
 ﻿namespace IHMS.ViewModel
 {
-    public class DietListViewModel
+    public class SportDetailViewModel
     {
-        
     }
 }

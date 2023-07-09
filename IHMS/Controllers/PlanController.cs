@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Numerics;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
@@ -12,11 +13,8 @@ namespace IHMS.Controllers
 {
     public class PlanController : Controller
     {
-        IhmsContext db = new IhmsContext();
-
-       
-
-        public IActionResult List()
+        IhmsContext db = new IhmsContext();    
+        public ActionResult List()
         {
             // var planlist = (from p in db.Plans select p);      //不ToList會觸發重複使用資料庫         
             //foreach (var p in planlist)
@@ -39,7 +37,7 @@ namespace IHMS.Controllers
             return View(query);
         }
 
-        public IActionResult Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id != null)
             {
@@ -52,15 +50,30 @@ namespace IHMS.Controllers
             }
             return RedirectToAction("List");
         }
-        public IActionResult Detail(int? id)
+        public ActionResult Detail(int? id)
         {                   
             if (id == null)
             {
                 return RedirectToAction("List");
             }
             var plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
-            var dietquery = db.Diets.Include("Plans").Where(d => d.PlanId == plan.PlanId).ToList();
-            var sportquery = db.Sports.Include("Plans").Where(s => s.PlanId == plan.PlanId).ToList();
+            var dietquery = db.Diets.Include("Plan").Where(d => d.PlanId.Equals(plan.PlanId)).ToList();
+            var sportquery = db.Sports.Include("Plan").Where(s => s.PlanId.Equals(plan.PlanId)).ToList();
+            var dietdatelist = new List<DateTime>();
+            var dietId = new List<int>();
+            var sportdatelist = new List<DateTime>();
+            var sportId = new List<int>();
+            foreach (var diet in dietquery)
+            {
+                dietdatelist.Add(diet.Date);
+                dietId.Add(diet.DietId);
+            }
+
+            foreach (var sport in sportquery)
+            {
+                sportdatelist.Add(sport.Date);
+                sportId.Add(sport.SportId);
+            }
             PPlanViewModel vm = new PPlanViewModel
             {
                 PlanId = plan.PlanId,
@@ -69,20 +82,26 @@ namespace IHMS.Controllers
                 RegisterDate = plan.RegisterDate,
                 EndDate = plan.EndDate,
                 Pname = plan.Pname,
-            };
-            foreach (var diet in dietquery)
-            {
-                vm.DietDate.Add(diet.Date);
-                vm.DietRegisterDate.Add(diet.Registerdate);
-            }
-
-            foreach (var sport in sportquery)
-            {
-                vm.DietDate.Add(sport.Date);
-                vm.DietRegisterDate.Add(sport.Registerdate);
-            }
-
+                DietDate = dietdatelist,
+                DietId = dietId,
+                SportDate = sportdatelist,
+                SportId = sportId,
+            };                 
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Detail(int? id,string type)
+        {
+            switch (type){
+                case "sport":
+                    return RedirectToAction("Details", "Diet", new {id = id});
+                    break;
+                default:
+                    return RedirectToAction("Details", "Sport", new { id = id });
+                    break;
+            }
+               
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace IHMS.Controllers
 {
-    public class DietController1 : Controller
+    public class SportController : Controller
     {
-        public IActionResult List()
+        public IActionResult Details()
         {
             return View();
         }

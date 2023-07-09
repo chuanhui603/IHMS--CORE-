@@ -5,26 +5,26 @@
 }
 
 <div class="container ">
-    <h1>Detail</h1>
+    <h1>細項</h1>
 
-    <h4>細項</h4>
-    <hr />
+    <hr>
 
-
+    <ul id="navtabs" class="nav nav-tabs">
+        <li class="nav-item">
+            <button onclick="navChange(value)" value="1" class="nav-link active btnchange" aria-current="page">計畫細項</button>
+        </li>
+        <li class="nav-item">
+            @*            <a asp-action="Detail" class="nav-link active" aria-current="page">計畫細項</a>*@
+            <button onclick="navChange(value)" value="2" class="nav-link btnchange">飲食清單</button>
+        </li>
+        <li class="nav-item">
+            <button onclick="navChange(value)" value="3" class="nav-link btnchange">運動清單</button>
+        </li>
+    </ul>
+    <br>
 
     <div class="row d-md-flex flex-column align-items-md-center">
-        <div class="col-md-12">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">                 
-                    <div class="collapse navbar-collapse">
-                        <div class="navbar-nav">
-                            <a asp-action="Detail" class="nav-link active" aria-current="page" >計畫細項</a>
-                            <a asp-action="../Diet/List" class="nav-link">飲食清單</a>
-                            <a asp-action="../Sport/List" class="nav-link">運動清單</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+        <div id="listContent" class="col-md-12">
             <form asp-action="Detail">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -59,18 +59,109 @@
                 </div>
             </form>
 
-            <a asp-action="List" class="btn btn-primary mt-3">Back to List</a>
+            <a asp-action="List" class="btn btn-primary mt-3">回到計畫列表</a>
+        </div>
+        <div id="dietContent" class="col-md-12 d-none">
+            <table class="table">
 
+                <thead>
+                    <tr>
+                        <th>
+                            飲食日期
+                        </th>
+                        <th></th>                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        for(int i=0;i<Model.DietId.Count;i++)
+                        {
 
+                            <tr>
+                                <td>
+                                    @Model.DietDate[i].ToString()
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Detail", "Detail", new { id=Model.DietId[i],type="diet"}, new{@class="btn btn-success"})
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <a asp-action="List" class="btn btn-primary mt-3">回到計畫列表</a>
+        </div>
 
+        <div id="sportContent" class="col-md-12 d-none">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            日期
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        for (int i = 0; i < Model.SportId.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.SportDate[i].ToString()
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Detail", "Detail", new { id=Model.SportId[i],type="sport" }, new{@class="btn btn-success"}) 
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <a asp-action="List" class="btn btn-primary mt-3">回到計畫列表</a>
         </div>
 
     </div>
 
 
+
     @section Scripts {
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            <script src="~/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+            <script>
+                function navChange(e) {
+                    let list = document.querySelector('#listContent')
+                    let diet = document.querySelector('#dietContent')
+                    let sport = document.querySelector('#sportContent')
+
+                    //切換標籤
+                    let btnChangeSet = document.querySelectorAll('.btnchange')
+                    for (let i = 0; i < btnChangeSet.length; i++) {
+                        btnChangeSet[i].classList.remove('active')
+                        if (btnChangeSet[i].value == e) {
+                            btnChangeSet[i].classList.add('active')
+                        }
+                    }
+
+                    list.classList.add('d-none')                  
+                    diet.classList.add('d-none')                 
+                    sport.classList.add('d-none')                   
+                                    switch (parseInt(e)) {
+                        case 1:
+                          
+                            list.classList.remove('d-none')
+                            break
+                        case 2:
+                           
+                            diet.classList.remove('d-none')
+                            break
+                        default:
+                            
+                            sport.classList.remove('d-none')
+                            break
+                    }
+
+                }
+            </script>
         }
     }

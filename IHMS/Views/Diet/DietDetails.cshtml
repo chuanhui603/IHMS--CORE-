@@ -1,0 +1,19 @@
+﻿@model IHMS.ViewModel.DietdetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>DietdetailViewModel</h4>
+    <hr />
+    <dl class="row">
+        <p>@Model.DietId</p>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
