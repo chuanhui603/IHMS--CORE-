@@ -13,7 +13,12 @@ namespace IHMS.Controllers
 {
     public class PlanController : Controller
     {
-        IhmsContext db = new IhmsContext();    
+        IhmsContext db;  
+        
+        public PlanController(IhmsContext d)
+        {
+            db = d;
+        }
         public ActionResult List()
         {
             // var planlist = (from p in db.Plans select p);      //不ToList會觸發重複使用資料庫         
@@ -95,11 +100,9 @@ namespace IHMS.Controllers
         {
             switch (type){
                 case "sport":
-                    return RedirectToAction("Details", "Diet", new {id = id});
-                    break;
+                    return RedirectToAction("Details", "Diet", new {id = id});                
                 default:
-                    return RedirectToAction("Details", "Sport", new { id = id });
-                    break;
+                    return RedirectToAction("Details", "Sport", new { id = id });                   
             }
                
         }
