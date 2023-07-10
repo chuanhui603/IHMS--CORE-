@@ -18,18 +18,21 @@ namespace IHMS.Controllers
             return View();
         }
 
-        private readonly string connectionString = "Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True"; // 替換為你的資料庫連接字串
+       // private readonly string connectionString = "Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True"; // 替換為你的資料庫連接字串
         private readonly IWebHostEnvironment _environment;
+        private readonly IConfiguration _configuration;
 
-        public AnnouncementController(IWebHostEnvironment environment)
+        public AnnouncementController(IWebHostEnvironment environment, IConfiguration configuration)
         {
             _environment = environment;
+            _configuration = configuration;
+
         }
         [HttpPost]
         public IActionResult Create(AnnouncementView model, IFormFile imageFile)
         {
-
-                model.time = DateTime.Now;
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            model.time = DateTime.Now;
 
                 using (var connection = new SqlConnection(connectionString))
                 {
@@ -79,6 +82,7 @@ namespace IHMS.Controllers
 
         public IActionResult PastAnnouncements()
         {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
             IEnumerable<AnnouncementView> pastAnnouncements;
 
             using (var connection = new SqlConnection(connectionString))
@@ -93,6 +97,7 @@ namespace IHMS.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();

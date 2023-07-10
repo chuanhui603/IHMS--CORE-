@@ -51,27 +51,7 @@ namespace IHMS.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CreateQuestion(Questionset questionset)
-        {
-            if (ModelState.IsValid)
-            {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using (IDbConnection connection = new SqlConnection(connectionString))
-                {
-                    string query = "INSERT INTO Questionset (question, category) VALUES (@Question, @Category)";
-                    var parameters = new DynamicParameters();
-                    parameters.Add("@Question", questionset.question);
-                    parameters.Add("@Category", questionset.category);
-                    connection.Execute(query, parameters);
-                }
-
-                return RedirectToAction("Index");
-            }
-
-            return View(questionset);
-        }
+       
         [HttpGet]
         public IActionResult Edit(int id)
         {
