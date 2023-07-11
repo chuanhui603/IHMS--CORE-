@@ -1,10 +1,13 @@
-﻿namespace IHMS.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace IHMS.Models;
+
+public partial class Questionset
 {
-    public class Questionset
-    {
-        public int q_questionset_id { get; set; }
-        public string q_question { get; set; }
-        public string q_category { get; set; }
-        public string q_api_url { get; set; }
-    }
+    public int QuestionsetId { get; set; }
+
+    public string? Question { get; set; }
+
+    public string? Category { get; set; }
 }

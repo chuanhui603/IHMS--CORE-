@@ -5,11 +5,13 @@ namespace IHMS.Models;
 
 public partial class Water
 {
-    public int WWaterId { get; set; }
+    public int WaterId { get; set; }
 
-    public int WPlanId { get; set; }
+    public int PlanId { get; set; }
 
-    public int? WDrinkId { get; set; }
+    public int? Drink { get; set; }
 
-    public DateTime? WDate { get; set; }
+    public DateTime? Date { get; set; }
+
+    public virtual Plan Plan { get; set; } = null!;
 }

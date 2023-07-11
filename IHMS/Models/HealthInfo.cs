@@ -5,19 +5,17 @@ namespace IHMS.Models;
 
 public partial class HealthInfo
 {
-    public int HMemberId { get; set; }
+    public int MemberId { get; set; }
 
-    public decimal? HHeight { get; set; }
+    public decimal? Height { get; set; }
 
-    public decimal? HWeight { get; set; }
+    public decimal? Weight { get; set; }
 
-    public string? HBloodPressure { get; set; }
+    public string? BloodPressure { get; set; }
 
-    public decimal? HBmi { get; set; }
+    public decimal? BodyFatPercentage { get; set; }
 
-    public decimal? HBodyFatPercentage { get; set; }
+    public DateTime? DateEntered { get; set; }
 
-    public DateTime? HDateEntered { get; set; }
-
-    public virtual Member HMember { get; set; } = null!;
+    public virtual Member Member { get; set; } = null!;
 }

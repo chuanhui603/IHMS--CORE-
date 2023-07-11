@@ -5,23 +5,13 @@ namespace IHMS.Models;
 
 public partial class Sport
 {
-    public int SSportId { get; set; }
+    public int SportId { get; set; }
 
-    public int SPlanId { get; set; }
+    public int PlanId { get; set; }
 
-    public string SType { get; set; } = null!;
+    public DateTime Registerdate { get; set; }
 
-    public string SName { get; set; } = null!;
+    public DateTime Sportdate { get; set; }
 
-    public TimeSpan? STime { get; set; }
-
-    public int? SNumber { get; set; }
-
-    public DateTime SDate { get; set; }
-
-    public string? SImage { get; set; }
-
-    public string? SDescription { get; set; }
-
-    public DateTime SRegisterdate { get; set; }
+    public virtual Plan Plan { get; set; } = null!;
 }

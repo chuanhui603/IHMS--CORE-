@@ -23,14 +23,14 @@ namespace IHMS.Controllers
             if (id == null)
                 return RedirectToAction("List");
             IhmsContext db = new IhmsContext();
-            Member cust = db.Members.FirstOrDefault(p => p.MMemberId == id);
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == id);
             return View(cust);
         }
         [HttpPost]
         public ActionResult Edit(CMember x)
         {
             IhmsContext db = new IhmsContext();
-            Member cust = db.Members.FirstOrDefault(p => p.MMemberId == x.MMemberId);
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MemberId);
             if (cust != null)
             {
                 if (x.photo != null)
@@ -39,21 +39,21 @@ namespace IHMS.Controllers
                     x.photo.CopyTo(new FileStream(
                         _enviro.WebRootPath + "/images/" + photoName,
                         FileMode.Create));
-                    cust.MAvatarImage = photoName;
+                    cust.AvatarImage = photoName;
                 }                
-                cust.MName = x.MName; //姓名
-                cust.MPhone = x.MPhone; //電話
-                cust.MEmail = x.MEmail; //信箱
-                cust.MAccount = x.MAccount; //帳號
-                cust.MPassword = x.MPassword; //密碼
-                cust.MBirthday = x.MBirthday; //生日
-                cust.MGender = x.MGender; //性別
-                cust.MMaritalStatus = x.MMaritalStatus; //婚姻狀態
-                cust.MName = x.MName; //暱稱
-                //cust.MAvatarImage = x.MAvatarImage; // 頭像
-                cust.MResidentialCity = x.MResidentialCity; //居住城市
-                cust.MPermission = x.MPermission; //權限
-                cust.MOccupation = x.MOccupation; //職業
+                cust.Name = x.Name; //姓名
+                cust.Phone = x.Phone; //電話
+                cust.Email = x.Email; //信箱
+                cust.Account = x.Account; //帳號
+                cust.Password = x.Password; //密碼
+                cust.Birthday = x.Birthday; //生日
+                cust.Gender = x.Gender; //性別
+                cust.MaritalStatus = x.MaritalStatus; //婚姻狀態
+                cust.Name = x.Name; //暱稱
+                //cust.AvatarImage = x.AvatarImage; // 頭像
+                cust.ResidentialCity = x.ResidentialCity; //居住城市
+                cust.Permission = x.Permission; //權限
+                cust.Occupation = x.Occupation; //職業
                 cust.MDiseaseDescription = x.MDiseaseDescription; //疾病史
                 cust.MAllergyDescription = x.MAllergyDescription; //過敏反應
                 cust.MLoginTime = x.MLoginTime; //登入日期
@@ -67,7 +67,7 @@ namespace IHMS.Controllers
             if (id != null)
             {
                 IhmsContext db = new IhmsContext();
-                Member prod = db.Members.FirstOrDefault(p => p.MMemberId == id);
+                Member prod = db.Members.FirstOrDefault(p => p.MemberId == id);
                 if (prod != null)
                 {
                     db.Members.Remove(prod);
@@ -85,9 +85,9 @@ namespace IHMS.Controllers
         {
             IhmsContext db = new IhmsContext();
 
-            if (string.IsNullOrEmpty(t.MAvatarImage))
+            if (string.IsNullOrEmpty(t.AvatarImage))
             {
-                t.MAvatarImage = "1.jpg";
+                t.AvatarImage = "1.jpg";
             }
 
             db.Members.Add(t);
