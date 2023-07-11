@@ -54,9 +54,9 @@ namespace IHMS.Controllers
                 cust.ResidentialCity = x.ResidentialCity; //居住城市
                 cust.Permission = x.Permission; //權限
                 cust.Occupation = x.Occupation; //職業
-                cust.MDiseaseDescription = x.MDiseaseDescription; //疾病史
-                cust.MAllergyDescription = x.MAllergyDescription; //過敏反應
-                cust.MLoginTime = x.MLoginTime; //登入日期
+                cust.DiseaseDescription = x.DiseaseDescription; //疾病史
+                cust.AllergyDescription = x.AllergyDescription; //過敏反應
+                cust.login_time = x.login_time; //登入日期
                 db.SaveChanges();
             }
             return RedirectToAction("List");

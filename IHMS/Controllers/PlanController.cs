@@ -31,7 +31,7 @@ namespace IHMS.Controllers
             if (id != null)
             {
                 IhmsContext db = new IhmsContext();
-                Plan cust = db.Plans.FirstOrDefault(p => p.PPlanId == id);
+                Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == id);
                 if (cust != null)
                 {
                     db.Plans.Remove(cust);
@@ -49,20 +49,20 @@ namespace IHMS.Controllers
                 return RedirectToAction("List");
             }
             IhmsContext db = new IhmsContext();
-            cust = db.Plans.FirstOrDefault(p => p.PPlanId == id);
+            cust = db.Plans.FirstOrDefault(p => p.PlanId == id);
             return View(cust);
         }
         [HttpPost]
         public ActionResult Edit(Plan t)
         {
             IhmsContext db = new IhmsContext();
-            Plan cust = db.Plans.FirstOrDefault(p => p.PPlanId == t.PPlanId);
+            Plan cust = db.Plans.FirstOrDefault(p => p.PlanId == t.PlanId);
             if (cust != null)
             {
-                cust.PWeight = t.PWeight;
-                cust.PBodyPercentage = t.PBodyPercentage;
-                cust.PRegisterdate = t.PRegisterdate;
-                cust.PEndDate = t.PEndDate;
+                cust.Weight = t.Weight;
+                cust.BodyPercentage = t.BodyPercentage;
+                cust.RegisterDate = t.RegisterDate;
+                cust.EndDate = t.EndDate;
                 db.SaveChanges();
             }
 

@@ -310,7 +310,7 @@ public partial class IhmsContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("email");
             entity.Property(e => e.Gender).HasColumnName("gender");
-            entity.Property(e => e.LoginTime)
+            entity.Property(e => e.login_time)
                 .HasColumnType("datetime")
                 .HasColumnName("login_time");
             entity.Property(e => e.MaritalStatus).HasColumnName("marital_status");
