@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<IhmsContext>();
-//NorthwindConnectoin ¨O∞Oø˝¶b appsettings.json §§™∫≥sΩu¶r¶Í¶W∫Ÿ
+//IHMSConnection ÊòØË®òÈåÑÂú® appsettings.json ‰∏≠ÁöÑÈÄ£Á∑öÂ≠ó‰∏≤ÂêçÁ®±
 //option => option.UseSqlServer(builder.Configuration.GetConnectionString("IHMSConnection"))
 //    );
 
@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 
-"app.UseCors(\"AllowAll\");": null,
+
 
 var app = builder.Build();
 
@@ -30,7 +30,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+//Âä†‰∏äÊâçÊúâÈò≤Cors
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
