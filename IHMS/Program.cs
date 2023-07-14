@@ -11,6 +11,7 @@ builder.Services.AddDbContext<IhmsContext>();
 //option => option.UseSqlServer(builder.Configuration.GetConnectionString("IHMSConnection"))
 //    );
 
+// js寫AJAX, 伺服器會擋JS的AJAX請求, 須加上可以接受JS的AJAX的兩個方法
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
