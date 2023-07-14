@@ -19,6 +19,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 "app.UseCors(\"AllowAll\");": null,
+
 var app = builder.Build();
 
 
