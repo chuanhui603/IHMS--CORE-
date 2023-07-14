@@ -1,11 +1,26 @@
 using IHMS.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<IhmsContext>();
+//NorthwindConnectoin 是記錄在 appsettings.json 中的連線字串名稱
+//option => option.UseSqlServer(builder.Configuration.GetConnectionString("IHMSConnection"))
+//    );
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
+builder.Services.AddEndpointsApiExplorer();
+
+"app.UseCors(\"AllowAll\");": null,
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
