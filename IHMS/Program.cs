@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<IhmsContext>(
-    //NorthwindConnectoin 是記錄在 appsettings.json 中的連線字串名稱
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("IHMSConnection"))
     );
 
