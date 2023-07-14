@@ -11,13 +11,14 @@ using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace IHMS.Controllers
 {
+  
     public class PlanController : Controller
     {
-        IhmsContext db;  
+        IhmsContext _db;  
         
         public PlanController(IhmsContext d)
         {
-            db = d;
+            _db = d;
         }
         public ActionResult List()
         {
@@ -32,10 +33,10 @@ namespace IHMS.Controllers
             //    list.Add(plan);
             //}
             List<PPlanListViewModel> list = new List<PPlanListViewModel>();
-            var query = db.Plans.Select(p => new PPlanListViewModel
+            var query = _db.Plans.Select(p => new PPlanListViewModel
             {
                 PlanId = p.PlanId,
-                Name = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==p.MemberId).MName,
+                Name = _db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==p.MemberId).MName,
                 Registerdate = p.RegisterDate,
                 EndDate = p.EndDate,
             });
@@ -46,11 +47,11 @@ namespace IHMS.Controllers
         {
             if (id != null)
             {
-                Plan plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
+                Plan plan = _db.Plans.FirstOrDefault(p => p.PlanId == id);
                 if (plan != null)
                 {
-                    db.Plans.Remove(plan);
-                    db.SaveChanges();
+                    _db.Plans.Remove(plan);
+                    _db.SaveChanges();
                 }
             }
             return RedirectToAction("List");
@@ -61,9 +62,9 @@ namespace IHMS.Controllers
             {
                 return RedirectToAction("List");
             }
-            var plan = db.Plans.FirstOrDefault(p => p.PlanId == id);
-            var dietquery = db.Diets.Include("Plan").Where(d => d.PlanId.Equals(plan.PlanId)).ToList();
-            var sportquery = db.Sports.Include("Plan").Where(s => s.PlanId.Equals(plan.PlanId)).ToList();
+            var plan = _db.Plans.FirstOrDefault(p => p.PlanId == id);
+            var dietquery = _db.Diets.Include("Plan").Where(d => d.PlanId.Equals(plan.PlanId)).ToList();
+            var sportquery = _db.Sports.Include("Plan").Where(s => s.PlanId.Equals(plan.PlanId)).ToList();
             var dietdatelist = new List<DateTime>();
             var dietId = new List<int>();
             var sportdatelist = new List<DateTime>();
@@ -82,7 +83,7 @@ namespace IHMS.Controllers
             PPlanViewModel vm = new PPlanViewModel
             {
                 PlanId = plan.PlanId,
-                MemberName = db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId == plan.MemberId).MName,
+                MemberName = _db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId == plan.MemberId).MName,
                 BodyPercentage = plan.BodyPercentage,
                 RegisterDate = plan.RegisterDate,
                 EndDate = plan.EndDate,

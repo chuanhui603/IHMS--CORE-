@@ -10,6 +10,11 @@ builder.Services.AddDbContext<IhmsContext>(
     //NorthwindConnectoin 是記錄在 appsettings.json 中的連線字串名稱
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("IHMSConnection"))
     );
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,11 +25,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllerRoute(
