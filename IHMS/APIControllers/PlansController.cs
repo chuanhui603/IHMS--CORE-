@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using IHMS.DTO;
 
 namespace IHMS.APIControllers
 {
@@ -20,34 +22,53 @@ namespace IHMS.APIControllers
             _context = context;
         }
 
+
+
         // GET: api/Plans
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Plan>>> GetPlans()
-        {
-          if (_context.Plans == null)
-          {
-              return NotFound();
-          }
-            return await _context.Plans.ToListAsync();
-        }
-
-        // GET: api/Plans/5
+        [Route("~/api/[controller]/member/{memberid:int}")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Plan>> GetPlan(int id)
+        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid)
         {
-          if (_context.Plans == null)
-          {
-              return NotFound();
-          }
-            var plan = await _context.Plans.FindAsync(id);
-
-            if (plan == null)
+            if (_context.Plans == null)
             {
                 return NotFound();
             }
+            var res = _context.Plans.Where(p => p.MemberId == memberid).OrderByDescending(p=>p.RegisterDate).Select(p => new PlansSideBarDTO
+            {
+                PlanId = p.PlanId,
+                Pname = p.Pname,
+                RegisterDate = p.RegisterDate,
+                EndDate =p.EndDate,
+            });
+            
+            if (res==null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
 
-            return plan;
         }
+
+        // GET: api/Plans/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Plan>> GetPlan(int id)
+        //{
+        //  if (_context.Plans == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var plan = await _context.Plans.FindAsync(id);
+
+        //    if (plan == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return plan;
+        //}
 
         // PUT: api/Plans/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -85,10 +106,10 @@ namespace IHMS.APIControllers
         [HttpPost]
         public async Task<ActionResult<Plan>> PostPlan(Plan plan)
         {
-          if (_context.Plans == null)
-          {
-              return Problem("Entity set 'IhmsContext.Plans'  is null.");
-          }
+            if (_context.Plans == null)
+            {
+                return Problem("Entity set 'IhmsContext.Plans'  is null.");
+            }
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
 
