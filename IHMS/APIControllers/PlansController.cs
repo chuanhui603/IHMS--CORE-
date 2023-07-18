@@ -25,15 +25,15 @@ namespace IHMS.APIControllers
 
 
         // GET: api/Plans
-        [Route("~/api/[controller]/member/{memberid:int}")]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid)
+        [Route("~/api/[controller]/member/{memberid:int}/{nums:int}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid,int nums)
         {
             if (_context.Plans == null)
             {
                 return NotFound();
             }
-            var res = _context.Plans.Where(p => p.MemberId == memberid).OrderByDescending(p=>p.RegisterDate).Select(p => new PlansSideBarDTO
+            var res = _context.Plans.Where(p => p.MemberId == memberid).OrderByDescending(p=>p.RegisterDate).Take(nums).Select(p => new PlansSideBarDTO
             {
                 PlanId = p.PlanId,
                 Pname = p.Pname,
@@ -51,6 +51,36 @@ namespace IHMS.APIControllers
             }
 
         }
+
+        // GET: api/Plans
+        [Route("~/api/[controller]/member/{memberid:int}/search/{search}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid,string search)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.Plans.OrderByDescending(p => p.RegisterDate).Where(p => p.MemberId == memberid && p.Pname.Contains($"{search}")).Select(p => new PlansSideBarDTO
+            {
+                PlanId = p.PlanId,
+                Pname = p.Pname,
+                RegisterDate = p.RegisterDate,
+                EndDate = p.EndDate,
+            });
+            var x = 0;
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
 
         // GET: api/Plans/5
         //[HttpGet("{id}")]
@@ -104,12 +134,21 @@ namespace IHMS.APIControllers
         // POST: api/Plans
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Plan>> PostPlan(Plan plan)
+        public async Task<ActionResult<Plan>> PostPlan(CreatePlanDTO dto)
         {
             if (_context.Plans == null)
             {
-                return Problem("Entity set 'IhmsContext.Plans'  is null.");
+                return Problem("Entity set 'IhmsContext.Plans' is null.");
             }
+            Plan plan = new Plan
+            {
+                Pname = dto.pname,
+                Weight =dto.weight,
+                BodyPercentage =dto.Bmi,
+                EndDate =dto.endDate,             
+
+
+            };
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
 
