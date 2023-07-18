@@ -4,7 +4,8 @@ namespace IHMS.DTO
 {
     public class CreatePlanDTO
     {
-        public string? pname { get; set; }
+        public string pname { get; set; }
+        public int memberid { get; set; }
         public int weight { get; set; }
         public double Bmi { get; set; }
         public DateTime endDate { get; set; }

@@ -19,6 +19,8 @@ public partial class Plan
 
     public DateTime EndDate { get; set; }
 
+    public string? Description { get; set; }
+
     public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
 
     public virtual Member Member { get; set; } = null!;

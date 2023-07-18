@@ -19,7 +19,11 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Announcement> Announcements { get; set; }
 
+    public virtual DbSet<Answer> Answers { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
+
+    public virtual DbSet<Coach> Coaches { get; set; }
 
     public virtual DbSet<Course> Courses { get; set; }
 
@@ -34,6 +38,12 @@ public partial class IhmsContext : DbContext
     public virtual DbSet<MedicalHistory> MedicalHistories { get; set; }
 
     public virtual DbSet<Member> Members { get; set; }
+
+    public virtual DbSet<MessageBoard> MessageBoards { get; set; }
+
+    public virtual DbSet<MessageBoardDetail> MessageBoardDetails { get; set; }
+
+    public virtual DbSet<MessageBoardImage> MessageBoardImages { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
@@ -65,7 +75,7 @@ public partial class IhmsContext : DbContext
     {
         modelBuilder.Entity<Allergy>(entity =>
         {
-            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE05428828005DA4");
+            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE054288CC83F0BB");
 
             entity.Property(e => e.AMemberId)
                 .ValueGeneratedNever()
@@ -102,6 +112,22 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("an_title");
         });
 
+        modelBuilder.Entity<Answer>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Answer");
+
+            entity.Property(e => e.Answer1)
+                .HasMaxLength(500)
+                .HasColumnName("answer");
+            entity.Property(e => e.AnswerId).HasColumnName("answer_id");
+            entity.Property(e => e.QuestionsetId).HasColumnName("questionset_id");
+            entity.Property(e => e.Time)
+                .HasColumnType("date")
+                .HasColumnName("time");
+        });
+
         modelBuilder.Entity<Cart>(entity =>
         {
             entity.HasKey(e => e.CCartId);
@@ -117,6 +143,41 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.CUpdatetime)
                 .HasColumnType("datetime")
                 .HasColumnName("c_updatetime");
+        });
+
+        modelBuilder.Entity<Coach>(entity =>
+        {
+            entity.ToTable("Coach");
+
+            entity.Property(e => e.CoachId).HasColumnName("coach_id");
+            entity.Property(e => e.Applytime)
+                .HasColumnType("datetime")
+                .HasColumnName("applytime");
+            entity.Property(e => e.Commission).HasColumnName("commission");
+            entity.Property(e => e.Condition).HasColumnName("condition");
+            entity.Property(e => e.Confirmtime)
+                .HasColumnType("datetime")
+                .HasColumnName("confirmtime");
+            entity.Property(e => e.Image)
+                .HasMaxLength(50)
+                .HasColumnName("image");
+            entity.Property(e => e.Intro)
+                .HasMaxLength(200)
+                .HasColumnName("intro");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.Rank).HasColumnName("rank");
+            entity.Property(e => e.Reason)
+                .HasMaxLength(100)
+                .HasColumnName("reason");
+            entity.Property(e => e.Resume)
+                .HasMaxLength(50)
+                .HasColumnName("resume");
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .HasColumnName("type");
+            entity.Property(e => e.Video)
+                .HasMaxLength(100)
+                .HasColumnName("video");
         });
 
         modelBuilder.Entity<Course>(entity =>
@@ -212,7 +273,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCB18660F9");
+            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCAF842794");
 
             entity.ToTable("HealthInfo");
 
@@ -247,7 +308,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<MedicalHistory>(entity =>
         {
-            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D541309767A");
+            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D542D54605A");
 
             entity.ToTable("MedicalHistory");
 
@@ -331,6 +392,61 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("m_residential_city");
         });
 
+        modelBuilder.Entity<MessageBoard>(entity =>
+        {
+            entity.HasKey(e => e.MessageId);
+
+            entity.ToTable("message board");
+
+            entity.Property(e => e.MessageId).HasColumnName("message_id");
+            entity.Property(e => e.Category)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("category");
+            entity.Property(e => e.Contents)
+                .HasMaxLength(500)
+                .HasColumnName("contents");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.Time)
+                .HasColumnType("datetime")
+                .HasColumnName("time");
+            entity.Property(e => e.Title)
+                .HasMaxLength(50)
+                .HasColumnName("title");
+        });
+
+        modelBuilder.Entity<MessageBoardDetail>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("message board details");
+
+            entity.Property(e => e.Contents).HasMaxLength(200);
+            entity.Property(e => e.Image)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("image");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.MessageId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("message_id");
+            entity.Property(e => e.Time)
+                .HasColumnType("datetime")
+                .HasColumnName("time");
+        });
+
+        modelBuilder.Entity<MessageBoardImage>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("message board image");
+
+            entity.Property(e => e.Image)
+                .HasMaxLength(50)
+                .HasColumnName("image");
+            entity.Property(e => e.MessageId).HasColumnName("message_id");
+        });
+
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasKey(e => e.OOrderId);
@@ -382,6 +498,9 @@ public partial class IhmsContext : DbContext
 
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.BodyPercentage).HasColumnName("body_percentage");
+            entity.Property(e => e.Description)
+                .HasMaxLength(100)
+                .HasColumnName("description");
             entity.Property(e => e.EndDate)
                 .HasColumnType("datetime")
                 .HasColumnName("end_date");

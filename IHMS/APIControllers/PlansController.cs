@@ -68,7 +68,6 @@ namespace IHMS.APIControllers
                 RegisterDate = p.RegisterDate,
                 EndDate = p.EndDate,
             });
-            var x = 0;
 
             if (res == null)
             {
@@ -136,6 +135,7 @@ namespace IHMS.APIControllers
         [HttpPost]
         public async Task<ActionResult<Plan>> PostPlan(CreatePlanDTO dto)
         {
+            
             if (_context.Plans == null)
             {
                 return Problem("Entity set 'IhmsContext.Plans' is null.");
@@ -143,16 +143,17 @@ namespace IHMS.APIControllers
             Plan plan = new Plan
             {
                 Pname = dto.pname,
+                MemberId =dto.memberid,
                 Weight =dto.weight,
                 BodyPercentage =dto.Bmi,
                 EndDate =dto.endDate,             
-
-
+                RegisterDate =DateTime.Now,
+                Description = dto.description,
             };
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPlan", new { id = plan.PlanId }, plan);
+            return plan;
         }
 
         // DELETE: api/Plans/5
@@ -164,11 +165,13 @@ namespace IHMS.APIControllers
                 return NotFound();
             }
             var plan = await _context.Plans.FindAsync(id);
+            //var diet =  _context.Diets.Include("Plan").Where(d => d.PlanId == id);
+            //var sport = _context.Sports.Include("Plan").Where(d => d.PlanId == id);
+            //var water = _context.Water.Include("Plan").Where(d => d.PlanId == id);           
             if (plan == null)
             {
                 return NotFound();
             }
-
             _context.Plans.Remove(plan);
             await _context.SaveChangesAsync();
 
