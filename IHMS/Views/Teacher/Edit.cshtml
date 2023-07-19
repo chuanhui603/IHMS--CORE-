@@ -1,4 +1,4 @@
-﻿@model IHMS.Models.Teacher
+﻿@model IHMS.Models.Coach
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,9 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col-md-10">
                 <div class="form-group col-md-10">
-                    <label asp-for="TIntro" class="control-label"></label>
-                    <input asp-for="TIntro" class="form-control" />
-                    <span asp-validation-for="TIntro" class="text-danger"></span>
+                    <label asp-for="Intro" class="control-label"></label>
+                    <input asp-for="Intro" class="form-control" />
+                    <span asp-validation-for="Intro" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-10">
                     個人照片
@@ -43,5 +43,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
