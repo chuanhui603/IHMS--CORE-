@@ -169,9 +169,9 @@ namespace IHMS.APIControllers
             }
             var plan = await _context.Plans.FindAsync(id);
             //移除plan的關聯資料
-            deleteitems.diet = await _context.Diets.Include("Plan").Where(d => d.PlanId == id).ToListAsync();
-            deleteitems.sport = await _context.Sports.Include("Plan").Where(d => d.PlanId == id).ToListAsync();
-            deleteitems.water = await _context.Water.Include("Plan").Where(d => d.PlanId == id).ToListAsync();
+            deleteitems.diet =  _context.Diets.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.sport =  _context.Sports.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.water =  _context.Water.Include("Plan").Where(d => d.PlanId == id);
             deleteMethod(deleteitems);
 
             if (plan == null)
@@ -193,30 +193,30 @@ namespace IHMS.APIControllers
                     case "diet":
                         foreach(var diet in delete.diet)
                         {
-                            var query = _context.DietDetails.Include("Diet").Where(d => d.DietId == diet.DietId).ToList();
+                            var query = _context.DietDetails.Include("Diet").Where(d => d.DietId == diet.DietId);
                             foreach(var detail in query)
                             {
-                                _context.DietDetails.Remove(detail);
+                                 _context.DietDetails.Remove(detail);
                             }
-                            _context.Diets.Remove(diet);
+                             _context.Diets.Remove(diet);
                         }
                        
                         break;
                     case "sport":
                         foreach (var sport in delete.sport)
                         {
-                            var query = _context.SportDetails.Include("Sport").Where(d => d.SportId == sport.SportId).ToList();
+                            var query = _context.SportDetails.Include("Sport").Where(d => d.SportId == sport.SportId);
                             foreach (var detail in query)
                             {
-                                _context.SportDetails.Remove(detail);
+                                 _context.SportDetails.Remove(detail);
                             }
-                            _context.Sports.Remove(sport);
+                             _context.Sports.Remove(sport);
                         }
                         break;
                      default:
                         foreach (var water in delete.water)
                         {
-                            _context.Water.Remove(water);
+                             _context.Water.Remove(water);
                         }
                         break;
                 }
