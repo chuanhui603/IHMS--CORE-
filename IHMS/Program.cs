@@ -1,12 +1,18 @@
-using Microsoft.CodeAnalysis.Options;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using static IHMS.Controllers.ImageController;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddCors(Options =>
+
+builder.Services.AddCors(options =>
 {
-    Options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
 });
 
 var app = builder.Build();

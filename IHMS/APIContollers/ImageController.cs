@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
+using Dapper;
+using Microsoft.Extensions.Configuration; // 引入這個名稱空間以使用 IConfiguration
 
 namespace IHMS.Controllers
 {
@@ -9,10 +13,16 @@ namespace IHMS.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration; // 添加一個 IConfiguration 屬性
+        private string _connectionString; // 變更為實例變數
 
-        public ImageController(IWebHostEnvironment webHostEnvironment)
+        // 透過 DI，注入 IConfiguration 到您的控制器中
+        public ImageController(IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
+            // 從 appsettings.json 中讀取名為 DefaultConnection 的連接字串，並將其賦值給 _connectionString 變量
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
         [HttpGet("{imageName}")]
@@ -23,45 +33,34 @@ namespace IHMS.Controllers
             return File(imageData, "image/jpeg");
         }
 
-
-        [HttpPost("upload")]
-        public IActionResult UploadImage()
+        [HttpGet("{messageId}/images")]
+        public IActionResult GetMessageImages(int messageId)
         {
-            try
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
-                var files = Request.Form.Files;
-                if (files == null || files.Count == 0)
-                {
-                    return BadRequest("沒有上傳任何圖片。");
-                }
+                var query = "SELECT [image] FROM [dbo].[message board image] WHERE message_id = @MessageId";
+                var images = dbConnection.Query<string>(query, new { MessageId = messageId }).ToList();
 
-                var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "AnnouncementImage");
-
-                if (!Directory.Exists(imageDirectory))
-                {
-                    Directory.CreateDirectory(imageDirectory);
-                }
-
-                foreach (var file in files)
-                {
-                    if (file.Length > 0)
-                    {
-                        // 檔案名稱使用 GUID 組合，避免檔案名稱重複
-                        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                        string filePath = Path.Combine(imageDirectory, fileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            file.CopyTo(stream);
-                        }
-                    }
-                }
-
-                return Ok("圖片上傳成功。");
+                return Ok(images);
             }
-            catch (Exception ex)
+        }
+        [HttpGet("{messageId}/images/{imageName}")]
+        public IActionResult GetMessageImage(int messageId, string imageName)
+        {
+            string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "messageimage", imageName);
+            if (System.IO.File.Exists(imagePath))
             {
-                return StatusCode(500, "圖片上傳失敗。");
+                byte[] imageData = System.IO.File.ReadAllBytes(imagePath);
+                if (imageData.Length == 0)
+                {
+                    Console.WriteLine("圖片數據為空。");
+                    return NotFound();
+                }
+                return File(imageData, "image/jpeg");
+            }
+            else
+            {
+                return NotFound();
             }
         }
     }
