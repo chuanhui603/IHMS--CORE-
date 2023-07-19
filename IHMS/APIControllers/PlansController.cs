@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using IHMS.DTO;
+using System.Numerics;
 
 namespace IHMS.APIControllers
 {
@@ -27,21 +28,21 @@ namespace IHMS.APIControllers
         // GET: api/Plans
         [Route("~/api/[controller]/member/{memberid:int}/{nums:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid,int nums)
+        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid, int nums)
         {
             if (_context.Plans == null)
             {
                 return NotFound();
             }
-            var res = _context.Plans.Where(p => p.MemberId == memberid).OrderByDescending(p=>p.RegisterDate).Take(nums).Select(p => new PlansSideBarDTO
+            var res = _context.Plans.Where(p => p.MemberId == memberid).OrderByDescending(p => p.RegisterDate).Take(nums).Select(p => new PlansSideBarDTO
             {
                 PlanId = p.PlanId,
                 Pname = p.Pname,
                 RegisterDate = p.RegisterDate,
-                EndDate =p.EndDate,
+                EndDate = p.EndDate,
             });
-            
-            if (res==null)
+
+            if (res == null)
             {
                 return NotFound();
             }
@@ -55,7 +56,7 @@ namespace IHMS.APIControllers
         // GET: api/Plans
         [Route("~/api/[controller]/member/{memberid:int}/search/{search}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid,string search)
+        public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetPlans(int memberid, string search)
         {
             if (_context.Plans == null)
             {
@@ -135,7 +136,7 @@ namespace IHMS.APIControllers
         [HttpPost]
         public async Task<ActionResult<Plan>> PostPlan(CreatePlanDTO dto)
         {
-            
+
             if (_context.Plans == null)
             {
                 return Problem("Entity set 'IhmsContext.Plans' is null.");
@@ -143,11 +144,11 @@ namespace IHMS.APIControllers
             Plan plan = new Plan
             {
                 Pname = dto.pname,
-                MemberId =dto.memberid,
-                Weight =dto.weight,
-                BodyPercentage =dto.Bmi,
-                EndDate =dto.endDate,             
-                RegisterDate =DateTime.Now,
+                MemberId = dto.memberid,
+                Weight = dto.weight,
+                BodyPercentage = dto.Bmi,
+                EndDate = dto.endDate,
+                RegisterDate = DateTime.Now,
                 Description = dto.description,
             };
             _context.Plans.Add(plan);
@@ -160,14 +161,19 @@ namespace IHMS.APIControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlan(int id)
         {
+            DeletePlanDTO deleteitems = new DeletePlanDTO();
+           
             if (_context.Plans == null)
             {
                 return NotFound();
             }
             var plan = await _context.Plans.FindAsync(id);
-            //var diet =  _context.Diets.Include("Plan").Where(d => d.PlanId == id);
-            //var sport = _context.Sports.Include("Plan").Where(d => d.PlanId == id);
-            //var water = _context.Water.Include("Plan").Where(d => d.PlanId == id);           
+            //移除plan的關聯資料
+            deleteitems.diet = await _context.Diets.Include("Plan").Where(d => d.PlanId == id).ToListAsync();
+            deleteitems.sport = await _context.Sports.Include("Plan").Where(d => d.PlanId == id).ToListAsync();
+            deleteitems.water = await _context.Water.Include("Plan").Where(d => d.PlanId == id).ToListAsync();
+            deleteMethod(deleteitems);
+
             if (plan == null)
             {
                 return NotFound();
@@ -176,6 +182,45 @@ namespace IHMS.APIControllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+      public void deleteMethod(DeletePlanDTO delete)
+        {
+            for(int i=0;i< delete.deleteDataSet.Length; i++)
+            {
+                switch (delete.deleteDataSet[i])
+                {
+                    case "diet":
+                        foreach(var diet in delete.diet)
+                        {
+                            var query = _context.DietDetails.Include("Diet").Where(d => d.DietId == diet.DietId).ToList();
+                            foreach(var detail in query)
+                            {
+                                _context.DietDetails.Remove(detail);
+                            }
+                            _context.Diets.Remove(diet);
+                        }
+                       
+                        break;
+                    case "sport":
+                        foreach (var sport in delete.sport)
+                        {
+                            var query = _context.SportDetails.Include("Sport").Where(d => d.SportId == sport.SportId).ToList();
+                            foreach (var detail in query)
+                            {
+                                _context.SportDetails.Remove(detail);
+                            }
+                            _context.Sports.Remove(sport);
+                        }
+                        break;
+                     default:
+                        foreach (var water in delete.water)
+                        {
+                            _context.Water.Remove(water);
+                        }
+                        break;
+                }
+            }
         }
 
         private bool PlanExists(int id)

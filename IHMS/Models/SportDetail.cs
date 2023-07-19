@@ -20,4 +20,6 @@ public partial class SportDetail
     public string? Type { get; set; }
 
     public string? Description { get; set; }
+
+    public virtual Sport Sport { get; set; } = null!;
 }

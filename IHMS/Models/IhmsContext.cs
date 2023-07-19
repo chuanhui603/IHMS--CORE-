@@ -75,7 +75,7 @@ public partial class IhmsContext : DbContext
     {
         modelBuilder.Entity<Allergy>(entity =>
         {
-            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE054288CC83F0BB");
+            entity.HasKey(e => e.AMemberId).HasName("PK__Allergie__FE0542882BB66261");
 
             entity.Property(e => e.AMemberId)
                 .ValueGeneratedNever()
@@ -273,7 +273,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCAF842794");
+            entity.HasKey(e => e.HMemberId).HasName("PK__HealthIn__D1BAB1FCE17BCF7C");
 
             entity.ToTable("HealthInfo");
 
@@ -308,7 +308,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<MedicalHistory>(entity =>
         {
-            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D542D54605A");
+            entity.HasKey(e => e.MhMemberId).HasName("PK__MedicalH__35599D545902246D");
 
             entity.ToTable("MedicalHistory");
 
@@ -635,6 +635,11 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
                 .HasColumnName("type");
+
+            entity.HasOne(d => d.Sport).WithMany()
+                .HasForeignKey(d => d.SportId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sport_Detail_Sport");
         });
 
         modelBuilder.Entity<Teacher>(entity =>
