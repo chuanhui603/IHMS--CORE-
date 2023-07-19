@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
+using Microsoft.AspNetCore.Hosting;
+using System.Diagnostics;
 
 namespace IHMS.APIControllers
 {
@@ -12,11 +14,16 @@ namespace IHMS.APIControllers
     [ApiController]
     public class MessageBoardController : ControllerBase
     {
+
+
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         private readonly string _connectionString;
 
-        public MessageBoardController(IConfiguration configuration)
+        public MessageBoardController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             // 在建構子中取得資料庫連接字串
+            _webHostEnvironment = webHostEnvironment;
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
@@ -68,29 +75,63 @@ namespace IHMS.APIControllers
         }
 
         // POST: api/MessageBoard
-        [HttpPost]
-        public IActionResult CreateMessage([FromBody] Message message)
+        [HttpPost("CreateMessage")]
+        public IActionResult CreateMessage([FromForm] Message message, [FromForm] List<IFormFile> images)
         {
             try
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
                     dbConnection.Open();
-                    
-                    message.Time = DateTime.Now; 
+
+                    // log 或 console
+                    Debug.WriteLine($"Received message: Title={message.Title}, Contents={message.Contents}, Category={message.Category}, MemberId={message.member_id}");
+
+                    message.Time = DateTime.Now;
 
                     var query = "INSERT INTO [dbo].[message board] (title, contents, category, member_id, time) " +
-                        "VALUES (@Title, @Contents, @Category, @Member_Id, @Time)";
-                    dbConnection.Execute(query, message);
-                    return CreatedAtAction(nameof(GetMessage), new { id = message.message_id }, message);
+                        "VALUES (@Title, @Contents, @Category, @Member_Id, @Time); SELECT CAST(SCOPE_IDENTITY() as int);";
+                    int messageId = dbConnection.ExecuteScalar<int>(query, message);
+
+                    var webRootPath = _webHostEnvironment.WebRootPath;
+                    var imageDirectory = Path.Combine(webRootPath, "messageimage");
+
+                    if (!Directory.Exists(imageDirectory))
+                    {
+                        Directory.CreateDirectory(imageDirectory);
+                    }
+
+                    if (images != null && images.Count > 0)
+                    {
+                        foreach (var image in images)
+                        {
+                            string fileName = $"{messageId}_{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+                            string filePath = Path.Combine(imageDirectory, fileName);
+
+                            //  log 或 console
+                            Debug.WriteLine($"Received image: Name={image.FileName}, Size={image.Length}");
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                image.CopyTo(stream);
+                            }
+
+                            var imageQuery = "INSERT INTO [dbo].[message board image] (message_id, image) VALUES (@MessageId, @Image)";
+                            dbConnection.Execute(imageQuery, new { MessageId = messageId, Image = fileName });
+                        }
+                    }
+
+                    return CreatedAtAction(nameof(GetMessage), new { id = messageId }, message);
                 }
             }
             catch (Exception ex)
             {
+                // 在這裡加入 log 或 console 輸出，觀察錯誤訊息
+                Debug.WriteLine($"Error occurred: {ex.Message}");
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "新增留言板資料失敗。");
             }
         }
-
         // PUT: api/MessageBoard/5
         [HttpPut("{id}")]
         public IActionResult UpdateMessage(int id, [FromBody] Message message)
