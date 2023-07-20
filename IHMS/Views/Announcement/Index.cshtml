@@ -1,0 +1,72 @@
+﻿@model AnnouncementView
+@{
+    ViewData["Title"] = "Announcement";
+    Layout = "_Layout";
+}
+
+<br />
+
+<h1>發布公告</h1>
+
+@using (Html.BeginForm("Create", "Announcement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="mb-3">
+        <label for="title" class="form-label">標題:</label>
+        <br />
+        @Html.TextBoxFor(model => model.an_title, new { id = "title", @class = "form-control" })
+    </div>
+
+    <div class="mb-3">
+        <label for="content" class="form-label">內容文字:</label>
+        <br />
+        @Html.TextAreaFor(model => model.an_content, new { id = "content", @class = "form-control", style = "height: 200px;" })
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label">上傳圖片:</label>
+        <br />
+        <input type="file" name="imageFile" id="image" class="form-control" />
+    </div>
+
+    <input type="submit" value="發布" class="btn btn-primary" />
+}
+
+@if (TempData["ShowPopup"] != null && (bool)TempData["ShowPopup"])
+{
+    <div class="modal" id="successModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">發布成功</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您的公告已成功發布。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#successModal').modal('show');
+
+        $('#successModal').on('hidden.bs.modal', function () {
+            // 關閉提示視窗後的相應動作
+            // 例如重新載入頁面或執行其他操作
+            location.reload(); // 重新載入頁面
+        });
+
+        $('#successModal').find('.close, .btn-primary').click(function () {
+            $('#successModal').modal('hide');
+        });
+    });
+</script>
