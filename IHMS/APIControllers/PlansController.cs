@@ -104,10 +104,11 @@ namespace IHMS.APIControllers
         //DietDetail
         // PUT: api/Plans/diets/{dietsid}/edit
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("diets/{id}/edit")]
-        public async Task<IActionResult> PutPlan(int id, Diet diet)
+        [Route("~/api/[controller]/diets/{dietid:int}/edit")]
+        [HttpPut]
+        public async Task<IActionResult> PutdietDetail(int dietid, DietDetail diet)
         {
-            if (id != diet.PlanId)
+            if (dietid != diet.DietDetailId)
             {
                 return BadRequest();
             }
@@ -120,7 +121,7 @@ namespace IHMS.APIControllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlanExists(id))
+                if (!PlanExists(dietid))
                 {
                     return NotFound();
                 }
