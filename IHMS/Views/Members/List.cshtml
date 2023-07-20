@@ -131,7 +131,7 @@
                     <td class="text-truncate">@item.Occupation</td>
                     <td class="text-truncate">@item.DiseaseDescription</td>
                     <td class="text-truncate">@item.AllergyDescription</td>
-                    <td>@item.login_time</td>
+                    <td>@item.LoginTime</td>
                     <td class="fixed-actions">
                         @Html.ActionLink("修改", "Edit", "Members", new { id = item.MemberId }, new { @class = "btn btn-success" })
                         @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-danger" })

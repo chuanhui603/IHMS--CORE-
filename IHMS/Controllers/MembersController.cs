@@ -56,7 +56,7 @@ namespace IHMS.Controllers
                 cust.Occupation = x.Occupation; //職業
                 cust.DiseaseDescription = x.DiseaseDescription; //疾病史
                 cust.AllergyDescription = x.AllergyDescription; //過敏反應
-                cust.login_time = x.login_time; //登入日期
+                cust.LoginTime = x.login_time; //登入日期
                 db.SaveChanges();
             }
             return RedirectToAction("List");

@@ -116,8 +116,8 @@ namespace IHMS.Models
 
         public DateTime? login_time
         {
-            get { return _member.login_time; }
-            set { _member.login_time = value; }
+            get { return _member.LoginTime; }
+            set { _member.LoginTime = value; }
         }        
     }
 }
