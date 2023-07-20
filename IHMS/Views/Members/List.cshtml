@@ -62,20 +62,20 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.MMemberId</td>
+                    <td>@item.MemberId</td>
                     <td>
-                        <img src="~/images/@item.MAvatarImage" width="100" height="100" />
+                        <img src="~/images/@item.AvatarImage" width="100" height="100" />
                     </td>
-                    <td class="text-truncate">@item.MName</td>
-                    <td class="text-truncate">@item.MEmail</td>                    
-                    <td class="text-truncate">@item.MAccount</td>
-                    <td class="text-truncate">@item.MPassword</td>
-                    <td class="text-truncate">@item.MPhone</td>
-                    <td>@item.MBirthday</td>
+                    <td class="text-truncate">@item.Name</td>
+                    <td class="text-truncate">@item.Email</td>                    
+                    <td class="text-truncate">@item.Account</td>
+                    <td class="text-truncate">@item.Password</td>
+                    <td class="text-truncate">@item.Phone</td>
+                    <td>@item.Birthday</td>
                     <td>
-                        @if (item.MGender.HasValue)
+                        @if (item.Gender.HasValue)
                         {
-                            if (item.MGender.Value)
+                            if (item.Gender.Value)
                             {
                                 <span>男</span>
                             }
@@ -91,9 +91,9 @@
                     </td>
 
                     <td>
-                        @if (item.MMaritalStatus.HasValue)
+                        @if (item.MaritalStatus.HasValue)
                         {
-                            if (item.MMaritalStatus.Value)
+                            if (item.MaritalStatus.Value)
                             {
                                 <span>已婚</span>
                             }
@@ -107,18 +107,18 @@
                             <span></span>
                         }
                     </td>
-                    <td class="text-truncate">@item.MNickname</td>
-                    <td class="text-truncate">@item.MResidentialCity</td>                    
+                    <td class="text-truncate">@item.Nickname</td>
+                    <td class="text-truncate">@item.ResidentialCity</td>                    
                     <td>
-                        @if (item.MPermission >= 1 && item.MPermission <= 100)
+                        @if (item.Permission >= 1 && item.Permission <= 100)
                         {
                             <span>管理者</span>
                         }
-                        else if (item.MPermission >= 1000 && item.MPermission <= 2000)
+                        else if (item.Permission >= 1000 && item.Permission <= 2000)
                         {
                             <span>老師</span>
                         }
-                        else if (item.MPermission >= 3000 && item.MPermission <= 4000)
+                        else if (item.Permission >= 3000 && item.Permission <= 4000)
                         {
                             <span>會員</span>
                         }
@@ -128,13 +128,13 @@
                         }
                     </td>
 
-                    <td class="text-truncate">@item.MOccupation</td>
-                    <td class="text-truncate">@item.MDiseaseDescription</td>
-                    <td class="text-truncate">@item.MAllergyDescription</td>
-                    <td>@item.MLoginTime</td>
+                    <td class="text-truncate">@item.Occupation</td>
+                    <td class="text-truncate">@item.DiseaseDescription</td>
+                    <td class="text-truncate">@item.AllergyDescription</td>
+                    <td>@item.LoginTime</td>
                     <td class="fixed-actions">
-                        @Html.ActionLink("修改", "Edit", "Members", new { id = item.MMemberId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MMemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-danger" })
+                        @Html.ActionLink("修改", "Edit", "Members", new { id = item.MemberId }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-danger" })
                     </td>
                 </tr>
             }

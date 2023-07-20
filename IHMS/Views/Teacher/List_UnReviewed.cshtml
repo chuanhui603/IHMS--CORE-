@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IHMS.Models.Teacher>
+﻿@model IEnumerable<IHMS.Models.Coach>
 
 @{
     ViewData["Title"] = "List_UnReviewed";
@@ -31,22 +31,22 @@
                 序
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TImage)
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TMemberId)
+                @Html.DisplayNameFor(model => model.MemberId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TLevel)
+                @Html.DisplayNameFor(model => model.Rank)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TCommission)
+                @Html.DisplayNameFor(model => model.Commission)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TApplytime)
+                @Html.DisplayNameFor(model => model.Applytime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TConfirmtime)
+                @Html.DisplayNameFor(model => model.Confirmtime)
             </th>
 
             <th></th>
@@ -63,29 +63,29 @@
                         @count
                     </td>
                     <td>
-                        <img src="~/Images/@item.TImage" width="100" height="125" />
+                        <img src="~/Images/@item.Image" width="100" height="125" />
 
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TMemberId)
+                        @Html.DisplayFor(modelItem => item.MemberId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TLevel)
+                        @Html.DisplayFor(modelItem => item.Rank)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TCommission)
+                        @Html.DisplayFor(modelItem => item.Commission)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TApplytime)
+                        @Html.DisplayFor(modelItem => item.Applytime)
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.TConfirmtime)
+                        @Html.DisplayFor(modelItem => item.Confirmtime)
                     </td>
                     <td>
-                        @Html.ActionLink("詳細內容", "Details", "Teacher", new { id = item.TTeacherId },
+                        @Html.ActionLink("詳細內容", "Details", "Teacher", new { id = item.CoachId },
                 new { @class = "btn btn-success" }) |
-                        @Html.ActionLink("審查通過", "Pass", "Teacher", new { id = item.TTeacherId },
+                        @Html.ActionLink("審查通過", "Pass", "Teacher", new { id = item.CoachId },
                 new { onclick = "return confirm('此教練將移轉至已審查區')", Class = "btn btn-danger" })
                     </td>
                 </tr>

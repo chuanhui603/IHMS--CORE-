@@ -1,0 +1,174 @@
+﻿@model IEnumerable<IHMS.Models.Order>
+
+@{
+    
+    ViewData["Title"] = "List";
+       
+}
+
+<h1 class="text-center mt-5" style="font-size: 28px;">訂單</h1>
+<br />
+
+<form >
+    <div class="text-end">
+        <p>
+            關鍵字 @Html.TextBox("txtKeyword", null, new { @class = "form-control d-inline-block w-auto" })
+            <input type="submit" value="查詢" class="btn btn-primary" />
+        </p>
+    </div>
+</form>
+
+@*<form>
+    <div class="text-end">
+        <p>
+            關鍵字 @Html.TextBox("txtKeyword", null, new { @class = "form-control d-inline-block w-auto" })
+            <input type="submit" value="查詢" class="btn btn-primary" />
+        </p>
+    </div>
+</form>*@
+
+<br />
+<br />
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    序
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MemberId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Member.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ordernumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pointstotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reason)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Createtime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updatetime)
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int count = 0;
+                decimal pay = 0;
+                decimal tax = 0;
+                decimal sum = 0;
+                foreach (var item in Model)
+                {
+                    count++;
+                    pay += item.Pointstotal;
+                    <tr>
+                        <td>
+                            @count
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MemberId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Member.Name)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ordernumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pointstotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.State)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reason)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Createtime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Updatetime)
+                        </td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn btn-danger btn-sm">修改</a> |
+                            <a asp-action="Details" asp-route-id="@item.OrderId" class="btn btn-info btn-sm">明細</a>
+                        </td>
+                    </tr>
+                }
+                tax = pay * 0.05M;
+                sum = pay + tax;
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center">
+    <nav aria-label="Page navigation" class="d-flex justify-content-center mt-3">
+        <ul class="pagination custom-pagination">
+            <!-- 使用for迴圈建立分頁按鈕 -->
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "List")">
+                    <a class="page-link" href="@Url.Action("List", new { txtKeyword =ViewBag.Keyword,page = i })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    @*@if (ViewBag.TotalPages > 1)
+    {
+    if (ViewBag.CurrentPage > 1)
+    {
+    @Html.ActionLink("上一頁", "List", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize }, new { @class = "btn btn-secondary" })
+    }*@
+
+
+    @*for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+    if (i == ViewBag.CurrentPage)
+    {
+    <button class="btn btn-primary disabled">@i</button>
+    }
+    else
+    {
+    @Html.ActionLink(i.ToString(), "List", new { page = i, pageSize = ViewBag.PageSize }, new { @class = "btn btn-secondary" })
+    }
+    }*@
+
+    @*if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+    @Html.ActionLink("下一頁", "List", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize }, new { @class = "btn btn-secondary" })
+    }
+    }*@
+    
+        
+
+
+            
+    
+    <div class="text-end">
+        <ul class="list-unstyled">
+            <li>交易金額：@pay.ToString("###,###,##0")</li>
+            <li>稅　　額：@tax.ToString("###,###,##0")</li>
+            <li>應付金額：@sum.ToString("###,###,##0")</li>
+        </ul>
+    </div>
+</div>
+    
+

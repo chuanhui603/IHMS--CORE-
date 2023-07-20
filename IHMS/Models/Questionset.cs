@@ -5,9 +5,9 @@ namespace IHMS.Models;
 
 public partial class Questionset
 {
-    public int QQuestionsetId { get; set; }
+    public int QuestionsetId { get; set; }
 
-    public string? QQuestion { get; set; }
+    public string? Question { get; set; }
 
-    public string? QCategory { get; set; }
+    public string? Category { get; set; }
 }

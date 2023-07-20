@@ -1,0 +1,102 @@
+﻿@model IHMS.Models.Order
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="mt-5" style="font-size: 24px;">訂單修改</h1>
+
+<style>
+    .boxx{
+        margin:2px;
+        padding:2px;
+        
+    }
+   
+    
+</style>
+
+<hr />
+<div class="row ">
+    <div class="col-md-4 " >
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderId" />
+            <div class="form-group">
+                <label asp-for="Ordernumber" class="control-label boxx"></label>
+                <input asp-for="Ordernumber" class="form-control " readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Ordernumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member.Name" class="control-label boxx"></label>
+                <input asp-for="Member.Name" class="form-control " readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Member.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pointstotal" class="control-label boxx"></label>
+                <input asp-for="Pointstotal" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Pointstotal" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="State" class="control-label boxx"></label>
+                <select asp-for="State" class="form-control">
+                    <option value="已完成">已完成</option>
+                    <option value="未完成">未完成</option>
+                    <option value="已取消">已取消</option>
+                </select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Reason" class="control-label boxx"></label>
+                <input asp-for="Reason" class="form-control" />
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Createtime" class="control-label boxx"></label>
+                <input asp-for="Createtime" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Createtime" class="text-danger"></span>
+            </div>
+            <div class="form-group ">
+                <label asp-for="Updatetime" class="control-label boxx"></label>
+                <input asp-for="Updatetime" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Updatetime" class="text-danger"></span>
+            </div>
+            <div class="form-group overflow-hidden visually-hidden ">
+                <label asp-for="Member.Email" class="control-label boxx"></label>
+                <input asp-for="Member.Email" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Member.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group visually-hidden ">
+                <input asp-for="Member.Password" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Member.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group visually-hidden">
+                <label asp-for="Member.Account" class="control-label boxx"></label>
+                <input asp-for="Member.Account" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="Member.Account" class="text-danger"></span>
+            </div>
+            <br />
+
+            <br />
+
+            <div class="form-group">
+                <input type="submit" value="送出" class="btn btn-primary"/>
+                
+                
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<br />
+
+
+<div>
+    <a asp-action="List">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

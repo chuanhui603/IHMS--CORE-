@@ -36,7 +36,7 @@ namespace IHMS.Controllers
             var query = _db.Plans.Select(p => new PPlanListViewModel
             {
                 PlanId = p.PlanId,
-                Name = _db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId==p.MemberId).MName,
+                Name = _db.Members.Include("Plans").FirstOrDefault(m => m.MemberId==p.MemberId).Name,
                 Registerdate = p.RegisterDate,
                 EndDate = p.EndDate,
             });
@@ -83,7 +83,7 @@ namespace IHMS.Controllers
             PPlanViewModel vm = new PPlanViewModel
             {
                 PlanId = plan.PlanId,
-                MemberName = _db.Members.Include("Plans").FirstOrDefault(m => m.MMemberId == plan.MemberId).MName,
+                MemberName = _db.Members.Include("Plans").FirstOrDefault(m => m.MemberId == plan.MemberId).Name,
                 BodyPercentage = plan.BodyPercentage,
                 RegisterDate = plan.RegisterDate,
                 EndDate = plan.EndDate,

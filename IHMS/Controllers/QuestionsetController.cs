@@ -37,7 +37,7 @@ namespace IHMS.Controllers
 
                 // 範例：
                 string query = "INSERT INTO Questionset (q_question, q_category) VALUES (@Question, @Category)";
-                connection.Execute(query, new { Question = questionset.QQuestion, Category = questionset.QCategory });
+                connection.Execute(query, new { Question = questionset.Question, Category = questionset.Category });
             }
 
             // 新增完成後重新導向至 Index 頁面

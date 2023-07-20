@@ -23,9 +23,7 @@ public partial class Plan
 
     public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
 
-    public virtual Member Member { get; set; } = null!;
-
-    public virtual ICollection<Sport> Sports { get; set; } = new List<Sport>();
+    public virtual Sport? Sport { get; set; }
 
     public virtual ICollection<Water> Water { get; set; } = new List<Water>();
 }

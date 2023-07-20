@@ -1,87 +1,51 @@
-﻿@model IEnumerable<IHMS.Models.Teacher>
+﻿@model IHMS.Models.Coach
 
 @{
-    ViewData["Title"] = "List_Rejected";
+    ViewData["Title"] = "Create";
 }
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<h1>新增教練</h1>
 
-<h1>教練列表</h1>
 
-<p>
-    <a asp-action="Create">新增測試</a>
-</p>
-<ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link" href="https://localhost:7127/Teacher/List_Done">已審核</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="https://localhost:7127/Teacher/List_UnReviewed">待審查</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#" >已退件</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="https://localhost:7127/Teacher/List_resigned">離職</a>
-    </li>
-</ul>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                序
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TMemberId)
-            </th>
-            <th>
-                退件原因
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TApplytime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TConfirmtime)
-            </th>
+<h4>申請資料</h4>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count = 0;
-            foreach (var item in Model)
-            {
-                count++;
-                <tr>
-                    <td>
-                        @count
-                    </td>
-                    <td>
-                        <img src="~/Images/@item.TImage" width="100" height="125" />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-10">
+                <div class="form-group col-md-10">
+                    <label asp-for="Intro" class="control-label"></label>
+                    <input asp-for="Intro" class="form-control" />
+                    <span asp-validation-for="Intro" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-10">
+                    個人照片
+                    <div class="col-md-10">
+                        <input type="file" name="photo" />
+                    </div>
+                </div>
+                <div class="form-group col-md-10">
+                    履歷上傳
+                    <div class="col-md-10">
+                        <input type="file" name="resume" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-10">
+                <input type="submit" value="送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TMemberId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TResume)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TApplytime)
-                    </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TConfirmtime)
-                    </td>
-                    <td>
-                        @Html.ActionLink("詳細內容", "Details", "Teacher", new { id = item.TTeacherId },
-                new { @class = "btn btn-success" }) 
-                         </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+<div>
+    <a asp-action="List_Done">取消</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

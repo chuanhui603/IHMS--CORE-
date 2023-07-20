@@ -14,4 +14,8 @@ public partial class MessageBoardDetail
     public DateTime Time { get; set; }
 
     public string? Image { get; set; }
+
+    public virtual Member Member { get; set; } = null!;
+
+    public virtual MessageBoard MemberNavigation { get; set; } = null!;
 }

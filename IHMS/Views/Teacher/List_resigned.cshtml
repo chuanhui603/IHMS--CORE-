@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IHMS.Models.Teacher>
+﻿@model IEnumerable<IHMS.Models.Coach>
 
 @{
     ViewData["Title"] = "List_resigned";
@@ -30,19 +30,19 @@
                 序
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TImage)
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TMemberId)
+                @Html.DisplayNameFor(model => model.MemberId)
             </th>
             <th>
                 離職原因
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TApplytime)
+                @Html.DisplayNameFor(model => model.Applytime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TConfirmtime)
+                @Html.DisplayNameFor(model => model.Confirmtime)
             </th>
 
             <th></th>
@@ -59,24 +59,24 @@
                         @count
                     </td>
                     <td>
-                        <img src="~/Images/@item.TImage" width="100" height="125" />
+                        <img src="~/Images/@item.Image" width="100" height="125" />
 
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TMemberId)
+                        @Html.DisplayFor(modelItem => item.MemberId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TResume)
+                        @Html.DisplayFor(modelItem => item.Resume)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TApplytime)
+                        @Html.DisplayFor(modelItem => item.Applytime)
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.TConfirmtime)
+                        @Html.DisplayFor(modelItem => item.Confirmtime)
                     </td>
                     <td>
-                        @Html.ActionLink("詳細內容", "Details", "Teacher", new { id = item.TTeacherId },
+                        @Html.ActionLink("詳細內容", "Details", "Teacher", new { id = item.CoachId },
                 new { @class = "btn btn-success" }) 
                     </td>
                 </tr>
