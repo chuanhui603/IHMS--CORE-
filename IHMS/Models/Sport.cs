@@ -11,7 +11,7 @@ public partial class Sport
 
     public DateTime Registerdate { get; set; }
 
-    public DateTime Sportdate { get; set; }
+    public DateTime Date { get; set; }
 
     public virtual Plan Plan { get; set; } = null!;
 }

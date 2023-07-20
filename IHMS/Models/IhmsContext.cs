@@ -59,6 +59,8 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<SportDetail> SportDetails { get; set; }
 
+    public virtual DbSet<Teacher> Teachers { get; set; }
+
     public virtual DbSet<Water> Water { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -207,9 +209,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Date)
                 .HasColumnType("date")
                 .HasColumnName("date");
-            entity.Property(e => e.Image)
-                .HasMaxLength(150)
-                .HasColumnName("image");
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
@@ -234,9 +233,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Fname)
                 .HasMaxLength(50)
                 .HasColumnName("fname");
-            entity.Property(e => e.FoodType)
-                .HasMaxLength(50)
-                .HasColumnName("food_type");
             entity.Property(e => e.Img)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -478,10 +474,27 @@ public partial class IhmsContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetail_Orders");
 
-            entity.HasOne(d => d.Schedule).WithMany(p => p.OrderDetails)
-                .HasForeignKey(d => d.ScheduleId)
+            entity.Property(e => e.PlanId).HasColumnName("plan_id");
+            entity.Property(e => e.BodyPercentage).HasColumnName("body_percentage");
+            entity.Property(e => e.Description)
+                .HasMaxLength(100)
+                .HasColumnName("description");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("datetime")
+                .HasColumnName("end_date");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.Pname)
+                .HasMaxLength(50)
+                .HasColumnName("pname");
+            entity.Property(e => e.RegisterDate)
+                .HasColumnType("datetime")
+                .HasColumnName("register_date");
+            entity.Property(e => e.Weight).HasColumnName("weight");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.Plans)
+                .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderDetail_Schedule");
+                .HasConstraintName("FK_Plan_Members");
         });
 
         modelBuilder.Entity<Plan>(entity =>
@@ -546,6 +559,21 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("question");
         });
 
+        modelBuilder.Entity<Questionset>(entity =>
+        {
+            entity.HasKey(e => e.QQuestionsetId);
+
+            entity.ToTable("Questionset");
+
+            entity.Property(e => e.QQuestionsetId).HasColumnName("q_questionset_id");
+            entity.Property(e => e.QCategory)
+                .HasMaxLength(50)
+                .HasColumnName("q_category");
+            entity.Property(e => e.QQuestion)
+                .HasMaxLength(500)
+                .HasColumnName("q_question");
+        });
+
         modelBuilder.Entity<Schedule>(entity =>
         {
             entity.ToTable("Schedule");
@@ -597,13 +625,13 @@ public partial class IhmsContext : DbContext
             entity.ToTable("Sport");
 
             entity.Property(e => e.SportId).HasColumnName("sport_id");
+            entity.Property(e => e.Date)
+                .HasColumnType("datetime")
+                .HasColumnName("date");
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
-            entity.Property(e => e.Sportdate)
-                .HasColumnType("datetime")
-                .HasColumnName("sportdate");
 
             entity.HasOne(d => d.Plan).WithMany(p => p.Sports)
                 .HasForeignKey(d => d.PlanId)
@@ -633,6 +661,18 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
                 .HasColumnName("type");
+
+            entity.HasOne(d => d.Sport).WithMany()
+                .HasForeignKey(d => d.SportId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sport_Detail_Sport");
+        });
+
+        modelBuilder.Entity<Teacher>(entity =>
+        {
+            entity.HasKey(e => e.TTeacherId).HasName("PK_Table_2");
+
+            entity.ToTable("Teacher");
 
             entity.HasOne(d => d.Sport).WithMany()
                 .HasForeignKey(d => d.SportId)
