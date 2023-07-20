@@ -100,17 +100,19 @@ namespace IHMS.APIControllers
         //    return plan;
         //}
 
-        // PUT: api/Plans/5
+
+        //DietDetail
+        // PUT: api/Plans/diets/{dietsid}/edit
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlan(int id, Plan plan)
+        [HttpPut("diets/{id}/edit")]
+        public async Task<IActionResult> PutPlan(int id, Diet diet)
         {
-            if (id != plan.PlanId)
+            if (id != diet.PlanId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(plan).State = EntityState.Modified;
+            _context.Entry(diet).State = EntityState.Modified;
 
             try
             {

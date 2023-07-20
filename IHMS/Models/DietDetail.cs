@@ -9,7 +9,7 @@ public partial class DietDetail
 
     public int DietId { get; set; }
 
-    public string? Fname { get; set; }
+    public string? Dname { get; set; }
 
     public string? Type { get; set; }
 

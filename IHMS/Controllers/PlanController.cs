@@ -20,6 +20,11 @@ namespace IHMS.Controllers
         {
             _db = d;
         }
+
+        public ActionResult test()
+        {
+            return PartialView();
+        }
         public ActionResult List()
         {
             // var planlist = (from p in db.Plans select p);      //不ToList會觸發重複使用資料庫         

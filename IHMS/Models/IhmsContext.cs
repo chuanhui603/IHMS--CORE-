@@ -227,9 +227,9 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("decription");
             entity.Property(e => e.DietId).HasColumnName("diet_id");
-            entity.Property(e => e.Fname)
+            entity.Property(e => e.Dname)
                 .HasMaxLength(50)
-                .HasColumnName("fname");
+                .HasColumnName("dname");
             entity.Property(e => e.Img)
                 .HasMaxLength(50)
                 .IsUnicode(false)
