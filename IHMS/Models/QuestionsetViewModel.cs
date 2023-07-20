@@ -1,6 +1,6 @@
 ﻿namespace IHMS.Models
 {
-    public class Questionset
+    public class QuestionsetViewModel
     {
         public int questionset_id { get; set; }
         public string question { get; set; }
