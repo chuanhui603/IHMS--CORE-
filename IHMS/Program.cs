@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader());
 });
 
+builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 
