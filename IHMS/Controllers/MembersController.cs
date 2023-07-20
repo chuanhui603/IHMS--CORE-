@@ -2,6 +2,7 @@
 using IHMS.Models;
 using IHMS.ViewModel;
 
+
 namespace IHMS.Controllers
 {
     public class MembersController : Controller
@@ -51,7 +52,7 @@ namespace IHMS.Controllers
                         _enviro.WebRootPath + "/images/" + photoName,
                         FileMode.Create));
                     cust.AvatarImage = photoName;
-                }
+                }                
                 cust.Name = x.Name; //姓名
                 cust.Phone = x.Phone; //電話
                 cust.Email = x.Email; //信箱

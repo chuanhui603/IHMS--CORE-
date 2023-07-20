@@ -89,7 +89,7 @@ namespace IHMS.APIControllers
         // PUT: api/Members/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<string> PutMember(int id, MembersDTO MemDTO)
+        public async Task<string> PutMember(int id, MembersDTO MemDTO)//修改會員資料
         {
             {
                 if (id != MemDTO.MemberId)
@@ -144,7 +144,7 @@ namespace IHMS.APIControllers
         // POST: api/Members
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<string> PostMember(MembersDTO MemDTO)
+        public async Task<string> PostMember(MembersDTO MemDTO)//註冊會員
         {
             Member mem = new Member
             {
@@ -161,7 +161,7 @@ namespace IHMS.APIControllers
 
         // DELETE: api/Members/5
         [HttpDelete("{id}")]
-        public async Task<string> DeleteMember(int id)
+        public async Task<string> DeleteMember(int id)//刪除
         {
             if (_context.Members == null)
             {
@@ -189,5 +189,32 @@ namespace IHMS.APIControllers
         {
             return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
         }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] MembersDTO loginDTO)
+        {
+            string username = loginDTO.Account; // 用戶輸入的帳號
+            string password = loginDTO.Password; // 用戶輸入的密碼
+
+            // 根據帳號查找對應的會員記錄
+            var member = await _context.Members.SingleOrDefaultAsync(m => m.Account == username);
+
+            if (member == null)
+            {
+                // 如果找不到對應的會員記錄，表示帳號錯誤
+                return BadRequest(new { message = "帳號錯誤" });
+            }
+
+            // 檢查用戶提供的密碼是否與資料庫中的密碼匹配
+            if (password == member.Password)
+            {
+                // 登入成功
+                return Ok(new { message = "登入成功" });
+            }
+            else
+            {
+                // 密碼驗證失敗
+                return BadRequest(new { message = "登入失敗，帳號或密碼錯誤" });
+            }
+        }     
     }
 }
