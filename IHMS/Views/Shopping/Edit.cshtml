@@ -1,0 +1,68 @@
+﻿@model IHMS.Models.CourseOrder
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<h1>訂單修改</h1>
+
+<h4>請輸入訂單資訊</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CoCourseorderId" />
+            <div class="form-group">
+                <label asp-for="CoMemberId" class="control-label"></label>
+                <input asp-for="CoMemberId" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />               
+                <span asp-validation-for="CoMemberId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoPointstotal" class="control-label"></label>
+                <input asp-for="CoPointstotal" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="CoPointstotal" class="text-danger"></span>
+            </div>
+            
+
+            <div class="form-group">
+                <label asp-for="CoState" class="control-label"></label>
+                <select asp-for="CoState" class="form-control">
+                    <option value="已完成">已完成</option>
+                    <option value="未完成">未完成</option>
+                    <option value="已取消">已取消</option>
+                </select>
+                <span asp-validation-for="CoState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoReason" class="control-label"></label>
+                <input asp-for="CoReason" class="form-control" />
+                <span asp-validation-for="CoReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoCreatetime" class="control-label"></label>
+                <input asp-for="CoCreatetime" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="CoCreatetime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoUpdatetime" class="control-label"></label>
+                <input asp-for="CoUpdatetime" class="form-control" readonly style="background-color: #f2f2f2; color: #888888;" />
+                <span asp-validation-for="CoUpdatetime" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <input type="submit" value="送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-action="List">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

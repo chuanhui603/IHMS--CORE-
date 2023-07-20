@@ -1,0 +1,43 @@
+﻿@using IHMS.Models;
+@model IEnumerable<AnnouncementView>
+
+@{
+    ViewData["Title"] = "Past Announcements";
+    Layout = "_Layout";
+}
+
+<h1>Past Announcements</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Date</th>
+                <th>Image</th> <!-- 新增圖片欄位 -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var announcement in Model)
+            {
+                <tr>
+                    <td>@announcement.an_title</td>
+                    <td>@announcement.an_content</td>
+                    <td>@announcement.an_time.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(announcement.an_image))
+                        {
+                            <img src="~/AnnouncementImage/@announcement.an_image" alt="Announcement Image" width="100px" />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No past announcements found.</p>
+}

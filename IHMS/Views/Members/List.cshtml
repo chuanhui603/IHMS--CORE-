@@ -1,0 +1,143 @@
+﻿<style>
+    th, td {
+        white-space: nowrap;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        overflow-y: scroll; 
+        white-space: nowrap;
+        max-height: 600px; /* 設置欄位最大高度 */
+    }
+
+    .table td {
+        min-width: 50px; /* 控制欄為最小寬度 */
+    }
+
+    .fixed-actions {
+        position: sticky;
+        right: 0;
+        background-color: #808080;
+    }
+</style>
+
+@model IEnumerable<IHMS.Models.Member>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>會員資料列表</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">新增會員</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+        
+            <tr>
+                <th>序</th>
+                <th>會員圖片</th>
+                <th>名稱</th>
+                <th>Email</th>                
+                <th>帳號</th>
+                <th>密碼</th>
+                <th>電話</th>
+                <th>生日</th>
+                <th>性別</th>
+                <th>婚姻狀況</th>
+                <th>暱稱</th>
+                <th>居住城市</th>
+                <th>權限</th>
+                <th>職業</th>
+                <th>疾病描述</th>
+                <th>過敏描述</th>
+                <th>登入時間</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MemberId</td>
+                    <td>
+                        <img src="~/images/@item.AvatarImage" width="100" height="100" />
+                    </td>
+                    <td class="text-truncate">@item.Name</td>
+                    <td class="text-truncate">@item.Email</td>                    
+                    <td class="text-truncate">@item.Account</td>
+                    <td class="text-truncate">@item.Password</td>
+                    <td class="text-truncate">@item.Phone</td>
+                    <td>@item.Birthday</td>
+                    <td>
+                        @if (item.Gender.HasValue)
+                        {
+                            if (item.Gender.Value)
+                            {
+                                <span>男</span>
+                            }
+                            else
+                            {
+                                <span>女</span>
+                            }
+                        }
+                        else
+                        {
+                            <span></span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (item.MaritalStatus.HasValue)
+                        {
+                            if (item.MaritalStatus.Value)
+                            {
+                                <span>已婚</span>
+                            }
+                            else
+                            {
+                                <span>未婚</span>
+                            }
+                        }
+                        else
+                        {
+                            <span></span>
+                        }
+                    </td>
+                    <td class="text-truncate">@item.Nickname</td>
+                    <td class="text-truncate">@item.ResidentialCity</td>                    
+                    <td>
+                        @if (item.Permission >= 1 && item.Permission <= 100)
+                        {
+                            <span>管理者</span>
+                        }
+                        else if (item.Permission >= 1000 && item.Permission <= 2000)
+                        {
+                            <span>老師</span>
+                        }
+                        else if (item.Permission >= 3000 && item.Permission <= 4000)
+                        {
+                            <span>會員</span>
+                        }
+                        else
+                        {
+                            <span>遊客</span>
+                        }
+                    </td>
+
+                    <td class="text-truncate">@item.Occupation</td>
+                    <td class="text-truncate">@item.DiseaseDescription</td>
+                    <td class="text-truncate">@item.AllergyDescription</td>
+                    <td>@item.LoginTime</td>
+                    <td class="fixed-actions">
+                        @Html.ActionLink("修改", "Edit", "Members", new { id = item.MemberId }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
