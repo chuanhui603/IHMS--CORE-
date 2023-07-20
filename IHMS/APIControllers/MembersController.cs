@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using IHMS.DTO;
+using Microsoft.AspNetCore.Cors;
 
 namespace IHMS.APIControllers
 {
+    [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
@@ -189,6 +191,7 @@ namespace IHMS.APIControllers
         {
             return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
         }
+        // POST: api/Members/Login
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] MembersDTO loginDTO)
         {
@@ -204,8 +207,9 @@ namespace IHMS.APIControllers
                 return BadRequest(new { message = "帳號錯誤" });
             }
 
-            // 檢查用戶提供的密碼是否與資料庫中的密碼匹配
-            if (password == member.Password)
+            // 比對用戶提供的密碼和資料庫中的密碼
+            bool isPasswordCorrect = string.Compare(password, member.Password, false) == 0;
+            if (isPasswordCorrect)
             {
                 // 登入成功
                 return Ok(new { message = "登入成功" });
@@ -215,6 +219,7 @@ namespace IHMS.APIControllers
                 // 密碼驗證失敗
                 return BadRequest(new { message = "登入失敗，帳號或密碼錯誤" });
             }
-        }     
+        }
+
     }
 }
