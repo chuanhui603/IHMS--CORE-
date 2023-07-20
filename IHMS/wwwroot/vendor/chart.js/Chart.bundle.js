@@ -20,7 +20,7 @@ function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
-function getCjsExportFroNamespace (n) {
+function getCjsExportFromNamespace (n) {
 	return n && n['default'] || n;
 }
 
@@ -7414,7 +7414,7 @@ __proto__: null,
 'default': platform_dom
 });
 
-var stylesheet = getCjsExportFroNamespace(platform_dom$1);
+var stylesheet = getCjsExportFromNamespace(platform_dom$1);
 
 var EXPANDO_KEY = '$chartjs';
 var CSS_PREFIX = 'chartjs-';
