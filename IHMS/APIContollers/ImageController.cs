@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using Dapper;
-using Microsoft.Extensions.Configuration; // 引入這個名稱空間以使用 IConfiguration
+using Microsoft.Extensions.Configuration; 
 
 namespace IHMS.Controllers
 {
@@ -13,15 +13,13 @@ namespace IHMS.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IConfiguration _configuration; // 添加一個 IConfiguration 屬性
+        private readonly IConfiguration _configuration; 
         private string _connectionString; // 變更為實例變數
-
-        // 透過 DI，注入 IConfiguration 到您的控制器中
+        // DI，注入 IConfiguration 到控制器
         public ImageController(IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
-            // 從 appsettings.json 中讀取名為 DefaultConnection 的連接字串，並將其賦值給 _connectionString 變量
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
