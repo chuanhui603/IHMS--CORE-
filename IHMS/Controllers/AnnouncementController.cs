@@ -18,28 +18,31 @@ namespace IHMS.Controllers
             return View();
         }
 
-        private readonly string connectionString = "Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True"; // 替換為你的資料庫連接字串
+       // private readonly string connectionString = "Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True"; // 替換為你的資料庫連接字串
         private readonly IWebHostEnvironment _environment;
+        private readonly IConfiguration _configuration;
 
-        public AnnouncementController(IWebHostEnvironment environment)
+        public AnnouncementController(IWebHostEnvironment environment, IConfiguration configuration)
         {
             _environment = environment;
+            _configuration = configuration;
+
         }
         [HttpPost]
         public IActionResult Create(AnnouncementView model, IFormFile imageFile)
         {
-
-                model.an_time = DateTime.Now;
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            model.time = DateTime.Now;
 
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    var query = "INSERT INTO Announcement (an_title, an_content, an_time, an_image) VALUES (@Title, @Content, @CreatedDate, @Image)";
+                    var query = "INSERT INTO Announcement (title, contents, time, image) VALUES (@Title, @Content, @CreatedDate, @Image)";
                     var parameters = new
                     {
-                        Title = model.an_title,
-                        Content = model.an_content,
-                        CreatedDate = model.an_time,
+                        Title = model.title,
+                        Content = model.contents,
+                        CreatedDate = model.time,
                         Image = string.Empty // 先將圖片欄位設為空，稍後會更新為實際的檔案名稱
                     };
                     connection.Execute(query, parameters);
@@ -60,11 +63,11 @@ namespace IHMS.Controllers
                     using (var connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
-                        var updateQuery = "UPDATE Announcement SET an_image = @Image WHERE an_title = @Title";
+                        var updateQuery = "UPDATE Announcement SET image = @Image WHERE title = @Title";
                         var updateParameters = new
                         {
                             Image = uniqueFileName,
-                            Title = model.an_title
+                            Title = model.title
                         };
                         connection.Execute(updateQuery, updateParameters);
                     }
@@ -79,16 +82,30 @@ namespace IHMS.Controllers
 
         public IActionResult PastAnnouncements()
         {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
             IEnumerable<AnnouncementView> pastAnnouncements;
 
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                var query = "SELECT * FROM Announcement ORDER BY an_time DESC";
+                var query = "SELECT * FROM Announcement ORDER BY time DESC";
                 pastAnnouncements = connection.Query<AnnouncementView>(query);
             }
               
             return View("PastAnnouncements", pastAnnouncements);
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var query = "DELETE FROM Announcement WHERE announcemet_id = @Id";
+                var parameters = new { Id = id };
+                connection.Execute(query, parameters);
+            }
+            return RedirectToAction("PastAnnouncements");
         }
 
     }
