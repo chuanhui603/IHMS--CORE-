@@ -31,22 +31,16 @@ namespace IHMS.APIContollers
             public string Contents { get; set; }
             public int member_id { get; set; }
             public DateTime time { get; set; }
-            public string image { get; set; } 
+            //public string image { get; set; }
         }
 
-        // 用於上傳的類別
-        public class MessageBoardDetailUpload
-        {
-            public int message_id { get; set; }
-            public string Contents { get; set; }
-            public int member_id { get; set; }
-            public IFormFile image { get; set; } 
-        }
+
+       
 
         [HttpGet("{messageId}")]
         public async Task<IActionResult> Get(int messageId)
         {
-            var sql = "SELECT * FROM [dbo].[message board details] WHERE message_id = @messageId";
+            var sql = "SELECT message_id, Contents, member_id, time FROM [dbo].[message board details] WHERE message_id = @messageId";
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
@@ -54,44 +48,31 @@ namespace IHMS.APIContollers
                 return Ok(results);
             }
         }
-
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] MessageBoardDetailUpload newComment)
+        public async Task<IActionResult> Post([FromBody] MessageBoardDetailQuery messageDetail)
         {
-            var filePath = "";
-            if (newComment.image != null)
-            {
-                // Create a unique filename
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + newComment.image.FileName;
-                // Specify the file path
-                filePath = Path.Combine(_webHostEnvironment.WebRootPath, "messagedetailimage", uniqueFileName);
+            // 直接在後端取得當前時間
+            messageDetail.time = DateTime.Now;
 
-                // Save the file
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await newComment.image.CopyToAsync(fileStream);
-                }
-            }
-            else
-            {
-                filePath = "default_image.jpg"; // or whatever default value you want
-            }
-
-            var sql = @"INSERT INTO [dbo].[message board details] (message_id, Contents, member_id, time, image) 
-VALUES (@message_id, @Contents, @member_id, GETDATE(), @image)";
+            var sql = @"INSERT INTO [dbo].[message board details](message_id, Contents, member_id, time) 
+                VALUES(@message_id, @Contents, @member_id, @time)";
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
-                var parameters = new
+                var results = await connection.ExecuteAsync(sql, messageDetail);
+                if (results > 0)
                 {
-                    message_id = newComment.message_id,
-                    Contents = newComment.Contents,
-                    member_id = newComment.member_id,
-                    image = filePath
-                };
-                var affectedRows = await connection.ExecuteAsync(sql, parameters);
-                return Ok(new { message = $"{affectedRows} rows inserted" });
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
         }
+
+
+
+
     }
 }
