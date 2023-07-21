@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using IHMS.DTO;
 using Microsoft.AspNetCore.Cors;
+using Azure.Core;
+using NuGet.Protocol.Plugins;
 
 namespace IHMS.APIControllers
 {
@@ -52,28 +54,26 @@ namespace IHMS.APIControllers
         }
 
         // POST: api/Login
-        [Route("~/api/[controller]/Login/{Account}/{Password}")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Member>>> GetPlans(string Account,string Password)
+        [Route("~/api/[controller]/Login")]
+        [HttpPost]
+        public async Task<ActionResult<Member>> Login([FromBody] LoginDTO request)
         {
             if (_context.Members == null)
             {
                 return NotFound();
             }
-            var res = _context.Members.Where(p => p.Account == Account);
-            var ress = _context.Members.Where(p => p.Password == Password);
 
-            if (res == null)
+            // 尋找與請求中帳號和密碼相符的會員資訊
+            var member = await _context.Members.SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
+
+            if (member == null)
             {
                 return NotFound();
             }
-            else
-            {
-                return await res.ToListAsync();
-            }
 
+            // 登入成功，只返回確認成功的回應，不返回會員資訊
+            return Ok(member);
         }
-
 
 
         // GET: api/Members/5
