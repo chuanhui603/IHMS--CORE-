@@ -7,52 +7,49 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 
-
 namespace IHMS.Controllers.APIcontrollers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersDTOController : ControllerBase
+    public class CartsDTOController : ControllerBase
     {
         private readonly IhmsContext _context;
 
-        public OrdersDTOController(IhmsContext context)
+        public CartsDTOController(IhmsContext context)
         {
             _context = context;
         }
 
-        // GET: api/OrdersDTO
-        //顯示某會員全部的資料
+        // GET: api/CartsDTO
         [HttpGet]
-        public IEnumerable<Order> GetOrders()
+        public  IEnumerable<Cart> GetCarts()
         {
-         
-            return _context.Orders;
+          
+            return  _context.Carts;
         }
 
-        // GET: api/OrdersDTO/3
-        //顯示某會員的某筆資料
+        // GET: api/CartsDTO/5
         [HttpGet("{id}")]
-        public async Task<Order> GetOrder(int id)
+        public async Task<Cart> GetCart(int id)
         {
-         
-            var order = await _context.Orders.FindAsync(id);            
+          
+            var cart = await _context.Carts.FindAsync(id);
+                       
 
-            return order;
+            return cart;
         }
 
-        // PUT: api/OrdersDTO/5
+        // PUT: api/CartsDTO/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // 修改->先找到會員的id值,在選要修改哪一筆資料
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        public async Task<IActionResult> PutCart(int id, Cart cart)
         {
-            if (id != order.OrderId)
+            if (id != cart.CartId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(order).State = EntityState.Modified;
+            _context.Entry(cart).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +57,7 @@ namespace IHMS.Controllers.APIcontrollers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(id))
+                if (!CartExists(id))
                 {
                     return NotFound();
                 }
@@ -73,44 +70,44 @@ namespace IHMS.Controllers.APIcontrollers
             return NoContent();
         }
 
-        // POST: api/OrdersDTO
+        // POST: api/CartsDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Cart>> PostCart(Cart cart)
         {
-          if (_context.Orders == null)
+          if (_context.Carts == null)
           {
-              return Problem("Entity set 'IhmsContext.Orders'  is null.");
+              return Problem("Entity set 'IhmsContext.Carts'  is null.");
           }
-            _context.Orders.Add(order);
+            _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
+            return CreatedAtAction("GetCart", new { id = cart.CartId }, cart);
         }
 
-        // DELETE: api/OrdersDTO/5
+        // DELETE: api/CartsDTO/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<IActionResult> DeleteCart(int id)
         {
-            if (_context.Orders == null)
+            if (_context.Carts == null)
             {
                 return NotFound();
             }
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            var cart = await _context.Carts.FindAsync(id);
+            if (cart == null)
             {
                 return NotFound();
             }
 
-            _context.Orders.Remove(order);
+            _context.Carts.Remove(cart);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool OrderExists(int id)
+        private bool CartExists(int id)
         {
-            return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
+            return (_context.Carts?.Any(e => e.CartId == id)).GetValueOrDefault();
         }
     }
 }
