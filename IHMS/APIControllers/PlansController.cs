@@ -24,6 +24,56 @@ namespace IHMS.APIControllers
         }
 
 
+        //// GET: api/Plans/Diet
+        //[Route("~/api/[controller]/{planid:int}/Diet")]
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetDiets(int planid, int nums)
+        //{
+        //    if (_context.Plans == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var res = _context.Diets.Where(p => p.PlanId == planid).OrderByDescending(p => p.Registerdate).Take(nums).Select(p => new Diet
+        //    {
+        //       DietId=p.DietId,
+        //       Registerdate=p.Registerdate,
+        //       DietDetails =p.DietDetails.Select(d=>d.DietId == )
+        //    });
+        //    if (res == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //    {
+        //        return await res.ToListAsync();
+        //    }
+
+        //}
+
+        //// GET: api/Plans/Diet
+        //[Route("~/api/[controller]/{planid:int}/Sport")]
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetSports(int planid, int nums)
+        //{
+        //    if (_context.Plans == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var res = _context.Diets.Where(p => p.PlanId == planid).OrderByDescending(p => p.Registerdate).Take(nums).Select(p => new Sport
+        //    {
+                
+        //    });
+        //    if (res == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //    {
+        //        return await res.ToListAsync();
+        //    }
+
+        //}
+
 
         // GET: api/Plans
         [Route("~/api/[controller]/member/{memberid:int}/{nums:int}")]
