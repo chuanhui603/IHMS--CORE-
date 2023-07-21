@@ -24,55 +24,123 @@ namespace IHMS.APIControllers
         }
 
 
-        //// GET: api/Plans/Diet
-        //[Route("~/api/[controller]/{planid:int}/Diet")]
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetDiets(int planid, int nums)
-        //{
-        //    if (_context.Plans == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var res = _context.Diets.Where(p => p.PlanId == planid).OrderByDescending(p => p.Registerdate).Take(nums).Select(p => new Diet
-        //    {
-        //       DietId=p.DietId,
-        //       Registerdate=p.Registerdate,
-        //       DietDetails =p.DietDetails.Select(d=>d.DietId == )
-        //    });
-        //    if (res == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    else
-        //    {
-        //        return await res.ToListAsync();
-        //    }
+        // GET: api/Diet/{DietId}/deitdetail/")
+        [Route("~/api/[controller]/Diet/{DietId:int}/deitdetail")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DietDetail>>> GetDietDetails(int DietId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.DietDetails.Where(p => p.DietId == DietId).Select(p => new DietDetail
+            {
+                DietDetailId = p.DietDetailId,
+                Decription =p.Decription,
+                DietId = p.DietId,
+                Fname =p.Fname,
+                Type =p.Type,
+                Calories =p.Calories,
+                Img =p.Img,
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
 
-        //}
+        }
 
-        //// GET: api/Plans/Diet
-        //[Route("~/api/[controller]/{planid:int}/Sport")]
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<PlansSideBarDTO>>> GetSports(int planid, int nums)
-        //{
-        //    if (_context.Plans == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var res = _context.Diets.Where(p => p.PlanId == planid).OrderByDescending(p => p.Registerdate).Take(nums).Select(p => new Sport
-        //    {
-                
-        //    });
-        //    if (res == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    else
-        //    {
-        //        return await res.ToListAsync();
-        //    }
+        // GET: api/Plans/Sport/{SportId}/Sportdetail
+        [Route("~/api/[controller]/Sport/{SportId:int}/Sportdetail")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SportDetail>>> GetSportDetails(int SportId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.SportDetails.Where(p => p.SportId == SportId).Select(p => new SportDetail
+            {
+                SportId = p.SportId,
+                Description = p.Description,
+                SportDetailId = p.SportDetailId,
+                Sname = p.Sname,
+                Image = p.Image,
+                Sporttime = p.Sporttime,
+                Frequency=p.Frequency,
 
-        //}
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+
+        // GET: api/Plans/{PlanId}/Diet")
+        [Route("~/api/[controller]/{PlanId:int}/Diet")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Diet>>> GetDiets(int PlanId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.Diets.Where(d => d.PlanId == PlanId).Select(d => new Diet
+            {
+               
+                DietId = d.DietId,
+                Registerdate =d.Registerdate,
+                Date =d.Date
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+        // GET: api/Plans/Diet
+        [Route("~/api/[controller]/{PlanId:int}/Sport")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Sport>>> GetSports(int PlanId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.Sports.Where(s => s.PlanId == PlanId).Select(s => new Sport
+            {
+                SportId = s.SportId,
+                Registerdate=s.Registerdate,
+                Date =s.Date
+
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+
 
 
         // GET: api/Plans
@@ -212,16 +280,16 @@ namespace IHMS.APIControllers
         public async Task<IActionResult> DeletePlan(int id)
         {
             DeletePlanDTO deleteitems = new DeletePlanDTO();
-           
+
             if (_context.Plans == null)
             {
                 return NotFound();
             }
             var plan = await _context.Plans.FindAsync(id);
             //移除plan的關聯資料
-            deleteitems.diet =  _context.Diets.Include("Plan").Where(d => d.PlanId == id);
-            deleteitems.sport =  _context.Sports.Include("Plan").Where(d => d.PlanId == id);
-            deleteitems.water =  _context.Water.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.diet = _context.Diets.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.sport = _context.Sports.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.water = _context.Water.Include("Plan").Where(d => d.PlanId == id);
             deleteMethod(deleteitems);
 
             if (plan == null)
@@ -234,23 +302,23 @@ namespace IHMS.APIControllers
             return NoContent();
         }
 
-      public void deleteMethod(DeletePlanDTO delete)
+        public void deleteMethod(DeletePlanDTO delete)
         {
-            for(int i=0;i< delete.deleteDataSet.Length; i++)
+            for (int i = 0; i < delete.deleteDataSet.Length; i++)
             {
                 switch (delete.deleteDataSet[i])
                 {
                     case "diet":
-                        foreach(var diet in delete.diet)
+                        foreach (var diet in delete.diet)
                         {
                             var query = _context.DietDetails.Include("Diet").Where(d => d.DietId == diet.DietId);
-                            foreach(var detail in query)
+                            foreach (var detail in query)
                             {
-                                 _context.DietDetails.Remove(detail);
+                                _context.DietDetails.Remove(detail);
                             }
-                             _context.Diets.Remove(diet);
+                            _context.Diets.Remove(diet);
                         }
-                       
+
                         break;
                     case "sport":
                         foreach (var sport in delete.sport)
@@ -258,15 +326,15 @@ namespace IHMS.APIControllers
                             var query = _context.SportDetails.Include("Sport").Where(d => d.SportId == sport.SportId);
                             foreach (var detail in query)
                             {
-                                 _context.SportDetails.Remove(detail);
+                                _context.SportDetails.Remove(detail);
                             }
-                             _context.Sports.Remove(sport);
+                            _context.Sports.Remove(sport);
                         }
                         break;
-                     default:
+                    default:
                         foreach (var water in delete.water)
                         {
-                             _context.Water.Remove(water);
+                            _context.Water.Remove(water);
                         }
                         break;
                 }
