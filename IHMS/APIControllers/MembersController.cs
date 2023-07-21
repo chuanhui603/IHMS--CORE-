@@ -24,7 +24,7 @@ namespace IHMS.APIControllers
         }
 
         // GET: api/Members
-        [Route("api/[controller]/{memberid:int}/{search}")]
+      
         [HttpGet]
         public async Task<IEnumerable<MembersDTO>> GetMembers(int id, string search)
         {
@@ -50,6 +50,31 @@ namespace IHMS.APIControllers
                     LoginTime = mem.LoginTime
                 });
         }
+
+        // POST: api/Login
+        [Route("~/api/[controller]/Login/{Account}/{Password}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Member>>> GetPlans(string Account,string Password)
+        {
+            if (_context.Members == null)
+            {
+                return NotFound();
+            }
+            var res = _context.Members.Where(p => p.Account == Account);
+            var ress = _context.Members.Where(p => p.Password == Password);
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+
 
         // GET: api/Members/5
         [HttpGet("{id}")]
@@ -191,35 +216,7 @@ namespace IHMS.APIControllers
         {
             return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
         }
-        // POST: api/Members/Login
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] MembersDTO loginDTO)
-        {
-            string username = loginDTO.Account; // 用戶輸入的帳號
-            string password = loginDTO.Password; // 用戶輸入的密碼
-
-            // 根據帳號查找對應的會員記錄
-            var member = await _context.Members.SingleOrDefaultAsync(m => m.Account == username);
-
-            if (member == null)
-            {
-                // 如果找不到對應的會員記錄，表示帳號錯誤
-                return BadRequest(new { message = "帳號錯誤" });
-            }
-
-            // 比對用戶提供的密碼和資料庫中的密碼
-            bool isPasswordCorrect = string.Compare(password, member.Password, false) == 0;
-            if (isPasswordCorrect)
-            {
-                // 登入成功
-                return Ok(new { message = "登入成功" });
-            }
-            else
-            {
-                // 密碼驗證失敗
-                return BadRequest(new { message = "登入失敗，帳號或密碼錯誤" });
-            }
-        }
+      
 
     }
 }

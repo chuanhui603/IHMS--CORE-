@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
-<head> 
+<head>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,46 +55,42 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
             button:hover {
                 background-color: #0056b3;
             }
     </style>
 </head>
-<body>   
+<body>
 
     <div id="loginContainer">
-        <div id="loginBox">
-            <form id="loginForm">
+        <div id="loginBox">          
                 <label for="Account">帳號：</label>
-                <input type="text" id="Account" name="Account" required><br>
+                <input type="text" id="Account"><br>
                 <label for="Password">密碼：</label>
-                <input type="Password" id="Password" name="Password" required><br>
+                <input type="Password" id="Password"><br>
                 <button onclick="Login()">登入</button>
-            </form>
-        </div>    
-    
+         
+        </div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            var baseAddress = "https://localhost:7127/";
+          
 
             // 完成 Login 函式
-            function Login() {
+           async function Login() {                  
                 var Account = document.getElementById('Account').value;
                 var Password = document.getElementById('Password').value;
-
-                // 使用 AJAX 發送登入請求
-                $.ajax({
-                    type: "POST",
-                    url: `${baseAddress}/api/Members/Login`,
-                    data: JSON.stringify({ Account: Account, Password: Password }),
-                    contentType: "application/json"
-                }).done(data => {
-                    alert('登入成功');
-                    // 登入成功後，可以進行其他後續操作，例如跳轉到會員頁面
-                }).fail(err => {
-                    alert('登入失敗');
-                });
-            }
+                 var baseAddress = `https://localhost:7127/api/Members/Login/${Account}/${Password}`;              
+                // 使用 AJAX 發送登入請求           
+                  const res = await fetch(baseAddress, {
+                     method: 'GET',
+                     headers: {
+                     'content-type': 'application/json'
+                     }
+                  })                 
+               }
+             
         </script>
 </body>
 </html>
