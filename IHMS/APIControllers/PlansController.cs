@@ -151,7 +151,7 @@ namespace IHMS.APIControllers
                 BodyPercentage = dto.Bmi,
                 EndDate = dto.endDate,
                 RegisterDate = DateTime.Now,
-                Description = dto.description,
+                //Description = dto.description,
             };
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();

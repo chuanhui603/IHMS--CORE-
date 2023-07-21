@@ -74,17 +74,17 @@ namespace IHMS.Controllers
             var dietId = new List<int>();
             var sportdatelist = new List<DateTime>();
             var sportId = new List<int>();
-            foreach (var diet in dietquery)
-            {
-                dietdatelist.Add(diet.Date);
-                dietId.Add(diet.DietId);
-            }
+            //foreach (var diet in dietquery)
+            //{
+            //    dietdatelist.Add(diet.Date);
+            //    dietId.Add(diet.DietId);
+            //}
 
-            foreach (var sport in sportquery)
-            {
-                sportdatelist.Add(sport.Date);
-                sportId.Add(sport.SportId);
-            }
+            //foreach (var sport in sportquery)
+            //{
+            //    sportdatelist.Add(sport.Date);
+            //    sportId.Add(sport.SportId);
+            //}
             PPlanViewModel vm = new PPlanViewModel
             {
                 PlanId = plan.PlanId,

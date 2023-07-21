@@ -51,6 +51,8 @@ public partial class Member
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
+    public virtual ICollection<Plan> Plans { get; set; } = new List<Plan>();
+
     public virtual ICollection<PointRecord> PointRecords { get; set; } = new List<PointRecord>();
 
     public virtual ICollection<Score> Scores { get; set; } = new List<Score>();
