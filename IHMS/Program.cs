@@ -34,9 +34,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+//加上才有防Cors
 app.UseCors("AllowAll");
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("AllowAll");
