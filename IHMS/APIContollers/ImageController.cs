@@ -20,7 +20,7 @@ namespace IHMS.Controllers
         {
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connectionString = _configuration.GetConnectionString("IHMSConnection");
         }
 
         [HttpGet("{imageName}")]

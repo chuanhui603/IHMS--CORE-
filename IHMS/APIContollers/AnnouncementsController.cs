@@ -23,7 +23,7 @@ namespace IHMS.APIControllers
         [HttpGet]
         public IEnumerable<Announcement> Get()
         {
-            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("IHMSConnection")))
             {
                 string query = "SELECT * FROM Announcement";
                 return connection.Query<Announcement>(query);
@@ -34,7 +34,7 @@ namespace IHMS.APIControllers
         [HttpGet("{id}")]
         public ActionResult<Announcement> Get(int id)
         {
-            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("IHMSConnection")))
             {
                 string query = "SELECT * FROM Announcement WHERE announcemet_id = @Id";
                 var parameters = new { Id = id };
@@ -51,7 +51,7 @@ namespace IHMS.APIControllers
         [HttpPost]
         public ActionResult<Announcement> Post([FromBody] Announcement announcement)
         {
-            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("IHMSConnection")))
             {
                 string query = @"INSERT INTO Announcement (title, contents, time, image)
                                  VALUES (@Title, @Contents, @Time, @Image);
@@ -73,7 +73,7 @@ namespace IHMS.APIControllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Announcement announcement)
         {
-            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("IHMSConnection")))
             {
                 string query = @"UPDATE Announcement
                                  SET title = @Title, contents = @Contents, time = @Time, image = @Image
@@ -88,7 +88,7 @@ namespace IHMS.APIControllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("IHMSConnection")))
             {
                 string query = "DELETE FROM Announcement WHERE announcemet_id = @Id";
                 var parameters = new { Id = id };

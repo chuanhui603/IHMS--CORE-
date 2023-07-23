@@ -42,7 +42,7 @@ namespace IHMS.APIContollers
         {
             var sql = "SELECT message_id, Contents, member_id, time FROM [dbo].[message board details] WHERE message_id = @messageId";
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_config.GetConnectionString("IHMSConnection")))
             {
                 var results = await connection.QueryAsync<MessageBoardDetailQuery>(sql, new { messageId });
                 return Ok(results);
@@ -57,7 +57,7 @@ namespace IHMS.APIContollers
             var sql = @"INSERT INTO [dbo].[message board details](message_id, Contents, member_id, time) 
                 VALUES(@message_id, @Contents, @member_id, @time)";
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_config.GetConnectionString("IHMSConnection")))
             {
                 var results = await connection.ExecuteAsync(sql, messageDetail);
                 if (results > 0)

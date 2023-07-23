@@ -24,7 +24,7 @@ namespace IHMS.APIControllers
         {
             // 在建構子中取得資料庫連接字串
             _webHostEnvironment = webHostEnvironment;
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("IHMSConnection");
         }
 
         // GET: api/MessageBoard
