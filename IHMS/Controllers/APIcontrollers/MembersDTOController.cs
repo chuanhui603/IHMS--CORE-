@@ -1,38 +1,45 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
-using IHMS.ViewModel.DTO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace IHMS.Controllers.APIcontrollers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoachesDTOController : ControllerBase
+    public class MembersDTOController : ControllerBase
     {
         private readonly IhmsContext _context;
 
-        public CoachesDTOController(IhmsContext context)
+        public MembersDTOController(IhmsContext context)
         {
             _context = context;
         }
 
-        // GET: api/CoachesDTO
+        // GET: api/MembersDTO
         [HttpGet]
-        public  IEnumerable<Coach> GetCoaches()
+        public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
         {
-          
-            return  _context.Coaches;
+          if (_context.Members == null)
+          {
+              return NotFound();
+          }
+            return await _context.Members.ToListAsync();
         }
 
-        // GET: api/CoachesDTO/7
-        [HttpGet("GetCoachByOrderid/{orderId}")]
-        public async Task<List<Coach>> GetCoachByOrderid(int orderId)
+        // GET: api/MembersDTO/5
+        [HttpGet("GetMemberByOrderid/{orderId}")]
+        public async Task<List<Member>> GetMemberByOrderid(int orderId)
         {
             List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
             // 使用 Include 來避免嵌套迴圈的查詢
-            List<Coach> coachesList = await _context.OrderDetails
+            List<Member> memberList = await _context.OrderDetails
                     .Where(od => od.OrderId == orderId)
                     .SelectMany(od => _context.Schedules
                         .Where(schedule => schedule.ScheduleId == od.ScheduleId)
@@ -40,6 +47,9 @@ namespace IHMS.Controllers.APIcontrollers
                             .Where(course => course.CourseId == schedule.CourseId)
                             .SelectMany(course => _context.Coaches
                                 .Where(coach => coach.CoachId == course.CoachId)
+                                .SelectMany(coach => _context.Members
+                                .Where(member => member.MemberId == coach.MemberId)
+                                )
                             )
                         )
                     )
@@ -52,26 +62,22 @@ namespace IHMS.Controllers.APIcontrollers
                 ReferenceHandler = ReferenceHandler.Preserve
             };
 
-            string serializedCoaches = JsonSerializer.Serialize(coachesList, options);
-            return coachesList;
+            string serializedCoaches = JsonSerializer.Serialize(memberList, options);
+            return memberList;
         }
 
 
-
-        
-
-
-        // PUT: api/CoachesDTO/5
+        // PUT: api/MembersDTO/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCoach(int id, Coach coach)
+        public async Task<IActionResult> PutMember(int id, Member member)
         {
-            if (id != coach.CoachId)
+            if (id != member.MemberId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(coach).State = EntityState.Modified;
+            _context.Entry(member).State = EntityState.Modified;
 
             try
             {
@@ -79,7 +85,7 @@ namespace IHMS.Controllers.APIcontrollers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CoachExists(id))
+                if (!MemberExists(id))
                 {
                     return NotFound();
                 }
@@ -92,44 +98,44 @@ namespace IHMS.Controllers.APIcontrollers
             return NoContent();
         }
 
-        // POST: api/CoachesDTO
+        // POST: api/MembersDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Coach>> PostCoach(Coach coach)
+        public async Task<ActionResult<Member>> PostMember(Member member)
         {
-          if (_context.Coaches == null)
+          if (_context.Members == null)
           {
-              return Problem("Entity set 'IhmsContext.Coaches'  is null.");
+              return Problem("Entity set 'IhmsContext.Members'  is null.");
           }
-            _context.Coaches.Add(coach);
+            _context.Members.Add(member);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCoach", new { id = coach.CoachId }, coach);
+            return CreatedAtAction("GetMember", new { id = member.MemberId }, member);
         }
 
-        // DELETE: api/CoachesDTO/5
+        // DELETE: api/MembersDTO/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCoach(int id)
+        public async Task<IActionResult> DeleteMember(int id)
         {
-            if (_context.Coaches == null)
+            if (_context.Members == null)
             {
                 return NotFound();
             }
-            var coach = await _context.Coaches.FindAsync(id);
-            if (coach == null)
+            var member = await _context.Members.FindAsync(id);
+            if (member == null)
             {
                 return NotFound();
             }
 
-            _context.Coaches.Remove(coach);
+            _context.Members.Remove(member);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CoachExists(int id)
+        private bool MemberExists(int id)
         {
-            return (_context.Coaches?.Any(e => e.CoachId == id)).GetValueOrDefault();
+            return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
         }
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -28,14 +30,32 @@ namespace IHMS.Controllers.APIcontrollers
             return  _context.Courses;
         }
 
-        // GET: api/CoursesDTO/5
-        [HttpGet("{id}")]
-        public async Task<List<Course>> GetCourse(int id)
+        // GET: api/CoursesDTO/3
+        [HttpGet("GetCourseByOrderid/{orderId}")]
+        public async Task<List<Course>> GetCourseByOrderid(int orderId)
         {
-            List<Course> course = await _context.Courses.Where(od => od.CourseId == id).ToListAsync();
-           
+            List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
+            // 使用 Include 來避免嵌套迴圈的查詢
+            List<Course> courseList = await _context.OrderDetails
+                    .Where(od => od.OrderId == orderId)
+                    .SelectMany(od => _context.Schedules
+                        .Where(schedule => schedule.ScheduleId == od.ScheduleId)
+                        .SelectMany(schedule => _context.Courses
+                            .Where(course => course.CourseId == schedule.CourseId)                          
+                            
+                        )
+                    )
+                    .ToListAsync();
 
-            return course;
+            //資料庫重複關聯問題
+            //在序列化時，ReferenceHandler.Preserve 會處理對象循環引用，同時保持輸出的 JSON 的完整性，這樣就不會再產生循環引用的錯誤。請確保更新後的程式碼有正確處理循環引用的情況。
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            };
+
+            string serializedCoaches = JsonSerializer.Serialize(courseList, options);
+            return courseList;
         }
 
         // PUT: api/CoursesDTO/5

@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
-
-
+using IHMS.ViewModel.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -118,39 +117,81 @@ namespace IHMS.Controllers.APIcontrollers
             return NoContent();
         }
 
+        public IhmsContext Get_context()
+        {
+            return _context;
+        }
+
         // POST: api/OrdersDTO
+        //create
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<string> PostOrder(OrderRequest orderRequest, IhmsContext _context)
         {
-          if (_context.Orders == null)
-          {
-              return Problem("Entity set 'IhmsContext.Orders'  is null.");
-          }
-            _context.Orders.Add(order);
+            if( _context.Orders == null || _context.Members == null)
+            { 
+                return "新增失敗";
+            }
+
+            // 從資料庫中取得最後一筆訂單編號
+            string lastOrderNumber = _context.Orders.Select(o => o.Ordernumber).OrderByDescending(o => o).FirstOrDefault();
+
+            // 解析日期部分和數字部分
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
+            int lastNumber = 0;
+            if (!string.IsNullOrEmpty(lastOrderNumber) && lastOrderNumber.Length >= 12)
+            {
+                lastNumber = int.Parse(lastOrderNumber.Substring(8));
+            }
+
+            // 產生新的數字部分
+            int newNumber = lastNumber + 1;
+
+            // 將日期和數字組合成新的訂單編號
+            string newOrderNumber = currentDate + newNumber.ToString("D4");
+
+            Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == orderRequest.MemberId);
+
+
+            Order Ord = new Order
+            {
+                Ordernumber = newOrderNumber,
+                Pointstotal = orderRequest.Pointstotal,
+                State = "購買成功",
+                Reason = "",
+                Member= targeMebmer,
+            };
+            _context.Orders.Add(Ord);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
+            return "新增訂單成功";
         }
 
         // DELETE: api/OrdersDTO/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<string> DeleteOrder(int id)
         {
             if (_context.Orders == null)
             {
-                return NotFound();
+                return "刪除訂單失敗";
             }
             var order = await _context.Orders.FindAsync(id);
             if (order == null)
             {
-                return NotFound();
+                return "刪除訂單失敗";
             }
 
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return "刪除訂單關聯記錄失敗!";
+            }
 
-            return NoContent();
+            return "刪除訂單記錄成功!";
         }
 
         private bool OrderExists(int id)

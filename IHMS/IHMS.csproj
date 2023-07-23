@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\APIcontrollers\CartsDTOController.cs" />
     <Compile Remove="Controllers\APIcontrollers\OrdersControllerAPI.cs" />
+    <Compile Remove="Models\CreateOrderRequest.cs" />
+    <Compile Remove="ViewModel\DTO\CourseAndCoachDTO.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModel\DTO\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
