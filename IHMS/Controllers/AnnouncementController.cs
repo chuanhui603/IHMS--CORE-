@@ -31,7 +31,7 @@ namespace IHMS.Controllers
         [HttpPost]
         public IActionResult Create(AnnouncementView model, IFormFile imageFile)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
             model.time = DateTime.Now;
 
                 using (var connection = new SqlConnection(connectionString))
@@ -82,7 +82,7 @@ namespace IHMS.Controllers
 
         public IActionResult PastAnnouncements()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
             IEnumerable<AnnouncementView> pastAnnouncements;
 
             using (var connection = new SqlConnection(connectionString))
@@ -97,7 +97,7 @@ namespace IHMS.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();

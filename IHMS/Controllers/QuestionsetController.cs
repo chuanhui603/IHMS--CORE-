@@ -17,7 +17,7 @@ namespace IHMS.Controllers
 
         public IActionResult Index()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -28,7 +28,7 @@ namespace IHMS.Controllers
         [HttpPost]
         public IActionResult Create(QuestionsetViewModel questionset)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -55,7 +55,7 @@ namespace IHMS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -76,7 +76,7 @@ namespace IHMS.Controllers
         public IActionResult Edit(QuestionsetViewModel questionset)
         {
 
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
+                string connectionString = _configuration.GetConnectionString("IHMSConnection");
 
                 using (IDbConnection connection = new SqlConnection(connectionString))
                 {
@@ -102,7 +102,7 @@ namespace IHMS.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("IHMSConnection");
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
