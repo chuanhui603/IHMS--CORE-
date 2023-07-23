@@ -31,6 +31,29 @@ async function login() {
         console.error(error);
     }
 
+    function LoginPermission(userData) {
+        // 將 userData 資料讀取出來
+        const permissionLevel userData.permission;
+
+        // 根據 permissionLevel 做權限控制
+        if (permissionLevel === 1) {
+            // 管理者可以做的事情
+            
+            
+        } else if (permissionLevel === 1000) {
+            // 老師可以做的事情
+            
+           
+        } else if (permissionLevel === 3000) {
+            // 會員可以做的事情
+                        
+        } else {
+            // 限制遊客可以做的事情
+            console.log(`您無法執行此操作，請先登入。`);
+            window.location.href = 'https://localhost:7127/Login/Login';
+        }
+    }   
+
 
     function checkLoginStatus() {
         // 檢查是否有會員登入
@@ -50,7 +73,7 @@ async function login() {
         localStorage.removeItem('currentMember');
         // 重新載入頁面
         location.reload();
-    }
+    }        
 
     window.addEventListener('load', function () {
         checkLoginStatus();
