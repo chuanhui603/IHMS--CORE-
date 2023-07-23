@@ -25,6 +25,125 @@ namespace IHMS.APIControllers
 
         #region Get
 
+        // GET: api/Diet/{DietId}/deitdetail/")
+        [Route("~/api/[controller]/Diet/{DietId:int}/deitdetail")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DietDetail>>> GetDietDetails(int DietId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.DietDetails.Where(p => p.DietId == DietId).Select(p => new DietDetail
+            {
+                DietDetailId = p.DietDetailId,
+                Decription =p.Decription,
+                DietId = p.DietId,
+                Fname =p.Fname,
+                Type =p.Type,
+                Calories =p.Calories,
+                Img =p.Img,
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+        // GET: api/Plans/Sport/{SportId}/Sportdetail
+        [Route("~/api/[controller]/Sport/{SportId:int}/Sportdetail")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SportDetail>>> GetSportDetails(int SportId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.SportDetails.Where(p => p.SportId == SportId).Select(p => new SportDetail
+            {
+                SportId = p.SportId,
+                Description = p.Description,
+                SportDetailId = p.SportDetailId,
+                Sname = p.Sname,
+                Image = p.Image,
+                Sporttime = p.Sporttime,
+                Frequency=p.Frequency,
+
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+
+        // GET: api/Plans/{PlanId}/Diet")
+        [Route("~/api/[controller]/{PlanId:int}/Diet")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Diet>>> GetDiets(int PlanId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.Diets.Where(d => d.PlanId == PlanId).Select(d => new Diet
+            {
+               
+                DietId = d.DietId,
+                Registerdate =d.Registerdate,
+                Date =d.Date
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+        // GET: api/Plans/Diet
+        [Route("~/api/[controller]/{PlanId:int}/Sport")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Sport>>> GetSports(int PlanId)
+        {
+            if (_context.Plans == null)
+            {
+                return NotFound();
+            }
+            var res = _context.Sports.Where(s => s.PlanId == PlanId).Select(s => new Sport
+            {
+                SportId = s.SportId,
+                Registerdate=s.Registerdate,
+                Date =s.Date
+
+            });
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
+
+
+
+
         // GET: api/Plans
         [Route("~/api/[controller]/member/{memberid:int}/{nums:int}")]
         [HttpGet]
