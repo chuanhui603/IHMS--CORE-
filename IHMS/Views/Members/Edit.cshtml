@@ -12,95 +12,95 @@
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" value="@Model.MMemberId" name="MMemberId" />
+            <input type="hidden" value="@Model.MemberId" name="MMemberId" />
             <div class="form-group">
-                <label asp-for="MName" class="control-label"></label>
-                <input asp-for="MName" class="form-control" />
-                <span asp-validation-for="MName" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MEmail" class="control-label"></label>
-                <input asp-for="MEmail" class="form-control" />
-                <span asp-validation-for="MEmail" class="text-danger"></span>
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>            
             <div class="form-group">
-                <label asp-for="MAccount" class="control-label"></label>
-                <input asp-for="MAccount" class="form-control" />
-                <span asp-validation-for="MAccount" class="text-danger"></span>
+                <label asp-for="Account" class="control-label"></label>
+                <input asp-for="Account" class="form-control" />
+                <span asp-validation-for="Account" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MPassword" class="control-label"></label>
-                <input asp-for="MPassword" class="form-control" />
-                <span asp-validation-for="MPassword" class="text-danger"></span>
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MPhone" class="control-label"></label>
-                <input asp-for="MPhone" class="form-control" />
-                <span asp-validation-for="MPhone" class="text-danger"></span>
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MBirthday" class="control-label"></label>
-                <input asp-for="MBirthday" class="form-control" type="date" />
-                <span asp-validation-for="MBirthday" class="text-danger"></span>
+                <label asp-for="Birthday" class="control-label"></label>
+                <input asp-for="Birthday" class="form-control" type="date" />
+                <span asp-validation-for="Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MGender" class="control-label"></label>
-                <select asp-for="MGender" class="form-control">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control">
                     <option value="">請選擇性別</option>
                     <option value="True">男</option>
                     <option value="False">女</option>
                 </select>
-                <span asp-validation-for="MGender" class="text-danger"></span>
+                <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MMaritalStatus" class="control-label"></label>
-                <select asp-for="MMaritalStatus" class="form-control">
+                <label asp-for="MaritalStatus" class="control-label"></label>
+                <select asp-for="MaritalStatus" class="form-control">
                     <option value="">請選擇婚姻狀態</option>
                     <option value="True">已婚</option>
                     <option value="False">未婚</option>
                 </select>
-                <span asp-validation-for="MMaritalStatus" class="text-danger"></span>
+                <span asp-validation-for="MaritalStatus" class="text-danger"></span>
             </div>
 
 
             <div class="form-group">
-                <label asp-for="MNickname" class="control-label"></label>
-                <input asp-for="MNickname" class="form-control" />
-                <span asp-validation-for="MNickname" class="text-danger"></span>
+                <label asp-for="Nickname" class="control-label"></label>
+                <input asp-for="Nickname" class="form-control" />
+                <span asp-validation-for="Nickname" class="text-danger"></span>
             </div>
             <div class="form-group">
                 個人資料相片
                 <input type="file" name="photo" />
             </div>
             <div class="form-group">
-                <label asp-for="MResidentialCity" class="control-label"></label>
-                <input asp-for="MResidentialCity" class="form-control" />
-                <span asp-validation-for="MResidentialCity" class="text-danger"></span>
+                <label asp-for="ResidentialCity" class="control-label"></label>
+                <input asp-for="ResidentialCity" class="form-control" />
+                <span asp-validation-for="ResidentialCity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MPermission" class="control-label"></label>
-                <select asp-for="MPermission" class="form-control">
+                <label asp-for="Permission" class="control-label"></label>
+                <select asp-for="Permission" class="form-control">
                     <option value="0">選擇權限</option>
                     <option value="1">管理者</option>
                     <option value="1000">老師</option>
                     <option value="3000">會員</option>
                 </select>
-                <span asp-validation-for="MPermission" class="text-danger"></span>
+                <span asp-validation-for="Permission" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MOccupation" class="control-label"></label>
-                <input asp-for="MOccupation" class="form-control" />
-                <span asp-validation-for="MOccupation" class="text-danger"></span>
+                <label asp-for="Occupation" class="control-label"></label>
+                <input asp-for="Occupation" class="form-control" />
+                <span asp-validation-for="Occupation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MDiseaseDescription" class="control-label"></label>
-                <input asp-for="MDiseaseDescription" class="form-control" />
-                <span asp-validation-for="MDiseaseDescription" class="text-danger"></span>
+                <label asp-for="DiseaseDescription" class="control-label"></label>
+                <input asp-for="DiseaseDescription" class="form-control" />
+                <span asp-validation-for="DiseaseDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MAllergyDescription" class="control-label"></label>
-                <input asp-for="MAllergyDescription" class="form-control" />
-                <span asp-validation-for="MAllergyDescription" class="text-danger"></span>
+                <label asp-for="AllergyDescription" class="control-label"></label>
+                <input asp-for="AllergyDescription" class="form-control" />
+                <span asp-validation-for="AllergyDescription" class="text-danger"></span>
             </div>            
             <div class="form-group">
                 <input type="submit" value="送出" class="btn btn-primary" />

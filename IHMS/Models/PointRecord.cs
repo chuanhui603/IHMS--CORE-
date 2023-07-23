@@ -5,15 +5,17 @@ namespace IHMS.Models;
 
 public partial class PointRecord
 {
-    public int PPointrecordId { get; set; }
+    public int PointrecordId { get; set; }
 
-    public int PCount { get; set; }
+    public int Count { get; set; }
 
-    public int PMemberId { get; set; }
+    public int MemberId { get; set; }
 
-    public int PBankNumber { get; set; }
+    public int BankNumber { get; set; }
 
-    public DateTime? PCreatetime { get; set; }
+    public DateTime? Createtime { get; set; }
 
-    public DateTime? PUpdatetime { get; set; }
+    public DateTime? Updatetime { get; set; }
+
+    public virtual Member Member { get; set; } = null!;
 }

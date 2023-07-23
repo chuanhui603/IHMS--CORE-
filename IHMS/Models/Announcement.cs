@@ -5,13 +5,13 @@ namespace IHMS.Models;
 
 public partial class Announcement
 {
-    public int AnAnnouncemetId { get; set; }
+    public int AnnouncemetId { get; set; }
 
-    public string AnTitle { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
-    public string AnContent { get; set; } = null!;
+    public string Contents { get; set; } = null!;
 
-    public DateTime AnTime { get; set; }
+    public DateTime Time { get; set; }
 
-    public string? AnImage { get; set; }
+    public string? Image { get; set; }
 }

@@ -30,4 +30,8 @@ public partial class Coach
     public DateTime Confirmtime { get; set; }
 
     public string? Type { get; set; }
+
+    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+
+    public virtual Member Member { get; set; } = null!;
 }

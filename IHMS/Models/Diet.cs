@@ -9,9 +9,7 @@ public partial class Diet
 
     public int PlanId { get; set; }
 
-    public DateTime Date { get; set; }
-
-    public DateTime Registerdate { get; set; }
+    public DateTime Createdate { get; set; }
 
     public virtual ICollection<DietDetail> DietDetails { get; set; } = new List<DietDetail>();
 

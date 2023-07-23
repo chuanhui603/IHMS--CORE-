@@ -5,45 +5,53 @@ namespace IHMS.Models;
 
 public partial class Member
 {
-    public int MMemberId { get; set; }
+    public int MemberId { get; set; }
 
-    public string MName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
-    public string MEmail { get; set; } = null!;
+    public string Email { get; set; } = null!;
 
-    public string MAccount { get; set; } = null!;
+    public string? Phone { get; set; }
 
-    public string MPassword { get; set; } = null!;
+    public string Account { get; set; } = null!;
 
-    public DateTime? MBirthday { get; set; }
+    public string Password { get; set; } = null!;
 
-    public bool? MGender { get; set; }
+    public DateTime? Birthday { get; set; }
 
-    public bool? MMaritalStatus { get; set; }
+    public bool? Gender { get; set; }
 
-    public string? MNickname { get; set; }
+    public bool? MaritalStatus { get; set; }
 
-    public string? MAvatarImage { get; set; }
+    public string? Nickname { get; set; }
 
-    public string? MResidentialCity { get; set; }
+    public string? AvatarImage { get; set; }
 
-    public int? MPermission { get; set; }
+    public string? ResidentialCity { get; set; }
 
-    public string? MOccupation { get; set; }
+    public int? Permission { get; set; }
 
-    public DateTime? MLoginTime { get; set; }
+    public string? Occupation { get; set; }
 
-    public string? MPhone { get; set; }
+    public string? DiseaseDescription { get; set; }
 
-    public string? MDiseaseDescription { get; set; }
+    public string? AllergyDescription { get; set; }
 
-    public string? MAllergyDescription { get; set; }
+    public DateTime? LoginTime { get; set; }
 
-    public virtual Allergy? Allergy { get; set; }
+    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+
+    public virtual ICollection<Coach> Coaches { get; set; } = new List<Coach>();
 
     public virtual HealthInfo? HealthInfo { get; set; }
 
-    public virtual MedicalHistory? MedicalHistory { get; set; }
+    public virtual ICollection<MessageBoard> MessageBoards { get; set; } = new List<MessageBoard>();
 
-    public virtual ICollection<Plan> Plans { get; set; } = new List<Plan>();
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ICollection<PointRecord> PointRecords { get; set; } = new List<PointRecord>();
+
+    public virtual ICollection<Score> Scores { get; set; } = new List<Score>();
 }

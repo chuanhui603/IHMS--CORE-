@@ -12,4 +12,6 @@ public partial class Answer
     public string? Answer1 { get; set; }
 
     public DateTime? Time { get; set; }
+
+    public virtual Questionset? Questionset { get; set; }
 }

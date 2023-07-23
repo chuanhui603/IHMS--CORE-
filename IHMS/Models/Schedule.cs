@@ -5,17 +5,21 @@ namespace IHMS.Models;
 
 public partial class Schedule
 {
-    public int SScheduleId { get; set; }
+    public int ScheduleId { get; set; }
 
-    public int SCourseId { get; set; }
+    public int CourseId { get; set; }
 
-    public int SPoint { get; set; }
+    public int Point { get; set; }
 
-    public DateTime SMonth { get; set; }
+    public DateTime Month { get; set; }
 
-    public DateTime SStartTime { get; set; }
+    public DateTime StartTime { get; set; }
 
-    public DateTime SEndTime { get; set; }
+    public DateTime EndTime { get; set; }
 
-    public int? SScore { get; set; }
+    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+
+    public virtual Course Course { get; set; } = null!;
+
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

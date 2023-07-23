@@ -5,13 +5,13 @@ namespace IHMS.Models;
 
 public partial class OrderDetail
 {
-    public int OOrderdetailId { get; set; }
+    public int OrderdetailId { get; set; }
 
-    public int OScheduleId { get; set; }
+    public int ScheduleId { get; set; }
 
-    public int OCourseorderId { get; set; }
+    public int OrderId { get; set; }
 
-    public DateTime? OCreatetime { get; set; }
+    public virtual Order Order { get; set; } = null!;
 
-    public DateTime? OUpdatetime { get; set; }
+    public virtual Schedule Schedule { get; set; } = null!;
 }

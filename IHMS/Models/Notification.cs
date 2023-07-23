@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 namespace IHMS.Models;
 
-public partial class MessageBoardDetail
+public partial class Notification
 {
-    public int MessageId { get; set; }
+    public int NotificationId { get; set; }
+
+    public string Title { get; set; } = null!;
 
     public string Contents { get; set; } = null!;
 
@@ -13,9 +15,5 @@ public partial class MessageBoardDetail
 
     public DateTime Time { get; set; }
 
-    public string? Image { get; set; }
-
     public virtual Member Member { get; set; } = null!;
-
-    public virtual MessageBoard MemberNavigation { get; set; } = null!;
 }

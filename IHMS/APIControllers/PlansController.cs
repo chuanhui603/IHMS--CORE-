@@ -23,7 +23,7 @@ namespace IHMS.APIControllers
             _context = context;
         }
 
-
+        #region Get
 
         // GET: api/Plans
         [Route("~/api/[controller]/member/{memberid:int}/{nums:int}")]
@@ -81,6 +81,36 @@ namespace IHMS.APIControllers
 
         }
 
+        [Route("~/api/[controller]/diet/{dietid:int}/dietDetail")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DietDetailDTO>>> GetDietDetail(int dietid)
+        {
+            if (_context.Diets == null && _context.DietDetails == null)
+            {
+                return NotFound();
+            }
+            var res = _context.DietDetails.Where(dt => dt.DietId == dietid).OrderByDescending(p => p.Registerdate).Select(dt => new DietDetailDTO
+            {
+
+                DietDetailId = dt.DietDetailId,
+                Decription = dt.Decription,
+                Dname = dt.Dname,
+                Registerdate = dt.Registerdate,
+                Img = dt.Img,
+                Type = dt.Type,
+                Calories = dt.Calories,
+            });
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await res.ToListAsync();
+            }
+
+        }
 
         // GET: api/Plans/5
         //[HttpGet("{id}")]
@@ -100,8 +130,18 @@ namespace IHMS.APIControllers
         //    return plan;
         //}
 
+        // GET: api/diet/{dietid:int}/dietDetail/{dietDetail:int}
+
+        #endregion
+
+
+
+
+
+
+        #region Put
+
         // PUT: api/Plans/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlan(int id, Plan plan)
         {
@@ -131,6 +171,12 @@ namespace IHMS.APIControllers
             return NoContent();
         }
 
+        #endregion
+
+
+
+        #region Post 
+
         // POST: api/Plans
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -157,21 +203,26 @@ namespace IHMS.APIControllers
             return plan;
         }
 
+
+        #endregion
+
+        #region Delete
+
         // DELETE: api/Plans/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlan(int id)
         {
             DeletePlanDTO deleteitems = new DeletePlanDTO();
-           
+
             if (_context.Plans == null)
             {
                 return NotFound();
             }
             var plan = await _context.Plans.FindAsync(id);
             //移除plan的關聯資料
-            deleteitems.diet =  _context.Diets.Include("Plan").Where(d => d.PlanId == id);
-            deleteitems.sport =  _context.Sports.Include("Plan").Where(d => d.PlanId == id);
-            deleteitems.water =  _context.Water.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.diet = _context.Diets.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.sport = _context.Sports.Include("Plan").Where(d => d.PlanId == id);
+            deleteitems.water = _context.Water.Include("Plan").Where(d => d.PlanId == id);
             deleteMethod(deleteitems);
 
             if (plan == null)
@@ -184,23 +235,28 @@ namespace IHMS.APIControllers
             return NoContent();
         }
 
-      public void deleteMethod(DeletePlanDTO delete)
+
+        #endregion
+
+
+        #region function
+        public void deleteMethod(DeletePlanDTO delete)
         {
-            for(int i=0;i< delete.deleteDataSet.Length; i++)
+            for (int i = 0; i < delete.deleteDataSet.Length; i++)
             {
                 switch (delete.deleteDataSet[i])
                 {
                     case "diet":
-                        foreach(var diet in delete.diet)
+                        foreach (var diet in delete.diet)
                         {
                             var query = _context.DietDetails.Include("Diet").Where(d => d.DietId == diet.DietId);
-                            foreach(var detail in query)
+                            foreach (var detail in query)
                             {
-                                 _context.DietDetails.Remove(detail);
+                                _context.DietDetails.Remove(detail);
                             }
-                             _context.Diets.Remove(diet);
+                            _context.Diets.Remove(diet);
                         }
-                       
+
                         break;
                     case "sport":
                         foreach (var sport in delete.sport)
@@ -208,15 +264,15 @@ namespace IHMS.APIControllers
                             var query = _context.SportDetails.Include("Sport").Where(d => d.SportId == sport.SportId);
                             foreach (var detail in query)
                             {
-                                 _context.SportDetails.Remove(detail);
+                                _context.SportDetails.Remove(detail);
                             }
-                             _context.Sports.Remove(sport);
+                            _context.Sports.Remove(sport);
                         }
                         break;
-                     default:
+                    default:
                         foreach (var water in delete.water)
                         {
-                             _context.Water.Remove(water);
+                            _context.Water.Remove(water);
                         }
                         break;
                 }
@@ -227,5 +283,9 @@ namespace IHMS.APIControllers
         {
             return (_context.Plans?.Any(e => e.PlanId == id)).GetValueOrDefault();
         }
+
+        #endregion
+
+
     }
 }

@@ -5,23 +5,23 @@ namespace IHMS.Models;
 
 public partial class Order
 {
-    public int OOrderId { get; set; }
+    public int OrderId { get; set; }
 
-    public int OMemberId { get; set; }
+    public string Ordernumber { get; set; } = null!;
 
-    public int OTeacherId { get; set; }
+    public int MemberId { get; set; }
 
-    public int OScheduleId { get; set; }
+    public int Pointstotal { get; set; }
 
-    public string OCourse { get; set; } = null!;
+    public string State { get; set; } = null!;
 
-    public int OPoints { get; set; }
+    public string? Reason { get; set; }
 
-    public DateTime? OOrderDate { get; set; }
+    public DateTime? Createtime { get; set; }
 
-    public string? ONote1 { get; set; }
+    public DateTime? Updatetime { get; set; }
 
-    public string? ONote2 { get; set; }
+    public virtual Member Member { get; set; } = null!;
 
-    public string? ONote3 { get; set; }
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }
