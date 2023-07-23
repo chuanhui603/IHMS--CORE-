@@ -1,5 +1,5 @@
 ﻿// 完成 Login 函式
-async function login() {
+async function login() { 
     const username = document.getElementById('Account').value;
     const password = document.getElementById('Password').value;
 
@@ -29,30 +29,7 @@ async function login() {
     } catch (error) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
-    }
-
-    function LoginPermission(userData) {
-        // 將 userData 資料讀取出來
-        const permissionLevel userData.permission;
-
-        // 根據 permissionLevel 做權限控制
-        if (permissionLevel === 1) {
-            // 管理者可以做的事情
-            
-            
-        } else if (permissionLevel === 1000) {
-            // 老師可以做的事情
-            
-           
-        } else if (permissionLevel === 3000) {
-            // 會員可以做的事情
-                        
-        } else {
-            // 限制遊客可以做的事情
-            console.log(`您無法執行此操作，請先登入。`);
-            window.location.href = 'https://localhost:7127/Login/Login';
-        }
-    }   
+    }    
 
 
     function checkLoginStatus() {
@@ -73,7 +50,30 @@ async function login() {
         localStorage.removeItem('currentMember');
         // 重新載入頁面
         location.reload();
-    }        
+    }
+
+    function LoginPermission(userData) {
+        // 將 userData 資料讀取出來
+        const permissionLevel = userData.permission;
+
+        // 根據 permissionLevel 做權限控制
+        if (permissionLevel === 1) {
+            // 管理者可以做的事情
+
+
+        } else if (permissionLevel === 1000) {
+            // 老師可以做的事情
+
+
+        } else if (permissionLevel === 3000) {
+            // 會員可以做的事情
+
+        } else {
+            // 限制遊客可以做的事情
+            console.log(`您無法執行此操作，請先登入。`);
+            window.location.href = 'https://localhost:7127/Login/Login';
+        }
+    }  
 
     window.addEventListener('load', function () {
         checkLoginStatus();
