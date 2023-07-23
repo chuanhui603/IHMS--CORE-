@@ -54,26 +54,56 @@ namespace IHMS.APIControllers
         }
 
         // POST: api/Login
+        //[Route("~/api/[controller]/Login")]
+        //[HttpPost]
+        //public async Task<ActionResult<Member>> Login([FromBody] LoginDTO request)
+        //{
+        //    if (_context.Members == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // 尋找與請求中帳號和密碼相符的會員資訊
+        //    var member = await _context.Members.SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
+
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // 登入成功，只返回確認成功的回應，不返回會員資訊
+        //    return Ok(member);
+        //}
         [Route("~/api/[controller]/Login")]
         [HttpPost]
-        public async Task<ActionResult<Member>> Login([FromBody] LoginDTO request)
+        public async Task<ActionResult<AllModelDTO>> Login([FromBody] LoginDTO request)
         {
-            if (_context.Members == null)
+            try
             {
+                // 在 try 區塊中執行查詢
+                var member = await _context.Members             
+                    .SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
+
+                // 檢查查詢結果是否為 null
+                if (member == null)
+                {                    
+                    
+                    return NotFound();
+                }
+
+                // 登入成功，返回會員資訊
+                return Ok(member);
+            }
+            catch (Exception ex)
+            {
+                // 處理錯誤
+                // 例如回傳 NotFound() 或其他適當的錯誤回應
                 return NotFound();
             }
-
-            // 尋找與請求中帳號和密碼相符的會員資訊
-            var member = await _context.Members.SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
-
-            if (member == null)
-            {
-                return NotFound();
-            }
-
-            // 登入成功，只返回確認成功的回應，不返回會員資訊
-            return Ok(member);
         }
+
+
+
 
 
         // GET: api/Members/5
