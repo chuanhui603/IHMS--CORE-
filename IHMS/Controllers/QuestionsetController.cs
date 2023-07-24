@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using IHMS.Models;
 using Microsoft.Data.SqlClient;
+using IHMS.Models;
 
 namespace IHMS.Controllers
 {
@@ -21,12 +21,12 @@ namespace IHMS.Controllers
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                List<Questionset> questionsets = connection.Query<Questionset>("SELECT * FROM Questionset").AsList();
+                List<QuestionsetViewModel> questionsets = connection.Query<QuestionsetViewModel>("SELECT * FROM Questionset").AsList();
                 return View(questionsets);
             }
         }
         [HttpPost]
-        public IActionResult Create(Questionset questionset)
+        public IActionResult Create(QuestionsetViewModel questionset)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -60,7 +60,7 @@ namespace IHMS.Controllers
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 // 根據問題的唯一識別碼（Id）從資料庫中獲取問題詳細資訊
-                Questionset questionset = connection.QueryFirstOrDefault<Questionset>("SELECT * FROM Questionset WHERE questionset_id = @Id", new { Id = id });
+                QuestionsetViewModel questionset = connection.QueryFirstOrDefault<QuestionsetViewModel>("SELECT * FROM Questionset WHERE questionset_id = @Id", new { Id = id });
 
                 if (questionset == null)
                 {
@@ -73,7 +73,7 @@ namespace IHMS.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(Questionset questionset)
+        public IActionResult Edit(QuestionsetViewModel questionset)
         {
 
                 string connectionString = _configuration.GetConnectionString("DefaultConnection");
