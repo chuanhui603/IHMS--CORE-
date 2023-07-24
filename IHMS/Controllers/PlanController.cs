@@ -71,13 +71,13 @@ namespace IHMS.Controllers
             var sportId = new List<int>();
             foreach (var diet in dietquery)
             {
-                dietdatelist.Add(diet.Date);
+                dietdatelist.Add(diet.Createdate);
                 dietId.Add(diet.DietId);
             }
 
             foreach (var sport in sportquery)
             {
-                sportdatelist.Add(sport.Date);
+                sportdatelist.Add(sport.Createdate);
                 sportId.Add(sport.SportId);
             }
             PPlanViewModel vm = new PPlanViewModel

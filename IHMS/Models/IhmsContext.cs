@@ -59,6 +59,8 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<SportDetail> SportDetails { get; set; }
 
+    public virtual DbSet<SportImg> SportImgs { get; set; }
+
     public virtual DbSet<Water> Water { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -227,10 +229,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Dname)
                 .HasMaxLength(50)
                 .HasColumnName("dname");
-            entity.Property(e => e.Img)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("img");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
@@ -604,16 +602,11 @@ public partial class IhmsContext : DbContext
         {
             entity.ToTable("Sport_Detail");
 
-            entity.Property(e => e.SportDetailId)
-                .ValueGeneratedNever()
-                .HasColumnName("sport_detail_id");
+            entity.Property(e => e.SportDetailId).HasColumnName("sport_detail_id");
             entity.Property(e => e.Description)
                 .HasMaxLength(50)
                 .HasColumnName("description");
             entity.Property(e => e.Frequency).HasColumnName("frequency");
-            entity.Property(e => e.Image)
-                .HasMaxLength(50)
-                .HasColumnName("image");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
@@ -621,7 +614,9 @@ public partial class IhmsContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("sname");
             entity.Property(e => e.SportId).HasColumnName("sport_id");
-            entity.Property(e => e.Sporttime).HasColumnName("sporttime");
+            entity.Property(e => e.Sporttime)
+                .HasPrecision(4)
+                .HasColumnName("sporttime");
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
                 .HasColumnName("type");
@@ -630,6 +625,22 @@ public partial class IhmsContext : DbContext
                 .HasForeignKey(d => d.SportId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Sport_Detail_Sport");
+        });
+
+        modelBuilder.Entity<SportImg>(entity =>
+        {
+            entity.ToTable("Sport_Img");
+
+            entity.Property(e => e.SportImgId).HasColumnName("sport_img_id");
+            entity.Property(e => e.Img)
+                .HasMaxLength(50)
+                .HasColumnName("img");
+            entity.Property(e => e.SportDetailId).HasColumnName("sport_Detail_id");
+
+            entity.HasOne(d => d.SportDetail).WithMany(p => p.SportImgs)
+                .HasForeignKey(d => d.SportDetailId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sport_Img_Sport_Detail");
         });
 
         modelBuilder.Entity<Water>(entity =>

@@ -17,9 +17,7 @@ public partial class DietDetail
 
     public string? Decription { get; set; }
 
-    public string? Img { get; set; }
-
-    public DateTime Registerdate { get; set; }
+    public DateTime? Registerdate { get; set; }
 
     public virtual Diet Diet { get; set; } = null!;
 }

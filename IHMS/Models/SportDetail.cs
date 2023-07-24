@@ -13,9 +13,7 @@ public partial class SportDetail
 
     public TimeSpan Sporttime { get; set; }
 
-    public int Frequency { get; set; }
-
-    public string? Image { get; set; }
+    public int? Frequency { get; set; }
 
     public string Type { get; set; } = null!;
 
@@ -24,4 +22,6 @@ public partial class SportDetail
     public DateTime Registerdate { get; set; }
 
     public virtual Sport Sport { get; set; } = null!;
+
+    public virtual ICollection<SportImg> SportImgs { get; set; } = new List<SportImg>();
 }

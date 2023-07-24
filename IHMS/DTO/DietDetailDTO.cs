@@ -4,6 +4,7 @@
     {
         public int DietDetailId { get; set; }
 
+        public int DietId { get; set; }
         public string Dname { get; set; } = null!;
 
         public string Type { get; set; } = null!;
@@ -14,6 +15,6 @@
 
         public string? Img { get; set; }
 
-        public DateTime Registerdate { get; set; }
+        public string Registerdate { get; set; }
     }
 }
