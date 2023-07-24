@@ -8,5 +8,9 @@ namespace IHMS.Controllers
         {
             return View();
         }
+        public IActionResult MemberEdit()
+        {
+            return View();
+        }
     }
 }

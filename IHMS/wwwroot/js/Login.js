@@ -20,6 +20,11 @@ async function login() {
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
             // 將會員資訊存入 localStorage
             localStorage.setItem('currentMember', JSON.stringify(member));
+            //將會員資料填入表單中
+            document.getElementById('name').value = member.name;
+            document.getElementById('email').value = member.email;
+            document.getElementById('account').value = member.account;
+            document.getElementById('password').value = member.password;
             // 重新載入頁面
             location.reload();
         } else {
@@ -73,7 +78,7 @@ async function login() {
             console.log(`您無法執行此操作，請先登入。`);
             window.location.href = 'https://localhost:7127/Login/Login';
         }
-    }  
+    }   
 
     window.addEventListener('load', function () {
         checkLoginStatus();
