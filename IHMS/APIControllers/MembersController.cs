@@ -82,8 +82,7 @@ namespace IHMS.APIControllers
             try
             {
                 // 在 try 區塊中執行查詢
-                var member = await _context.Members
-                    .Include(m => m.HealthInfo)
+                var member = await _context.Members                    
                     .SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
 
                 // 檢查查詢結果是否為 null
