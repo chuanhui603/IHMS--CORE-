@@ -211,7 +211,7 @@ namespace IHMS.APIControllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("~/api/[controller]/dietdetail/edit")]
         [HttpPut]
-        public async Task<IActionResult> PutDietDetail([FromBody] DietDetailDTO dietDTO, [FromBody] List<IFormFile> Img)
+        public async Task<IActionResult> PutDietDetail([FromForm] DietDetailDTO dietDTO, [FromForm] List<IFormFile> Img)
         {
             if (dietDTO.DietDetailId == null)
             {
