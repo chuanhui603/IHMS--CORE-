@@ -1,6 +1,8 @@
-﻿namespace IHMS.DTO
+﻿using IHMS.Models;
+
+namespace IHMS.DTO
 {
-    public class MembersDTO
+    public class MembersDTO : AllModelDTO
     {
         public int MemberId { get; set; }
         public string Name { get; set; }
@@ -19,5 +21,6 @@
         public string DiseaseDescription { get; set; }
         public string AllergyDescription { get; set; }
         public DateTime? LoginTime { get; set; }
+        public HealthInfo HealthInfo { get; set; }
     }
 }

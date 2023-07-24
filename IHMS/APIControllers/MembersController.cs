@@ -10,6 +10,7 @@ using IHMS.DTO;
 using Microsoft.AspNetCore.Cors;
 using Azure.Core;
 using NuGet.Protocol.Plugins;
+using NuGet.Packaging.Signing;
 
 namespace IHMS.APIControllers
 {
@@ -81,7 +82,8 @@ namespace IHMS.APIControllers
             try
             {
                 // 在 try 區塊中執行查詢
-                var member = await _context.Members             
+                var member = await _context.Members
+                    .Include(m => m.HealthInfo)
                     .SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
 
                 // 檢查查詢結果是否為 null
@@ -100,11 +102,7 @@ namespace IHMS.APIControllers
                 // 例如回傳 NotFound() 或其他適當的錯誤回應
                 return NotFound();
             }
-        }
-
-
-
-
+        }        
 
         // GET: api/Members/5
         [HttpGet("{id}")]
