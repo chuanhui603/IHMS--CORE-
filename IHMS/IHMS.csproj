@@ -11,6 +11,7 @@
     <Compile Remove="Controllers\APIcontrollers\OrdersControllerAPI.cs" />
     <Compile Remove="Models\CreateOrderRequest.cs" />
     <Compile Remove="ViewModel\DTO\CourseAndCoachDTO.cs" />
+    <Compile Remove="ViewModel\DTO\OrderDetailRequest.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using IHMS.ViewModel.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -73,16 +74,25 @@ namespace IHMS.Controllers.APIcontrollers
         // POST: api/PointRecordsDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PointRecord>> PostPointRecord(PointRecord pointRecord)
+        public async Task<string> PostPointRecord(PointRecordRequest pointRecordRequest , IhmsContext _context)
         {
-          if (_context.PointRecords == null)
-          {
-              return Problem("Entity set 'IhmsContext.PointRecords'  is null.");
-          }
-            _context.PointRecords.Add(pointRecord);
+            if (_context.PointRecords == null || _context.Members == null)
+            {
+                return "新增失敗";
+            }
+
+            Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == pointRecordRequest.MemberId);
+
+            PointRecord  Pointre = new PointRecord
+            {
+                Count = pointRecordRequest.Count,
+                BankNumber = pointRecordRequest.BankNumber,             
+                Member = targeMebmer,
+            };
+            _context.PointRecords.Add(Pointre);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPointRecord", new { id = pointRecord.PointrecordId }, pointRecord);
+            return "新增成功";
         }
 
         // DELETE: api/PointRecordsDTO/5

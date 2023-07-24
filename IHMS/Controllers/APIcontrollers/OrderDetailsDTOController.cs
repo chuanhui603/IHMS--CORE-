@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using IHMS.ViewModel.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -75,16 +76,22 @@ namespace IHMS.Controllers.APIcontrollers
         // POST: api/OrderDetailsDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OrderDetail>> PostOrderDetail(OrderDetail orderDetail)
+        public async Task<string> PostOrderDetail(OrderDetail orderDetail , IhmsContext _context)
         {
-          if (_context.OrderDetails == null)
-          {
-              return Problem("Entity set 'IhmsContext.OrderDetails'  is null.");
-          }
-            _context.OrderDetails.Add(orderDetail);
+
+            Schedule targeSchedule = _context.Schedules.FirstOrDefault(s => s.ScheduleId == orderDetail.ScheduleId);
+            Order targeOrder = _context.Orders.FirstOrDefault(o => o.OrderId == orderDetail.OrderId);
+
+            OrderDetail OrderDe= new OrderDetail
+            {
+
+                Order = targeOrder,
+                Schedule = targeSchedule,
+            };
+            _context.OrderDetails.Add(OrderDe);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrderDetail", new { id = orderDetail.OrderdetailId }, orderDetail);
+            return "新增訂單成功";
         }
 
         // DELETE: api/OrderDetailsDTO/5
