@@ -209,27 +209,88 @@ namespace IHMS.APIControllers
         //DietDetail
         // PUT: api/Plans/diets/{dietsid}/edit
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Route("~/api/[controller]/dietdetail/{dietdetailid:int}/edit")]
+        [Route("~/api/[controller]/dietdetail/edit")]
         [HttpPut]
-        public async Task<IActionResult> PutDietDetail([FromRoute] int dietdetailid, [FromBody] DietDetailDTO dietDTO)
+        public async Task<IActionResult> PutDietDetail([FromBody] DietDetailDTO dietDTO, [FromBody] List<IFormFile> Img)
         {
-            if (dietdetailid != dietDTO.DietDetailId)
+            if (dietDTO.DietDetailId == null)
             {
                 return BadRequest();
             }
-
+            //處理文字
             DietDetail diet = new DietDetail
             {
                 DietDetailId = dietDTO.DietDetailId,
                 DietId = dietDTO.DietId,
                 Dname = dietDTO.Dname,
-                Calories = dietDTO.Calories,
-                Decription = dietDTO.Decription,
-                Registerdate = Convert.ToDateTime(dietDTO.Registerdate),
                 Type = dietDTO.Type,
+                Decription = dietDTO.Decription,
+                Calories = dietDTO.Calories,
+                Registerdate = Convert.ToDateTime(dietDTO.Registerdate)
             };
 
             _context.Entry(diet).State = EntityState.Modified;
+
+            //建立圖片路徑
+            var webRootPath = _webHostEnvironment.WebRootPath;
+            var imageDirectory = Path.Combine(webRootPath, "DietImg");
+            //若路徑中沒有資料夾則建立資料夾
+            if (!Directory.Exists(imageDirectory))
+            {
+                Directory.CreateDirectory(imageDirectory);
+            }
+            //處理圖片
+            if (Img != null && Img.Count > 0)
+            {
+                foreach (var Image in Img)
+                {
+                    //判斷資料庫中是否dietdetail有其他圖片 如果有則清除全部相關圖片跟資料庫資料後再存取資料
+                    var imgs = _context.DietImgs.Where(img => img.DietDetailId == diet.DietDetailId).ToList();
+                    if (imgs.Count > 0)
+                    {
+                        foreach (var img in imgs)
+                        {
+                            string filepath = Path.Combine(imageDirectory, img.Img);
+                            if (System.IO.File.Exists(filepath))
+                            {
+                                System.IO.File.Delete(filepath);
+                            }
+                            _context.DietImgs.Remove(img);
+                        }
+                        //存取資料
+                        string fileName = $"{dietDTO.DietDetailId}_{Guid.NewGuid()}{Path.GetExtension(Image.FileName)}";
+                        string filePath = Path.Combine(imageDirectory, fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            Image.CopyTo(stream);
+                        }
+                        DietImg saveimg = new DietImg
+                        {
+                            DietDetailId = dietDTO.DietDetailId,
+                            Img = fileName,
+                        };
+                        _context.DietImgs.Add(saveimg);
+                    }
+                    else
+                    {
+                        //存取資料
+                        string fileName = $"{dietDTO.DietDetailId}_{Guid.NewGuid()}{Path.GetExtension(Image.FileName)}";
+                        string filePath = Path.Combine(imageDirectory, fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            Image.CopyTo(stream);
+                        }
+                        DietImg saveimg = new DietImg
+                        {
+                            DietDetailId = dietDTO.DietDetailId,
+                            Img = fileName,
+                        };
+                        _context.DietImgs.Add(saveimg);
+                    }
+                }
+            }
+
+
 
             try
             {
@@ -237,7 +298,7 @@ namespace IHMS.APIControllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlanExists(dietdetailid))
+                if (!PlanExists(dietDTO.DietDetailId))
                 {
                     return NotFound();
                 }
@@ -333,15 +394,7 @@ namespace IHMS.APIControllers
                 }
             }
 
-          
-            //var imgs = _context.SportImgs.Where(img => img.SportDetailId == sport.SportDetailId).ToList();
-            //if (imgs.Count != 0)
-            //{
-            //    foreach (var img in imgs)
-            //    {
-            //        img.Img
-            //    }
-            //}
+         
       
             try
             {

@@ -29,6 +29,8 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<DietDetail> DietDetails { get; set; }
 
+    public virtual DbSet<DietImg> DietImgs { get; set; }
+
     public virtual DbSet<HealthInfo> HealthInfos { get; set; }
 
     public virtual DbSet<Member> Members { get; set; }
@@ -60,6 +62,8 @@ public partial class IhmsContext : DbContext
     public virtual DbSet<SportDetail> SportDetails { get; set; }
 
     public virtual DbSet<SportImg> SportImgs { get; set; }
+
+    public virtual DbSet<Table1> Table1s { get; set; }
 
     public virtual DbSet<Water> Water { get; set; }
 
@@ -239,6 +243,24 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.Diet).WithMany(p => p.DietDetails)
                 .HasForeignKey(d => d.DietId)
                 .HasConstraintName("FK_DietDetail_Diet");
+        });
+
+        modelBuilder.Entity<DietImg>(entity =>
+        {
+            entity.ToTable("Diet_Img");
+
+            entity.Property(e => e.DietImgId)
+                .ValueGeneratedNever()
+                .HasColumnName("diet_img_id");
+            entity.Property(e => e.DietDetailId).HasColumnName("diet_detail_id");
+            entity.Property(e => e.Img)
+                .HasMaxLength(50)
+                .HasColumnName("img");
+
+            entity.HasOne(d => d.DietDetail).WithMany(p => p.DietImgs)
+                .HasForeignKey(d => d.DietDetailId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Diet_Img_DietDetail");
         });
 
         modelBuilder.Entity<HealthInfo>(entity =>
@@ -641,6 +663,24 @@ public partial class IhmsContext : DbContext
                 .HasForeignKey(d => d.SportDetailId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Sport_Img_Sport_Detail");
+        });
+
+        modelBuilder.Entity<Table1>(entity =>
+        {
+            entity.HasKey(e => e.DietImgId);
+
+            entity.ToTable("Table_1");
+
+            entity.Property(e => e.DietImgId).HasColumnName("diet_img_id");
+            entity.Property(e => e.DietDetailId).HasColumnName("diet_detail_id");
+            entity.Property(e => e.Img)
+                .HasMaxLength(50)
+                .HasColumnName("img");
+
+            entity.HasOne(d => d.DietDetail).WithMany(p => p.Table1s)
+                .HasForeignKey(d => d.DietDetailId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Table_1_DietDetail");
         });
 
         modelBuilder.Entity<Water>(entity =>

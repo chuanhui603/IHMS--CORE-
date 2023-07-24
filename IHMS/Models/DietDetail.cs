@@ -20,4 +20,8 @@ public partial class DietDetail
     public DateTime? Registerdate { get; set; }
 
     public virtual Diet Diet { get; set; } = null!;
+
+    public virtual ICollection<DietImg> DietImgs { get; set; } = new List<DietImg>();
+
+    public virtual ICollection<Table1> Table1s { get; set; } = new List<Table1>();
 }
