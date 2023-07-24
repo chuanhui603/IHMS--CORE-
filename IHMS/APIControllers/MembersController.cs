@@ -53,28 +53,7 @@ namespace IHMS.APIControllers
                     LoginTime = mem.LoginTime
                 });
         }
-
-        // POST: api/Login
-        //[Route("~/api/[controller]/Login")]
-        //[HttpPost]
-        //public async Task<ActionResult<Member>> Login([FromBody] LoginDTO request)
-        //{
-        //    if (_context.Members == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    // 尋找與請求中帳號和密碼相符的會員資訊
-        //    var member = await _context.Members.SingleOrDefaultAsync(m => m.Account == request.Account && m.Password == request.Password);
-
-        //    if (member == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    // 登入成功，只返回確認成功的回應，不返回會員資訊
-        //    return Ok(member);
-        //}
+        
         [Route("~/api/[controller]/Login")]
         [HttpPost]
         public async Task<ActionResult<AllModelDTO>> Login([FromBody] LoginDTO request)
