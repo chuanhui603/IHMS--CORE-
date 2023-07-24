@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using static IHMS.Controllers.ImageController;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
