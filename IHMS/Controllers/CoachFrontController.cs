@@ -34,9 +34,7 @@ namespace IHMS.Controllers
                     .Include(c => c.Member)
                     .Include(c => c.Courses)
                     
-                    .Include(c => c.Intro)
-                    .Include(c => c.Type)
-                    .Include(c => c.Video)
+                    
                     .Where(c => 
                     (c.Member.Name.ToLower().Contains(keyword) || c.Member.ResidentialCity.ToLower().Contains(keyword)  ));
             }
@@ -46,14 +44,12 @@ namespace IHMS.Controllers
                                     .Include(c => c.Member)
                     .Include(c => c.Courses)
                     
-                    .Include(c => c.Intro)
-                    .Include(c => c.Type)
-                    .Include(c => c.Video)
+                    
                                     .Where(c => c.Condition== 1);
             }
             ViewBag.Keyword = v.txtKeyword;
             var coaches = CCoachViewModel.CoachList(datas.ToList());
-            return View(coaches);
+            return View();
         }
 
         //教練詳細資料
