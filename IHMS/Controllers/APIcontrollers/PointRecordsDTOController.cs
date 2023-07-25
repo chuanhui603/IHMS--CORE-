@@ -83,10 +83,14 @@ namespace IHMS.Controllers.APIcontrollers
 
             Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == pointRecordRequest.MemberId);
 
+            Random random = new Random();
+            int bankNumber = random.Next(10000000, 99999999);
+
+
             PointRecord  Pointre = new PointRecord
             {
                 Count = pointRecordRequest.Count,
-                BankNumber = pointRecordRequest.BankNumber,             
+                BankNumber = bankNumber,             
                 Member = targeMebmer,
             };
             _context.PointRecords.Add(Pointre);
@@ -119,5 +123,32 @@ namespace IHMS.Controllers.APIcontrollers
         {
             return (_context.PointRecords?.Any(e => e.PointrecordId == id)).GetValueOrDefault();
         }
+
+        //測試產生亂數api
+
+        // POST: api/testPointRecordsDTO
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public string testPostPointRecord(PointRecordRequest pointRecordRequest, IhmsContext _context)
+        //{
+        //    //if (_context.PointRecords == null || _context.Members == null)
+        //    //{
+        //    //    return "新增失敗";
+        //    //}
+            
+        //    Random random = new Random();
+        //    int bankNumber = random.Next(10000000, 99999999);
+
+        //    PointRecord Pointre = new PointRecord
+        //    {                
+        //        BankNumber = bankNumber,
+                
+        //    };
+            //_context.PointRecords.Add(Pointre);
+            //await _context.SaveChangesAsync();
+
+        //    return "新增成功";
+        //}
+
     }
 }

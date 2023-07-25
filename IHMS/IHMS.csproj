@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Remove="Controllers\APIcontrollers\CartsDTOController.cs" />
     <Compile Remove="Controllers\APIcontrollers\OrdersControllerAPI.cs" />
+    <Compile Remove="Controllers\APIcontrollers\testDTOController.cs" />
     <Compile Remove="Models\CreateOrderRequest.cs" />
     <Compile Remove="ViewModel\DTO\CourseAndCoachDTO.cs" />
     <Compile Remove="ViewModel\DTO\OrderDetailRequest.cs" />
