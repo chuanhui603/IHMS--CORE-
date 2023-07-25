@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,12 +33,11 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
-    @RenderSection("Scripts", required: false)
+
     @RenderSection("Styles", required: false)
 </head>
 
 <body>
-    <div id="app">
         <div class="backimg">
             <!-- 讀取條 有需要的取消註解 Start -->
             <!-- <div id="spinner"
@@ -113,13 +112,15 @@
                 </nav>
             </div>
             <!-- 導覽列 End -->
+
             <!-- template內容 Start -->
             <!-- 使用時style去掉 -->
-            <div class="container p-0 mb-5" >
-                  
-
+            <div class="container p-0 mb-5 mt-3" >
+            @RenderBody()
+            @RenderSection("Scripts", required: false)
             </div>
             <!-- template內容 End -->
+
             <!-- 頁腳 Start -->
             <div class="container-fluid bg-dark footer mt-5 p-3 wow fadeIn"
                  data-wow-delay="0.1s">
@@ -146,23 +147,11 @@
             ></a> -->
             <!-- 回到頂層 -->
         </div>
-    </div>
 
     <!-- JavaScript Libraries -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
-
-    <script>
-        const { ref, reactive } = Vue;
-        const App = {
-          setup() {
-            return {};
-          },
-        };
-
-        Vue.createApp(App).mount("#app");
-    </script>
     <script src="~/lib/wow/wow.min.js"></script>
     <script src="~/js/main.js"></script>
     <script src="~/js/test.js"></script>
