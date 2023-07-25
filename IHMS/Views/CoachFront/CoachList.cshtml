@@ -7,12 +7,31 @@
 }
 
 @section Styles {
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" / >
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" / >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" / >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" / >
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/coach.css" rel="stylesheet" />
     <style>
-        .set-bg{
-            margin-top:79px;
+        .breadcrumb__text h2, .breadcrumb__option span {
+            color: #fff;
         }
+
+        .breadcrumb__option a {
+            color: #fff;
+        }
+
+        section{
+            height:100vh
+        }
+        #tittle {
+            background: url(../img/coach/Banner.png) center center repeat;
+            background-size:cover;
+            margin-top:79px;
+            width:100%;          
+            background-size: cover;
+            background-position: top center;
+        }
+
     </style>
 }
 
@@ -20,11 +39,11 @@
 @*banner大圖*@
 
 
-<section class="breadcrumb-section set-bg" data-setbg="~/img/coach/Banner.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
+<section>
+    <div id="tittle">
+        <div>
+            <div class="row text-center">
+                <div class="col-lg-12 breadcrumb__text">
                     @*h2內容請自行更換*@
                     <h2>私人教練專區</h2>
                     <div class="breadcrumb__option">
@@ -41,8 +60,7 @@
 
 @section Scripts{
     
-        //教練評價      
-        //無搜尋結果時自動跳轉回教練列表
+       
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
                 SwalGreen.fire({
