@@ -128,11 +128,7 @@ namespace IHMS.Controllers
         }
         public ActionResult MemberEdit(int? id)
         {
-            if (id == null)
-                return RedirectToAction("List");
-            IhmsContext db = new IhmsContext();
-            Member cust = db.Members.FirstOrDefault(p => p.MemberId == id);
-            return View(cust);
+            return View();
         }
         [HttpPost]
         public ActionResult MemberEdit(CMember x)
@@ -167,7 +163,8 @@ namespace IHMS.Controllers
                 cust.LoginTime = x.LoginTime; //登入日期
                 db.SaveChanges();
             }
-            return RedirectToAction("List");
+            return View(x);
         }
+
     }
 }

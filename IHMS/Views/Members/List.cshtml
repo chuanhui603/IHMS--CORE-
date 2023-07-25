@@ -147,7 +147,7 @@
                     <td>@item.LoginTime</td>
                     <td class="fixed-actions" style="background-color: #4169E1;">
                         @Html.ActionLink("修改", "Edit", "Members", new { id = item.MemberId }, new { @class = "btn btn-dark" })
-                        @*@Html.ActionLink("測試修改前端會員", "MemberEdit", "Members", new { id = item.MemberId }, new { @class = "btn btn-dark" })*@
+                        @Html.ActionLink("測試修改前端會員", "MemberEdit", "Members", new { id = item.MemberId }, new { @class = "btn btn-dark" })
                         @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-dark" })
                     </td>
 

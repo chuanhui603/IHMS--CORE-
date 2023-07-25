@@ -34,7 +34,8 @@ async function login() {
                     console.log(savedMemberJSON);
 
                     // 在這裡可以使用savedMember物件進行你需要的操作
-                    document.getElementById("name").value = "test";                    
+                    document.getElementById("MemberId").value = savedMember.MemberId; 
+                    document.getElementById("name").value = savedMember.name;                    
                     document.getElementById("email").value = savedMember.email;
                     document.getElementById("phone").value = savedMember.phone;
                     document.getElementById("account").value = savedMember.account;
@@ -50,6 +51,9 @@ async function login() {
                     document.getElementById("diseasedescription").value = savedMember.diseasedescription;
                     document.getElementById("allergydescription").value = savedMember.allergydescription;
                     document.getElementById("logintime").value = savedMember.logintime;                  
+
+                    const memberIdInput = document.getElementById("memberIdInput");
+                    memberIdInput.value = savedMember.MemberId;
 
                     // 當按下"更新資料"按鈕時，觸發更新會員資料的功能
                     const updateButton = document.getElementById("updateButton");
