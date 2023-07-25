@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "List";
-    Layout = "frontend_Layout";
+    Layout = "_Layout";
 }
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -14,6 +14,7 @@
 
 <p>
     <a asp-action="Create">新增測試</a>
+
 </p>
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -88,6 +89,7 @@
                 new { onclick = "return confirm('確定將該名教練移至離職列表嗎?')", Class = "btn btn-danger" })|
                         @Html.ActionLink("編輯", "Edit", "Coach", new { id = item.CoachId },
                 new { onclick = "btn btn-success", Class = "btn btn-success" })
+                        @Html.ActionLink("前端", "CoachList", "CoachFront",null,new { onclick = "btn btn-success", Class = "btn btn-success" })
 
                     </td>
                 </tr>

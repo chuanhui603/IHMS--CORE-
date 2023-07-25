@@ -1,0 +1,907 @@
+﻿@model IHMS.ViewModel.CCoachViewModel
+@using IHMS.Controllers
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /*左邊上半部*/
+        .back {
+            margin-bottom: 30px;
+        }
+
+            .back a {
+                color: #7fad39;
+                transition: .2s;
+            }
+
+                .back a:hover {
+                    color: #4F6C24;
+                }
+
+        .divLeft {
+            text-align: center;
+        }
+
+        .imgMain {
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+        }
+
+        .name {
+            margin-bottom: 10px;
+        }
+
+        .liAvgRate {
+            margin-bottom: 20px !important;
+            display: flex;
+        }
+
+        .intro {
+            margin: 0px 60px;
+            text-align: justify;
+        }
+
+        .ulBtns {
+            display: flex;
+            justify-content: space-evenly;
+            list-style: none;
+        }
+
+            .ulBtns > li {
+                width: 40%;
+                text-align: center;
+                margin: 40px;
+                border: 2px solid #7fad39;
+                border-radius: 10px;
+                transition: .3s;
+            }
+
+                .ulBtns > li:hover {
+                    border: 2px solid #4F6C24;
+                }
+
+                .ulBtns > li > a {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    padding: 10px;
+                    transition: .3s;
+                    color: #7fad39;
+                    font-size: 16px;
+                }
+
+                    .ulBtns > li > a:hover {
+                        color: #4F6C24;
+                    }
+
+        /*左邊下半部*/
+        .info_details, .rate {
+            width: 100%;
+            padding: 0px 30px;
+        }
+
+        .topic {
+            padding: 30px 0px 15px 0px;
+        }
+
+        .info_details_list {
+            list-style-position: inside;
+            list-style: none;
+        }
+
+            .info_details_list > li {
+                margin: 10px 0px;
+            }
+
+            .info_details_list > hr {
+                padding-top: 30px;
+            }
+
+        .nav-tabs::before, .nav-tabs::after {
+            content: none !important;
+        }
+
+        .bar {
+            display: inline-block;
+            width: 160px;
+            height: 2px;
+            background-color: lightgray;
+            line-height: 26px;
+        }
+
+        .tabs {
+            width: 100%;
+        }
+
+        .product__details__tab {
+            padding-top: 50px;
+        }
+
+        .tab_content {
+            padding: 0px 40px !important;
+        }
+
+        .rate {
+            margin-bottom: 30px;
+            padding: 0px;
+        }
+
+        .divSort {
+            text-align: right;
+            padding-top: 15px;
+            padding-right: 30px;
+        }
+
+        .star {
+            height: 18px;
+        }
+
+        .starOrig {
+            filter: grayscale(1);
+        }
+
+        .divMore {
+            text-align: center;
+        }
+
+        #btnMore {
+            border: none;
+            background-color: transparent;
+            transition: .2s;
+        }
+
+            #btnMore:hover {
+                color: #7fad39;
+            }
+
+        /*推薦教練*/
+        .divRecContent {
+            margin-top: 80px;
+            margin-left: 40px;
+        }
+
+        .divRecTopic > span {
+            margin: 10px 0px;
+            font-size: 22px;
+        }
+
+        .spTopic2 {
+            padding-left: 50px;
+        }
+
+        .recBar {
+            text-align: right;
+            height: 2px;
+            margin: 20px 0px;
+            margin-left: 55px;
+            background-color: #7fad39;
+        }
+
+        .divRec {
+            margin-bottom: 30px;
+            border-radius: 10px;
+            padding: 20px 15px 10px 15px;
+            border: 1px solid #F0F0F0;
+            transition: .3s;
+        }
+
+            .divRec:hover {
+                border: 1px solid #7FAD39;
+                box-shadow: 2px 2px 5px lightgray;
+            }
+
+            .divRec span {
+                font-size: 14px;
+            }
+
+        .divRecCoach {
+            padding: 0px;
+            padding-right: 10px;
+            text-align: justify;
+            line-height: 24px;
+        }
+
+        .divRecName h4 {
+            margin-bottom: 10px;
+        }
+
+        .coach_img {
+            border-radius: 50%;
+            border: 3px solid white;
+            width: 100px;
+            height: 100px;
+            transition: .3s;
+        }
+
+        .aRec {
+            color: #404040;
+        }
+
+            .aRec:hover {
+                color: #404040;
+            }
+
+        .spRec {
+            text-align: justify;
+        }
+
+        .divRecList {
+            padding: 10px 10px;
+        }
+
+        .recSkill {
+            line-height: 24px;
+        }
+
+        .icon {
+            height: 16px;
+        }
+
+        .li {
+            margin: 5px 0px;
+            font-size: 16px;
+        }
+
+
+        .selTime1, .selTime2 {
+            display: inline !important;
+            width: 48%;
+        }
+
+        .table td, .table th {
+            padding: 0;
+            font-family: Consolas;
+            text-align: center;
+        }
+
+        .period1, .period2, .period3, .period4, .period5, .period6, .period {
+            background-color: darkgray;
+        }
+
+        .available {
+            background-color: #66CDAA;
+        }
+
+            .available:hover {
+                background-color: #00FA9A;
+            }
+
+        .unavailable {
+            background-color: teal;
+            color: #FFF0F5;
+            font-weight: 700;
+        }
+
+            .unavailable:hover {
+                background-color: teal;
+            }
+
+        #gotop {
+            position: fixed;
+            z-index: 90;
+            right: 30px;
+            bottom: 31px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            color: #fff;
+            background: #7fad39;
+            line-height: 50px;
+            border-radius: 50%;
+            transition: all 0.5s;
+            text-align: center;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        }
+    </style>
+}
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>私人教練專區</h2>
+                    <div class="breadcrumb__option">
+                        <a href="~/Student/CoachMainPage">Home</a>
+                        <span>Training</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+            <div class="col-lg-8">
+                <div class="back reveal_t1"><a href="/Student/CoachList">< 返回教練列表</a></div>
+                <div class="row divUp">
+                    <div class="col-md-4 reveal_t1 divLeft">
+                        <img src="~/img/Coach/coachImage/@Model.Image" class="imgMain" />
+                    </div>
+                    <div class="col-md-8 divMainCoach reveal_r1">
+                        <ul>
+                            <li style="list-style:none" class="name"><h3><b>@Model.Name</b></h3></li>
+                            <li style="list-style:none" class="li liAvgRate">
+                                <span id="avgRate"></span>&nbsp;&nbsp;&nbsp;
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star2" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star3" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5" />&nbsp;&nbsp;&nbsp;
+                                <span id="rateCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               
+                            </li>
+                            <li style="list-style:none" class="li">
+                                <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
+                                <span>@Model.City</span>
+                            </li>
+                            <li style="list-style:none" class="li">
+                                <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長： </b>
+                                
+                            </li>
+                            <li style="list-style:none" class="li">
+                                <img src="~/img/Coach/icon/time.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;可上課時段： </b>
+                                @{
+                                    string times = "";
+                                    
+                                }
+                            </li>
+                            <li style="list-style:none" class="li">
+                               
+                            </li>
+                        </ul>
+                        <ul class="ServiceProfile__buttonList___27UCn ulBtns">
+                            <li>
+                                <a href="#" id="addCandidate" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">
+                                    <i class="fa-solid fa-heart" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId"></i>
+                                    <b data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">&nbsp;&nbsp;加入候選</b>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id="addContact" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">
+                                    <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId"></i>
+                                    <b data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">&nbsp;&nbsp;我想預約</b>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="intro">
+                        <div class="topic"><h5><b>教練介紹</b></h5></div>
+                        <h7>@Model.Intro</h7>
+                    </div>
+                </div>
+                <div class="product__details__tab tabs">
+                    <ul class="nav nav-tabs tablist" role="tablist">
+                        <li><div class="bar"></div></li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="false">經歷及相關證照</a>
+                        </li>
+                        <li class="nav-item liSort">
+                            <a class="nav-link rate" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="true">會員評價 <span id="spRate"></span></a>
+                        </li>
+                        <li><div class="bar"></div></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc tab_content reveal_b1">
+                                <div><h5 class="topic"><b>經歷</b></h5></div>
+                                <ul class="info_details_list ">
+                                    @{
+                                        
+                                    }
+                                </ul><br />
+                                <div><h5 class="topic"><b>專業證照</b></h5></div>
+                                <ul class="info_details_list">
+                                    @{
+                                        
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="filter__sort divSort">
+                                <span>排序</span>
+                                <select id="selSort">
+                                    <option value="0">預設</option>
+                                    <option value="1">最新評價</option>
+                                    <option value="2">評價高至低</option>
+                                    <option value="3">評價低至高</option>
+                                </select>
+                            </div>
+                            <div class="product__details__tab__desc tab_content divRate"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <div class="divRecContent">
+                            <div class="divRecTopic reveal_t1">
+                                <span>在<b>&nbsp;@Model.City，&nbsp;</b><br></span>
+                                <span class="spTopic2">擁有相同專長的教練 —</span>
+                            </div>
+                            <div class="recBar reveal_r1"></div>
+                            <div class="divCoaches"></div>
+                            <a id="gotop">
+                                <i class="fa fa-angle-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@*彈出視窗:我想預約*@
+<div class="modal fade" id="modalContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">聯繫教練<small>-以下為教練目前的周課表</small></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-lg-8">
+                    <table class="table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                                <th>Thu</th>
+                                <th>Fri</th>
+                                <th>Sat</th>
+                                <th>Sun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09:00</td>
+                                <td id="td19" class="period1"></td>
+                                <td id="td29" class="period1"></td>
+                                <td id="td39" class="period1"></td>
+                                <td id="td49" class="period1"></td>
+                                <td id="td59" class="period1"></td>
+                                <td id="td69" class="period4"></td>
+                                <td id="td79" class="period4"></td>
+                            </tr>
+                            <tr>
+                                <td>10:00</td>
+                                <td id="td110" class="period1"></td>
+                                <td id="td210" class="period1"></td>
+                                <td id="td310" class="period1"></td>
+                                <td id="td410" class="period1"></td>
+                                <td id="td510" class="period1"></td>
+                                <td id="td610" class="period4"></td>
+                                <td id="td710" class="period4"></td>
+                            </tr>
+                            <tr>
+                                <td>11:00</td>
+                                <td id="td111" class="period1"></td>
+                                <td id="td211" class="period1"></td>
+                                <td id="td311" class="period1"></td>
+                                <td id="td411" class="period1"></td>
+                                <td id="td511" class="period1"></td>
+                                <td id="td611" class="period4"></td>
+                                <td id="td711" class="period4"></td>
+                            </tr>
+                            <tr>
+                                <td>12:00</td>
+                                <td id="td112" class="period1"></td>
+                                <td id="td212" class="period1"></td>
+                                <td id="td312" class="period1"></td>
+                                <td id="td412" class="period1"></td>
+                                <td id="td512" class="period1"></td>
+                                <td id="td612" class="period4"></td>
+                                <td id="td712" class="period4"></td>
+                            </tr>
+                            <tr>
+                                <td>13:00</td>
+                                <td id="td113" class="period2"></td>
+                                <td id="td213" class="period2"></td>
+                                <td id="td313" class="period2"></td>
+                                <td id="td413" class="period2"></td>
+                                <td id="td513" class="period2"></td>
+                                <td id="td613" class="period5"></td>
+                                <td id="td713" class="period5"></td>
+                            </tr>
+                            <tr>
+                                <td>14:00</td>
+                                <td id="td114" class="period2"></td>
+                                <td id="td214" class="period2"></td>
+                                <td id="td314" class="period2"></td>
+                                <td id="td414" class="period2"></td>
+                                <td id="td514" class="period2"></td>
+                                <td id="td614" class="period5"></td>
+                                <td id="td714" class="period5"></td>
+                            </tr>
+                            <tr>
+                                <td>15:00</td>
+                                <td id="td115" class="period2"></td>
+                                <td id="td215" class="period2"></td>
+                                <td id="td315" class="period2"></td>
+                                <td id="td415" class="period2"></td>
+                                <td id="td515" class="period2"></td>
+                                <td id="td615" class="period5"></td>
+                                <td id="td715" class="period5"></td>
+                            </tr>
+                            <tr>
+                                <td>16:00</td>
+                                <td id="td116" class="period2"></td>
+                                <td id="td216" class="period2"></td>
+                                <td id="td316" class="period2"></td>
+                                <td id="td416" class="period2"></td>
+                                <td id="td516" class="period2"></td>
+                                <td id="td616" class="period5"></td>
+                                <td id="td716" class="period5"></td>
+                            </tr>
+                            <tr>
+                                <td>17:00</td>
+                                <td id="td117" class="period2"></td>
+                                <td id="td217" class="period2"></td>
+                                <td id="td317" class="period2"></td>
+                                <td id="td417" class="period2"></td>
+                                <td id="td517" class="period2"></td>
+                                <td id="td617" class="period5"></td>
+                                <td id="td717" class="period5"></td>
+                            </tr>
+                            <tr>
+                                <td>18:00</td>
+                                <td id="td118" class="period3"></td>
+                                <td id="td218" class="period3"></td>
+                                <td id="td318" class="period3"></td>
+                                <td id="td418" class="period3"></td>
+                                <td id="td518" class="period3"></td>
+                                <td id="td618" class="period6"></td>
+                                <td id="td718" class="period6"></td>
+                            </tr>
+                            <tr>
+                                <td>19:00</td>
+                                <td id="td119" class="period3"></td>
+                                <td id="td219" class="period3"></td>
+                                <td id="td319" class="period3"></td>
+                                <td id="td419" class="period3"></td>
+                                <td id="td519" class="period3"></td>
+                                <td id="td619" class="period6"></td>
+                                <td id="td719" class="period6"></td>
+                            </tr>
+                            <tr>
+                                <td>20:00</td>
+                                <td id="td120" class="period3"></td>
+                                <td id="td220" class="period3"></td>
+                                <td id="td320" class="period3"></td>
+                                <td id="td420" class="period3"></td>
+                                <td id="td520" class="period3"></td>
+                                <td id="td620" class="period6"></td>
+                                <td id="td720" class="period6"></td>
+                            </tr>
+                            <tr>
+                                <td>21:00</td>
+                                <td id="td121" class="period3"></td>
+                                <td id="td221" class="period3"></td>
+                                <td id="td321" class="period3"></td>
+                                <td id="td421" class="period3"></td>
+                                <td id="td521" class="period3"></td>
+                                <td id="td621" class="period6"></td>
+                                <td id="td721" class="period6"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>教練</label>
+                        <input type="text" class="form-control" value="@Model.Name" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>偏好時段</label>
+                        <div>
+                            <select class="selTime1">
+                                <option value="7">每周日</option>
+                                <option value="1">每周一</option>
+                                <option value="2">每周二</option>
+                                <option value="3">每周三</option>
+                                <option value="4">每周四</option>
+                                <option value="5">每周五</option>
+                                <option value="6">每周六</option>
+                            </select>
+                            <select class="selTime2">
+                                <option value="9">09:00</option>
+                                <option value="10">10:00</option>
+                                <option value="11">11:00</option>
+                                <option value="12">12:00</option>
+                                <option value="13">13:00</option>
+                                <option value="14">14:00</option>
+                                <option value="15">15:00</option>
+                                <option value="16">16:00</option>
+                                <option value="17">17:00</option>
+                                <option value="18">18:00</option>
+                                <option value="19">19:00</option>
+                                <option value="20">20:00</option>
+                                <option value="21">21:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <small>*送出聯繫後，需經教練確認，才會進行課程安排唷！</small>
+                    <div style="justify-content: end; display: flex; ">
+                        <button type="button" class="btn btn-success" id="btnSendContact"><i class="fa fa-paper-plane" aria-hidden="true"></i>聯繫教練</button>
+                    </div>
+                    <br />
+                    <table>
+                        <tr>
+                            <td class="period" style="width:2vw"></td>
+                            <td>未開放</td>
+                        </tr>
+                        <tr>
+                            <td class="available" style="width:2vw"></td>
+                            <td>可預約</td>
+                        </tr>
+                        <tr>
+                            <td class="unavailable" style="width:2vw"></td>
+                            <td>已額滿</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        //GoTop
+        $('#gotop').click(function () {
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            return false;
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 400) {
+                $('#gotop').fadeIn();
+            } else {
+                $('#gotop').fadeOut();
+            }
+        });
+
+        //載入評價(上方+tabpage)
+        $(document).ready(function () {
+            $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.CoachId" },
+                function (data) {
+                    let countSum = 0;
+                    $.each(data, function (index, rate) {
+                        countSum = countSum + rate.cr.fRateStar;
+                    })
+                    let avg = (countSum / data.length).toFixed(1);
+                    for (let i = 1; i <= avg; i++) {
+                        $(`#star${i}`).removeClass("starOrig");
+                    }
+                    $("#avgRate").text(`${avg}`);
+                    if ($("#avgRate").text() == "NaN") {
+                        $("#avgRate").text("0");
+                    }
+                    $("#spRate").text(`(${data.length})`);
+                    $("#rateCount").text(`(${data.length})`);
+                    displayRate(data);
+                })
+        })
+
+        //評價排序
+        $("#selSort").change(() => {
+            let opt = $("#selSort option:selected").val();
+            if (opt == 0) {
+                $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.CoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+            else if (opt == 1) {
+                $.getJSON("@Url.Content("~/Student/GetNewRate")", { "id": "@Model.CoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+            else if (opt == 2) {
+                $.getJSON("@Url.Content("~/Student/GetDesRate")", { "id": "@Model.CoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+            else if (opt == 3) {
+                $.getJSON("@Url.Content("~/Student/GetAscRate")", { "id": "@Model.CoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+        })
+
+        //顯示評價
+        function displayRate(data) {
+            $(".divRate").empty();
+            if (data.length == 0) {
+                $(".divRate").text("此教練尚無評價");
+                $(".divRate").css("text-align", "center").css("color", "dimgray");
+            }
+            $.each(data, function (index, item) {
+                console.log(item);
+                $("#spRate").text(`(${data.length})`);
+                $(".divRate").append(`<div class="feedback-item animate__animated animate__fadeIn" id=div${index}><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
+                for (let i = 1; i <= 5; i++) {
+                    $(`#r${index}`).append(`<img class="star starOrig" id="star${index}${i}"/>`);
+                    $(".star").attr("src", "@Url.Content("~/img/coach/icon/star.png")");
+                }
+                for (let i = 1; i <= item.cr.fRateStar; i++) {
+                    $(`#star${index}${i}`).removeClass("starOrig");
+                }
+                let year = `${item.cr.fRateDate}`.substr(0, 4);
+                let month = `${item.cr.fRateDate}`.substr(4, 2);
+                let day = `${item.cr.fRateDate}`.substr(6, 2);
+                $(`#r${index}`).after(`<div id="t${index}"></div>`);
+                if (item.cr.fRateText != null) {
+                    $(`#t${index}`).append(`<p>${item.cr.fRateText}<p>`);
+                }
+                $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);
+            })
+            //顯示更多
+            if (data.length > 5) {
+                for (let i = 5; i <= data.length - 1; i++) {
+                    $(`#div${i}`).hide();
+                }
+                $(".divRate").append('<div class="divMore"><button id=btnMore>顯示更多&nbsp;&nbsp;<i class="fa-solid fa-angle-down"></i></button></div>')
+            }
+            let click = 1;
+            $("#btnMore").click(() => {
+                for (let i = 5 * click; i <= 5 * (click + 1) - 1; i++) {
+                    $(`#div${i}`).show();
+                }
+                if (5 * (click + 1) - 1 >= data.length)
+                    $("#btnMore").hide();
+                click++;
+            })
+        }
+
+        //推薦教練
+        $(document).ready(function () {
+            $.getJSON("@Url.Content("~/Student/GetRecCoach")", { "id": "@Model.CoachId" },
+                function (data) {
+                    $(".divCoaches").empty();
+                    $.each(data, function (index, item) {
+                        $(".divCoaches").append(`<a href="/Student/ViewCoachDetails/${item.fCoachId}" id=a${index} class="aRec"></a>`);
+                        $(`#a${index}`).append(`<div class="row divRec" id=rec${index}></div>`);
+                        $(`#rec${index}`).append(`<div class="col-5" id=d1${index}></div>`).append(`<div class="col-7 divRecCoach" id=d2${index}></div>`)
+                            .append(`<div class="divRecList" id=d3${index}></div>`);
+                        $(`#d1${index}`).append(`<img id=img${index} class="coach_img">`);
+                        $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.fCoachImage}`);
+                        $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.fCoachName}</b></h4></div>`).append(`<div><span class="spRec">${item.fSlogan}</span></div>`);
+                        $(`#d3${index}`).append(`<ul class="ulRec" id=ul${index}>`);
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=l1${index}></li>`).append(`<li style="list-style:none" class="li" id=l2${index}></li>`);
+                        $(`#l1${index}`).append(`<img class="icon location"/><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;${item.cityName}</span>`);
+                        $(".location").attr("src", "@Url.Content("~/img/Coach/icon/location.png")");
+                        $(`#l2${index}`).append(`<img class="icon skill" /><span id=skill${index} class="recSkill"><b>&nbsp;&nbsp;&nbsp;專長： </b>&nbsp;&nbsp;</span>`)
+                        $(".skill").attr("src", "@Url.Content("~/img/Coach/icon/skill.png")");
+
+                        //取得專長項目
+                        $.getJSON("@Url.Content("~/Student/GetSkillName")", { "id": `${item.fCoachId}` },
+                            function (skills) {
+                                let s = "";
+                                $.each(skills, function (index, skill) {
+                                    s += skill;
+                                    s += "、";
+                                })
+                                s = s.substr(0, s.length - 1);
+                                $(`#skill${index}`).append(`${s}`);
+                            }
+                        )
+                    })
+                })
+        })
+
+
+        $("#modalContact").find(".nice-select").remove();
+
+        //預約時間表
+        function getAvailableTime() {
+            $.get("@Url.Content("~/Student/getAvailableTimeId")", { id: @Model.CoachId}, function (ids) {
+                $.each(ids, function (idx, val) {
+                    $(`.period${val}`).addClass("available");
+                    $(`.period${val}`).on("click", function () {
+                        let tdid = $(event.target).attr("id");
+                        let week = tdid.substr(2, 1);
+                        let time = tdid.substr(3, 2);
+                        $(".selTime1").val(week);
+                        $(".selTime2").val(time);
+                    })
+                    $(`.period${val}`).removeClass(`period${val}`);
+                })
+            })
+            $.get("@Url.Content("~/Student/getAvailableTimeNum")", { id: @Model.CoachId}, function (nums) {
+                $.each(nums, function (idx, val) {
+                    $(`#td${val}`).addClass("unavailable").removeClass("available");
+                    $(`#td${val}`).text("額滿");
+                    $(`#td${val}`).off("click");
+                })
+            })
+        }
+        getAvailableTime();
+
+        //送出通知
+        $("#btnSendContact").click(function () {
+            $.get("@Url.Content("~/Student/createContact")", { FCoachId: @Model.CoachId, FAvailableTimeNum: `${$(".selTime1").val()}${$(".selTime2").val()}` }, function () {
+                SwalGreen.fire({
+                    title: `已通知教練`,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: '前往聯繫紀錄',
+                    cancelButtonText: '繼續瀏覽',
+                    icon: 'success'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        /*跳轉CandidateList*/
+                        window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
+                    }
+                })
+            })
+        })
+
+        //加入候選
+        $("#addCandidate").click(function () {
+            if ($("#btnLayOutLogin span").text() == "登入") {
+                pleaseLogin();
+            }
+            else {
+                $.get("@Url.Content("~/Student/addCandidate")", { FCoachId: @Model.CoachId }, function (result) {
+                    if (result == "ok") {
+                        SwalGreen.fire({
+                            title: `已加入`,
+                            showDenyButton: false,
+                            showCancelButton: true,
+                            confirmButtonText: '前往候選教練',
+                            cancelButtonText: '繼續瀏覽',
+                            icon: 'success'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                /*跳轉CandidateList*/
+                                window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
+                            }
+                        })
+                    }
+                    else {
+                        SwalGreen.fire({
+                            title: `已是候選教練`,
+                            showDenyButton: false,
+                            showCancelButton: true,
+                            confirmButtonText: '前往候選教練',
+                            cancelButtonText: '繼續瀏覽',
+                            icon: 'warning'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                /*跳轉CandidateList*/
+                                window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
+                            }
+                        })
+                    }
+                })
+            }
+        })
+
+        $("#addContact").click(function () {
+            if ($("#btnLayOutLogin span").text() == "登入") {
+                pleaseLogin();
+            }
+            else {
+                $("#modalContact").modal("show");
+            }
+        })
+
+    </script>
+}
