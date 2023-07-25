@@ -107,5 +107,24 @@ namespace IHMS.Controllers
             return RedirectToAction("List");
         }
 
+        public ActionResult SignIn(int? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SignIn(Member t)
+        {
+            IhmsContext db = new IhmsContext();
+
+            if (string.IsNullOrEmpty(t.AvatarImage))
+            {
+                t.AvatarImage = "1.jpg";
+            }
+
+            db.Members.Add(t);
+            db.SaveChanges();
+            return RedirectToAction("List");
+        }
     }
 }
