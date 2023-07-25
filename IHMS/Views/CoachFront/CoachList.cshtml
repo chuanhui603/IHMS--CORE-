@@ -1,333 +1,27 @@
-﻿@model IEnumerable<IHMS.Models.Coach>
+@model IEnumerable<IHMS.Models.Coach>
 
 @{
     IhmsContext db = new IhmsContext();
     Layout = "frontend_Layout";
 
 }
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-@section Styles{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+@section Styles {
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" / >
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" / >
     <style>
-        /*多重篩選*/
-        .divSelCity {
-            padding-left: 10px;
-            text-align: right;
-        }
-
-            .divSelCity > div {
-                width: 180px;
-            }
-
-        #selCity {
-            display: inline !important;
-        }
-
-        .nice-select {
-            display: none;
-        }
-
-        .divFilter {
-            padding-right: 40px;
-        }
-
-            .divFilter input {
-                margin-right: 5px;
-            }
-
-        .divLeftTopic {
-            margin-bottom: 15px;
-        }
-
-        .bTopic {
-            color: #7fad39 !important;
-            font-size: 18px;
-        }
-
-        .keyTopic {
-            margin-bottom: 10px;
-            padding: 10px 0px;
-            border-bottom: 1px solid lightgray;
-        }
-
-        .spChoose {
-            float: right;
-            color: #7fad39;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .filterCard {
-            margin-bottom: 25px;
-        }
-
-        #btnClear {
-            display: block;
-            padding: 5px;
-            width: 100%;
-            background-color: #7fad39;
-            color: white;
-            font-weight: 500;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .skillCount {
-            font-weight: 600;
-            color: gray;
-        }
-
-        /*關鍵字*/
-        .divSearch {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .divKeyword {
-            display: flex;
-        }
-
-        .divSubmit {
-            height: 38px;
-            padding: 0px;
-            margin: 0px;
-            text-align: center;
-        }
-
-        .hero__search__form, .divCoachList {
-            width: 100%;
-        }
-
-        .inKeyword {
-            border-bottom-right-radius: 0px;
-            border-top-right-radius: 0px;
-        }
-
-        .btnSearch {
-            height: 38px;
-            border-bottom-left-radius: 0px;
-            border-top-left-radius: 0px;
-        }
-
-        .divLink {
-            display: flex;
-            justify-content: right;
-            height: 70px;
-        }
-
-        .divOther {
-            padding: 0px;
-        }
-
-            .divOther span {
-                color: #5F822B;
-                line-height: 70px;
-            }
-
-            .divOther i {
-                color: #5F822B;
-            }
-
-        .divUrl {
-            margin-left: 10px;
-            padding: 10px;
-            line-height: 48px;
-            border: 1px solid #BFD69C;
-            border-radius: 20px;
-        }
-
-            .divUrl i {
-                color: #DFEACE;
-            }
-
-            .divUrl a {
-                color: #7FAD39;
-                text-decoration: none;
-                transition: .3s;
-            }
-
-                .divUrl a:hover {
-                    color: #5F822B;
-                }
-
-        .divNoResult {
-            text-align: center;
-        }
-        /*列表*/
-        .divRight {
-            padding: 0px 20px;
-        }
-
-        .divCoachCount {
-            text-align: right;
-        }
-
-        .divCoachCard {
-            display: flex;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid lightgray;
-            transition: .3s;
-        }
-
-            .divCoachCard:hover {
-                border: 1px solid #7FAD39;
-                box-shadow: 2px 2px 5px lightgray;
-            }
-
-        .divImg {
-            text-align: right;
-            display: flex;
-            align-items: center;
-        }
-
-        .imgCoach {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            margin: auto;
-        }
-
-        .divCoachInfo {
-            padding: 20px;
-        }
-
-        .imgIcon {
-            height: 20px;
-        }
-
-        .li {
-            margin: 5px 0px;
-        }
-
-        .liCoachName {
-            margin-bottom: 10px;
-            display: flex;
-        }
-
-        .liSlogan {
-            margin-top: 18px;
-        }
-
-            .liSlogan span {
-                line-height: 30px;
-            }
-
-        .divPage {
-            text-align: right;
-        }
-
-        .btn-success {
-            background-color: #7fad39;
-            border: none;
-        }
-
-        .star {
-            height: 18px;
-        }
-
-        .starOrig {
-            filter: grayscale(1);
-        }
-
-        .liAvgRate {
-            margin-bottom: 20px !important;
-            display: flex;
-        }
-
-        .divBtnDetail {
-            padding: 0px;
-            border: 2px solid #7fad39;
-            border-radius: 5px;
-            transition: .3s;
-        }
-
-            .divBtnDetail a {
-                display: block;
-                width: 100%;
-                height: 100%;
-                text-align: center;
-                padding: 8px;
-                color: #7fad39;
-                font-weight: 600;
-            }
-
-            .divBtnDetail:hover {
-                background-color: #7fad39;
-            }
-
-            .divBtnDetail a:hover {
-                font-weight: 500;
-                color: white;
-            }
-
-        #divSearchResult {
-            margin-bottom: 20px;
-            line-height: 38px;
-        }
-
-        .spSearchFilter {
-            margin: 0px 4px;
-            border: 1px solid #CFE0B5;
-            border-radius: 5px;
-            background-color: #FBFCF9;
-            padding: 0px 4px;
-        }
-
-            .spSearchFilter::before {
-                content: "#";
-                color: gray;
-            }
-
-        #gotop {
-            position: fixed;
-            z-index: 90;
-            right: 30px;
-            bottom: 31px;
-            display: none;
-            width: 50px;
-            height: 50px;
-            color: #fff;
-            background: #7fad39;
-            line-height: 50px;
-            border-radius: 50%;
-            transition: all 0.5s;
-            text-align: center;
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
-        }
-
-        .btnPage {
-            font-weight: 600;
-            background-color: white;
-            color: #7fad39;
-            border: 1px solid #7fad39;
-            width: 35px;
-            height: 35px;
-            margin: 0px 8px;
-            transition: .4s;
-        }
-
-            .btnPage:hover {
-                background-color: #7fad39;
-                color: white;
-            }
-
-        .selectedPage {
-            background-color: #7fad39;
-            color: white;
+        .set-bg{
+            margin-top:79px;
         }
     </style>
 }
 
 
-
-
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/coach/Banner.jpg">
-    <div class="container" height:100vh>
+
+
+<section class="breadcrumb-section set-bg" data-setbg="~/img/coach/Banner.jpg">
+    <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
@@ -344,16 +38,13 @@
     </div>
 </section>
 
+
 @section Scripts{
     
-        <!--教練評價-->
-        
+        //教練評價      
+        //無搜尋結果時自動跳轉回教練列表
 
-        <!--無搜尋結果時自動跳轉回教練列表-->
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-            <script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
                 SwalGreen.fire({
                     title: '查無搜尋結果',
                     text: '請重新搜尋或選擇篩選條件。',
@@ -365,11 +56,11 @@
                         $(location).prop("href", "@Url.Content("~/Student/CoachList")");
                 })
             </script>
+        
+        
 
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="~/vendor/jquery/jquery.min.js"></script>
     <script>
         //Demo
         $("#btnDemo").click((evt) => {
@@ -574,7 +265,7 @@
                     GetPage();
                 }
             });
-        
+        }
 
         //GoTop btn
         $('#gotop').click(function () {
@@ -589,5 +280,4 @@
             }
         });
     </script>
-    }
-
+}
