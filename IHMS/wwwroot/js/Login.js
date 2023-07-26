@@ -1,5 +1,6 @@
 ﻿// 完成 Login 函式
-async function login() { 
+async function login() {
+
     const username = document.getElementById('Account').value;
     const password = document.getElementById('Password').value;
 
@@ -19,9 +20,10 @@ async function login() {
             // 登入成功
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
             // 將會員資訊存入 localStorage
-            localStorage.setItem('currentMember', JSON.stringify(member));           
-             // 重新載入頁面
+            localStorage.setItem('currentMember', JSON.stringify(member));
+            // 重新載入頁面
             location.reload();
+            LoadlocalStorage();
             // 呼叫 LoginPermission 函式，根據會員的權限層級進行權限控制
             LoginPermission(member);
         } else {
@@ -31,51 +33,54 @@ async function login() {
     } catch (error) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
-    }   
-
-    // 從localStorage中取出JSON格式的會員資料字串
-    const savedMemberJSON = localStorage.getItem('currentMember');
-    console.log(savedMemberJSON);
-    // 檢查是否有取得會員資料
-    if (savedMemberJSON) {
-        
-        try {
-            // 將JSON字串轉換為JavaScript物件
-            const savedMember = JSON.parse(savedMemberJSON);
-            console.log(savedMemberJSON);
-            // 在這裡可以使用savedMember物件進行你需要的操作
-            document.getElementById("MemberId").value = savedMember.MemberId;
-            document.getElementById("name").value = savedMember.name;
-            document.getElementById("email").value = savedMember.email;
-            document.getElementById("phone").value = savedMember.phone;
-            document.getElementById("account").value = savedMember.account;
-            document.getElementById("password").value = savedMember.password;
-            document.getElementById("birthday").value = savedMember.birthday;
-            document.getElementById("gender").value = savedMember.gender;
-            document.getElementById("maritalStatus").value = savedMember.maritalStatus;
-            document.getElementById("nickname").value = savedMember.nickname;
-            document.getElementById("avatarimage").value = savedMember.avatarimage;
-            document.getElementById("residentialcity").value = savedMember.residentialcity;
-            document.getElementById("permission").value = savedMember.permission;
-            document.getElementById("occupation").value = savedMember.occupation;
-            document.getElementById("diseasedescription").value = savedMember.diseasedescription;
-            document.getElementById("allergydescription").value = savedMember.allergydescription;
-            document.getElementById("logintime").value = savedMember.logintime;
-            // 當按下"更新資料"按鈕時，觸發更新會員資料的功能
-            const updateButton = document.getElementById("updateButton");
-            updateButton.addEventListener("click", () => {
-                // 假設你有一個函數來處理會員資料的更新
-                // 這裡示範一個名為updateMemberData的函數
-                updateMemberData(savedMember);
-            });
-        } catch (error) {
-            // 若轉換失敗或資料有誤，處理錯誤情況
-            console.error('無效的會員資料:', error);
-        }
-    } else {
-        // 若沒有取得會員資料，處理未登入情況
-        console.log('尚未登入');
     }
+
+    function LoadlocalStorage() {
+        // 從localStorage中取出JSON格式的會員資料字串
+        alert('AAA');
+        const savedMemberJSON = localStorage.getItem('currentMember');
+        console.log(savedMemberJSON);
+        // 檢查是否有取得會員資料
+        if (savedMemberJSON) {
+
+            try {
+                alert('BBB');
+                // 將JSON字串轉換為JavaScript物件
+                const savedMember = JSON.parse(savedMemberJSON);
+                alert('CCC');//只能跑到這裡 JavaScript物件轉換出問題
+                console.log(savedMemberJSON);
+                // 在這裡可以使用savedMember物件進行你需要的操作
+                document.getElementById("MemberId").value = savedMember.MemberId;
+                document.getElementById("name").value = savedMember.name;
+                //document.getElementById("email").value = savedMember.email;
+                //document.getElementById("phone").value = savedMember.phone;
+                //document.getElementById("account").value = savedMember.account;
+                //document.getElementById("password").value = savedMember.password;
+                //document.getElementById("birthday").value = savedMember.birthday;
+                //document.getElementById("gender").value = savedMember.gender;
+                //document.getElementById("maritalStatus").value = savedMember.maritalStatus;
+                //document.getElementById("nickname").value = savedMember.nickname;
+                //document.getElementById("avatarimage").value = savedMember.avatarimage;
+                //document.getElementById("residentialcity").value = savedMember.residentialcity;
+                //document.getElementById("permission").value = savedMember.permission;
+                //document.getElementById("occupation").value = savedMember.occupation;
+                //document.getElementById("diseasedescription").value = savedMember.diseasedescription;
+                //document.getElementById("allergydescription").value = savedMember.allergydescription;
+                //document.getElementById("logintime").value = savedMember.logintime;
+
+                alert('DDD');
+                alert('成功轉換savedMember為JavaScript物件！');
+            } catch (error) {
+                // 若轉換失敗或資料有誤，處理錯誤情況
+                console.error('無效的會員資料:', error);
+            }
+        } else {
+            // 若沒有取得會員資料，處理未登入情況
+            console.log('尚未登入');
+        }
+    }
+
+
 
     function checkLoginStatus() {
         // 檢查是否有會員登入
@@ -99,7 +104,7 @@ async function login() {
 
     function LoginPermission(userData) {
         // 將 userData 資料讀取出來
-        const permissionLevel = userData.permission;        
+        const permissionLevel = userData.permission;
 
         // 根據 permissionLevel 做權限控制
         if (permissionLevel === 1) {
@@ -121,7 +126,7 @@ async function login() {
         }
     }
 
-   
+
 
     window.addEventListener('load', function () {
         checkLoginStatus();
