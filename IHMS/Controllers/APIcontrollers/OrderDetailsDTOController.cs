@@ -31,8 +31,8 @@ namespace IHMS.Controllers.APIcontrollers
         }
 
         // GET: api/OrderDetailsDTO/5
-        [HttpGet("{OrderId}")]
-        public async Task<List<OrderDetail>>  GetOrderDetail(int OrderId)
+        [HttpGet("GetOrderDetailByOrderid/{orderId}")]
+        public async Task<List<OrderDetail>> GetOrderDetailByOrderid(int OrderId)
         {
             List<OrderDetail> orderDetail = await _context.OrderDetails
                .Where(od => od.OrderId == OrderId).ToListAsync();
@@ -78,6 +78,10 @@ namespace IHMS.Controllers.APIcontrollers
         [HttpPost]
         public async Task<string> PostOrderDetail(OrderDetail orderDetail , IhmsContext _context)
         {
+            if (_context.Orders == null || _context.Members == null)
+            {
+                return "新增失敗";
+            }
 
             Schedule targeSchedule = _context.Schedules.FirstOrDefault(s => s.ScheduleId == orderDetail.ScheduleId);
             Order targeOrder = _context.Orders.FirstOrDefault(o => o.OrderId == orderDetail.OrderId);

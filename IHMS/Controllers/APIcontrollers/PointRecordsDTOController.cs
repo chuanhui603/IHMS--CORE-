@@ -76,14 +76,14 @@ namespace IHMS.Controllers.APIcontrollers
         [HttpPost]
         public async Task<string> PostPointRecord(PointRecordRequest pointRecordRequest , IhmsContext _context)
         {
-            if (_context.PointRecords == null || _context.Members == null)
+            if ( _context.Members == null)
             {
                 return "新增失敗";
             }
 
             Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == pointRecordRequest.MemberId);
 
-            Random random = new Random();
+            Random random = new Random(Guid.NewGuid().GetHashCode());            
             int bankNumber = random.Next(10000000, 99999999);
 
 

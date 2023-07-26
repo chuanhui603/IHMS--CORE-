@@ -30,14 +30,56 @@ namespace IHMS.Controllers.APIcontrollers
 
         // GET: api/SchedulesDTO/5
         [HttpGet("{id}")]
-        public async Task<List<Schedule>> GetSchedule(int id)
+        public async Task<List<Schedule>> GetSchedule(int orderId)
         {
-            List<Schedule> schedule = await _context.Schedules.Where(od => od.ScheduleId == id ).ToListAsync();
+            List<Schedule> scheduleList = new List<Schedule>();
+            //使用訂單ID和訂單詳細資料ID查詢相關的訂單詳細資料
 
-            
+            List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
+            foreach (OrderDetail orderDetail in orderDetails)
+            {
+                List<Schedule> schedules = await _context.Schedules.Where(od => od.ScheduleId == orderDetail.ScheduleId).ToListAsync();
+                foreach (Schedule schedule in schedules)
+                {
+                    scheduleList.AddRange(schedules);
 
-            return schedule;
+                    //List<Course> courses = await _context.Courses.Where(od => od.CourseId == schedule.CourseId).ToListAsync();
+                    //foreach (Course course in courses)
+                    //{
+                    //    List<Coach> coaches = await _context.Coaches.Where(od => od.CoachId == course.CoachId).ToListAsync();
+                    //    foreach (Coach coach in coaches)
+                    //    {
+                    //        scheduleList.AddRange(coaches);
+                    //    }
+                    //}
+                }
+
+            }
+            return scheduleList;
+
+
+            // 使用訂單詳細資料中的scheduleid查詢相關的Schedule資料
+
+            //var schedules = await _context.Schedules.FirstOrDefaultAsync(s => s.ScheduleId == orderDetail.ScheduleId);
+
+            // var schedules = await _context.Schedules.Where(s => s.ScheduleId == orderDetail.ScheduleId).ToListAsync();
+
+            //在foreach迴圈一筆一筆拿出資料
+            //if (schedules != null)
+            // {
+            // foreach (Schedule data in schedules)
+            // {
+            //order.ScheduleInfo = data.ScheduleInfo;
+            //    var test =  data.ScheduleId;
+            // order.ScheduleInfo += data.ScheduleId + ", ";
+            //   }
+            //   }
+
+            //物件再回傳給order
+            //return schedules[0];
         }
+
+
 
         // PUT: api/SchedulesDTO/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
