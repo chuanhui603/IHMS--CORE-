@@ -9,7 +9,7 @@
 async function login(event) {
     event.preventDefault();
     const username = document.getElementById('Account').value;
-    const password = document.getElementById('Password').value;
+    const password = document.getElementById('Password').value;     
 
     // 使用 AJAX 發送登入請求
     const baseAddress = `https://localhost:7127/api/Members/Login`;
@@ -19,23 +19,19 @@ async function login(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ Account: username, Password: password })
+            body: JSON.stringify({ Account: username, Password: password})
         });
 
         if (res.ok) {
-            const member = await res.json();
+            const member = await res.json();   
+
             // 登入成功
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
             // 將會員資訊存入 localStorage
-            localStorage.setItem('currentMember', JSON.stringify(member));         
+            localStorage.setItem('currentMember', JSON.stringify(member));
 
-            location.href = "https://localhost:7127";
-            
-           // LoadlocalStorage();
-            // 呼叫 LoginPermission 函式，根據會員的權限層級進行權限控制
-            //LoginPermission(member);
-            // 重新載入頁面
-            //location.reload();
+            location.href = "https://localhost:7127";            
+           
         } else {
             // 登入失敗
             alert('帳號或密碼不正確，請重新登入！');
@@ -49,6 +45,7 @@ async function login(event) {
         checkLoginStatus();
     });
 }//登入用這個
+
 
 //從localStorage讀出資料放進會員修改頁面的欄位中
 function LoadlocalStorage() {
