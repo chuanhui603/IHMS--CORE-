@@ -123,8 +123,9 @@ namespace IHMS.Controllers
             }
 
             db.Members.Add(t);
-            db.SaveChanges();
-            return RedirectToAction("List");
+            db.SaveChanges();           
+
+            return Redirect("https://localhost:7127/");
         }
             public ActionResult MemberEdit(int? id)
             {

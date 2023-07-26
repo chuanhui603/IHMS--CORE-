@@ -36,6 +36,9 @@
     
 </head>
 
+
+@RenderSection("Scripts", required: false)
+
 <body>
     <div id="app">
         <div class="backimg">
@@ -75,7 +78,7 @@
                                     <a href="plan.html" class="dropdown-item">計畫總覽</a>
                                     <a href="feature.html" class="dropdown-item">購買紀錄</a>
                                     <a href="testimonial.html" class="dropdown-item">點數紀錄</a>
-                                    <a href="https://localhost:7127/Login/MemberEdit" class="dropdown-item">會員設定</a>
+                                    <a href="https://localhost:7127/Members/MemberEdit" class="dropdown-item">會員設定</a>
                                 </div>
                             </div>
                             <div class="nav-item dropdown">
@@ -104,7 +107,8 @@
                             </a>
 
                             <!-- 登入前功能畫面 -->
-                            <a href="https://localhost:7127/Login/Login" class="ms-3 p-1 text-body"></i>登入</a>
+                            <a href="https://localhost:7127/Login/Login" class="ms-3 p-1 text-body"></i>登入</a>                           
+                            <button type="button" class="ms-3 p-1 text-body" onclick="logout()">登出</button>
                             <!--登入前隱藏 登入後展示 -->
                             <div class="ms-3 p-1">點數: <span>$150.00</span></div>
                         </div>
@@ -145,7 +149,8 @@
             ></a> -->
             <!-- 回到頂層 -->
         </div>
-    </div>
+    </div>    
+
 
     <!-- JavaScript Libraries -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
@@ -153,6 +158,7 @@
     <script src="lib/wow/wow.min.js"></script>
 
     <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/js/Login.js"></script>
     <script src="~/js/main.js"></script>
     <script src="~/js/test.js"></script>
     <script src="~/vendor/jquery/jquery.min.js"></script>

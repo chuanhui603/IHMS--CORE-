@@ -25,7 +25,8 @@ async function login(event) {
         if (res.ok) {
             const member = await res.json();   
 
-            // 登入成功
+            // 登入成功         
+            
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
             // 將會員資訊存入 localStorage
             localStorage.setItem('currentMember', JSON.stringify(member));
@@ -40,7 +41,6 @@ async function login(event) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
     }
-
     window.addEventListener('load', function () {
         checkLoginStatus();
     });
@@ -80,13 +80,14 @@ function LoadlocalStorage() {
             document.getElementById("Gender").value = savedMember.gender;
             document.getElementById("MaritalStatus").value = savedMember.maritalStatus;
             document.getElementById("Nickname").value = savedMember.nickname;
-            document.getElementById("Avatarimage").value = savedMember.avatarimage;
+            document.getElementById("AvatarImage").value = savedMember.avatarimage;
             document.getElementById("Residentialcity").value = savedMember.residentialcity;
             document.getElementById("Permission").value = savedMember.permission;
             document.getElementById("Occupation").value = savedMember.occupation;
             document.getElementById("Diseasedescription").value = savedMember.diseasedescription;
             document.getElementById("Allergydescription").value = savedMember.allergydescription;
-            document.getElementById("Logintime").value = savedMember.logintime;           
+            document.getElementById("Logintime").value = savedMember.logintime;
+            document.getElementById("ImgShow").value = "/images/1.jpg";            
 
         } catch (error) {
             // 若轉換失敗或資料有誤，處理錯誤情況
@@ -97,6 +98,12 @@ function LoadlocalStorage() {
         console.log('尚未登入');
     }
 } //撈資料是這個
+
+
+// 在網頁載入時執行設定
+document.addEventListener("DOMContentLoaded", function () {
+    setAvatarImageSrc();
+});
 
 
 function checkLoginStatus() {
@@ -143,3 +150,25 @@ function LoginPermission(userData) {
     }
 } //登入權限
 
+function 管理者DemoLogin() {
+    // 填入預設的帳號和密碼
+    document.getElementById("Account").value = "Super001";
+    document.getElementById("Password").value = "password1";
+}
+function 老師DemoLogin() {
+    // 填入預設的帳號和密碼
+    document.getElementById("Account").value = "T001";
+    document.getElementById("Password").value = "password2";
+}
+function 會員DemoLogin() {
+    // 填入預設的帳號和密碼
+    document.getElementById("Account").value = "M001";
+    document.getElementById("Password").value = "password3";
+}
+function 註冊Demo() {
+    // 填入預設的帳號和密碼
+    document.getElementById("Name").value = "Demo001";
+    document.getElementById("Email").value = "Demo@yahoo.com";
+    document.getElementById("Account").value = "Jhon Line";
+    document.getElementById("Password").value = "password3error";
+}
