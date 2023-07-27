@@ -58,6 +58,11 @@ namespace IHMS.Controllers
             //};
             return View();
         }
+        public IActionResult getAvailableTimeId(int? id)
+        {
+            var ids = db.Schedules.Where(ca => ca.CourseId == id).Select(ca => ca.ScheduleId).Distinct();
+            return Json(ids);
+        }
 
     }
 }

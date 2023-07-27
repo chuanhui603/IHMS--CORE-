@@ -378,12 +378,7 @@
                             </li>
                         </ul>
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
-                            <li>
-                                <a href="#" id="addCandidate" data-nexthref="~/Student/ViewCoachDetails/2">
-                                    <i class="fa-solid fa-heart" data-nexthref="~/Student/ViewCoachDetails/2"></i>
-                                    <b data-nexthref="~/Student/ViewCoachDetails/2">&nbsp;&nbsp;加入候選</b>
-                                </a>
-                            </li>
+                            
                             <li>
                                 <a href="#" id="addContact" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/2">
                                     <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/2"></i>
@@ -773,55 +768,16 @@
             })
         })
 
-        //加入候選
-        $("#addCandidate").click(function () {
-            if ($("#btnLayOutLogin span").text() == "登入") {
-                pleaseLogin();
-            }
-            else {
-                $.get("@Url.Content("~/Student/addCandidate")", { FCoachId:2}, function (result) {
-                    if (result == "ok") {
-                        SwalGreen.fire({
-                            title: `已加入`,
-                            showDenyButton: false,
-                            showCancelButton: true,
-                            confirmButtonText: '前往候選教練',
-                            cancelButtonText: '繼續瀏覽',
-                            icon: 'success'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                /*跳轉CandidateList*/
-                                window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
-                            }
-                        })
-                    }
-                    else {
-                        SwalGreen.fire({
-                            title: `已是候選教練`,
-                            showDenyButton: false,
-                            showCancelButton: true,
-                            confirmButtonText: '前往候選教練',
-                            cancelButtonText: '繼續瀏覽',
-                            icon: 'warning'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                /*跳轉CandidateList*/
-                                window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
-                            }
-                        })
-                    }
-                })
-            }
-        })
+       
 
-        $("#addContact").click(function () {
+        /*$("#addContact").click(function () {
             if ($("#btnLayOutLogin span").text() == "登入") {
                 pleaseLogin();
             }
             else {
                 $("#modalContact").modal("show");
             }
-        })
+        })*/
 
     </script>
 }

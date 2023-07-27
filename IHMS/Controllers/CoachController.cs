@@ -6,14 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using IHMS.ViewModel;
 
 namespace IHMS.Controllers
 {
-    
+
     public class CoachController : Controller
     {
+        private IhmsContext db;
+        public CoachController(IhmsContext _context)
+        {
+            db = _context;
+        }
         private IWebHostEnvironment _enviro = null;
-        private readonly IhmsContext _context;
 
         public CoachController(IWebHostEnvironment e)
         {
@@ -23,12 +28,37 @@ namespace IHMS.Controllers
         // GET: Coach
         public ActionResult List_Done()
         {
-            IhmsContext db = new IhmsContext();
-            var datas = from c in db.Coaches
-                        where c.Condition == 1
-                        select c;
-            
-            return View(datas);
+            //IhmsContext db = new IhmsContext();
+            //foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
+            //{
+            //    var datas = from d in db.Coaches
+            //                where d.Condition == 1
+            //                select d;
+            //}
+            //return View(datas);
+            List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
+            foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
+            {
+                CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
+                {
+                    CoachId = c.CoachId,
+                    MemberId = c.MemberId,
+                    Image = c.Image,
+                    Intro = c.Intro,
+                    Rank = c.Rank,
+                    Commission = c.Commission,
+                    Condition = c.Condition.ToString(),
+                    Reason = c.Reason,
+                    Resume = c.Resume,
+                    Type = c.Type,
+                    Applytime = c.Applytime,
+                    Confirmtime = c.Confirmtime,
+                    Video = c.Video,
+                    
+                };
+                coaches.Add(coachViewModel);
+            }
+            return View(coaches);
         }
 
         public ActionResult List_UnReviewed()
