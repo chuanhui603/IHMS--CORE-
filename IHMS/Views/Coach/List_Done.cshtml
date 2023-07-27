@@ -126,7 +126,7 @@
 <section>
     @*篩選*@
     <div class="divSearch row">
-        <div class="col-1 col-form-label" id="divCount" style="font-weight:600">共 @Model.Count 筆</div>
+        <div class="col-1 col-form-label" id="divCount" style="font-weight:600">共 1 筆</div>
         <div class="col-lg-2">
             <select class="custom-select" id="selCity">
                 <option value="0" selected>所有城市</option>
@@ -215,39 +215,28 @@
                                 @c.
                             </td>
                             <td>
-                                @c.ApplyDate
+                                2023-07-28
                             </td>
                             @{
-                                if (c.Status == "審核中")
+                                if (c.Type == "未審核")
                                 {
                                     <td class="colorWait">
-                                        @c.Status
+                                        未審核
                                     </td>
                                 }
-                                else if (c.Status == "已退回")
+                                else if (c.Type == "已退件")
                                 {
                                     <td class="colorFalse">
-                                        @c.Status
+                                        已退件
                                     </td>
                                 }
                                 else
                                 {
                                     <td class="colorTrue">
-                                        @c.Status
+                                        審核完成
                                     </td>
                                 }
-                                if (c.Visible == "公開")
-                                {
-                                    <td class="colorTrue">
-                                        @c.Visible
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td class="colorWait">
-                                        @c.Visible
-                                    </td>
-                                }
+                                
                             }
                             <td class="details">
                                 <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看履歷</button>
