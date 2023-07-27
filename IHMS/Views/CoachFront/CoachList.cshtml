@@ -20,9 +20,7 @@
             color: #ffffff;
         }
 
-        /*section{
-            height:200vh
-        }*/
+        
         #title {
             background: url(../img/coach/Banner.jpg) center center repeat;
             background-size:cover;               
@@ -472,59 +470,39 @@
                     <span id="spFilter"></span>
                 </div>
                 <div class="divCoachList">
-                    @*@{
-                        int count = 0;
-                        foreach (var coach in Model)
-                        {
-                            count++;
-                            <div class="divCoachCard row animate__animated animate__fadeIn" id="coach_@count">
+                    @{
+                        
+                        
+                            <div class="divCoachCard row animate__animated animate__fadeIn" id=2>
                                 <div class="col-3 divImg">
-                                    <img src="/img/coach/coachImage/@coach.FCoachImage" class="imgCoach">
+                                <img src="/img/coach/coachImage/2f632566-4180-414e-ad04-d30d45912393.jpg" class="imgCoach">
                                 </div>
                                 <div class="col-9 divCoachInfo">
                                     <ul>
                                         <li style="list-style:none" class="liCoachName row">
-                                            <h3 class="col-8"><b>@coach.FCoachName</b></h3>
-                                            <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/@coach.FCoachId">教練檔案</a></div>
+                                            <h3 class="col-8"><b>教練一號</b></h3>
+                                            <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/2">教練檔案</a></div>
                                         </li>
-                                        <li style="list-style:none" class="li liAvgRate">
-                                            <span id="avg_@coach.FCoachId"></span>&nbsp;&nbsp;&nbsp;
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1_@coach.FCoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star2_@coach.FCoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star3_@coach.FCoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4_@coach.FCoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5_@coach.FCoachId" />&nbsp;&nbsp;&nbsp;
-                                            <span id="rateCount">(@coach.RateCount)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <span id="courseCount">@coach.FCourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
-                                        </li>
+                                        
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                            <span>@coach.CityName</span>
+                                            <span>高雄</span>
                                         </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/skill.png" class="imgIcon" />
-                                            <b>&nbsp;&nbsp;&nbsp;專長： </b>
+                                            <b>&nbsp;&nbsp;&nbsp;專業： </b>
                                             @{
                                                 string s = "";
-                                                foreach (var c in coach.Coach.TCoachSkills)
-                                                {
-                                                    string skillName = c.FSkill.FSkillName;
-                                                    s += skillName;
-                                                    s += "、";
-                                                }
-                                                if (s.Length != 0)
-                                                {
-                                                    s = s.Substring(0, s.Length - 1);
-                                                }
+                                                s ="健身運動";
                                                 <span class="spSkill">@s</span>
                                             }
                                         </li>
-                                        <li style="list-style:none" class="liSlogan"><span>@coach.FSlogan</span></li>
+                                        <li style="list-style:none" class="liSlogan"><span>健身從今天開始</span></li>
                                     </ul>
                                 </div>
                             </div>
                         }
-                    }*@
+                    
                 </div>
                 <div class="product__pagination divPage"></div>
                 <a id="gotop">
@@ -538,85 +516,51 @@
 
 @section Scripts{
     
-    @{
-        //教練評價
-        foreach (var coach in Model)
-        {
-            <script>
-                $.get("@Url.Content("~/Student/GetAvgRate")", { "id": "@coach.CoachId" },
-                    function (avg) {
-                        $(`#avg_@coach.CoachId`).text(`${avg}`);
-                        for (let i = 1; i <= `${avg}`; i++) {
-                            $(`#star${i}_@coach.CoachId`).removeClass("starOrig");
-                        }
-                    })
-            </script>
-        }
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script>
+        //Demo
+        $("#btnDemo").click((evt) => {
+            evt.preventDefault();
+            $("#ipKeyword").val("alisa");
+        })
 
-        //無搜尋結果時自動跳轉回教練列表
-        if (Model.Count() == 0)
-        {
-            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
-                SwalGreen.fire({
-                    title: '查無搜尋結果',
-                    text: '請重新搜尋或選擇篩選條件。',
-                    icon: 'warning',
-                    confirmButtonText: '前往教練列表',
-                    showCloseButton: true
-                }).then((result) => {
-                    if (result.isConfirmed)
-                        $(location).prop("href", "@Url.Content("~/Student/CoachList")");
-                })
-            </script>
+        //Page
+        function GetPage() {
+            $(".divPage").empty();
+            let coachCount = $(".divCoachList .divCoachCard").length;
+            let pageCount = coachCount / 10;
+            for (let i = 1; i < pageCount + 1; i++) {
+                $(".divPage").append(`<button class="btnPage" id="btn${i}">${i}</button>`);
+            }
+            //頁碼click
+            $(".btnPage").on("click", function () {
+                let coachCards = $(".divCoachCard");
+                coachCards.hide();
+                let index = 10 * parseInt($(this).text());
+                coachCards.slice(index - 10, index).show();
+                $('html,body').animate({ scrollTop: 0 }, 'slow');
+                $(this).addClass("selectedPage").siblings().removeClass("selectedPage");
+            })
+            //Next Page
+            if ($(".btnPage").length > 1) {
+                $(".divPage").append('<button class="btnPage btnNext"><i class="fa fa-long-arrow-right"></i></button>');
+            }
+            $(".btnNext").on("click", function () {
+                let recent = $(".selectedPage").text();
+                $(`#btn${parseInt(recent) + 1}`).trigger("click");
+            })
+            //顯示第一頁
+            let coachCards = $(".divCoachCard");
+            coachCards.hide();
+            coachCards.slice(0, 10).show();
+            $(".btnPage").first().addClass("selectedPage").siblings().removeClass("selectedPage");
         }
-    }
-    
-    //<script src="~/vendor/jquery/jquery.min.js"></script>
-    //<script>
-    //    //Demo
-    //    $("#btnDemo").click((evt) => {
-    //        evt.preventDefault();
-    //        $("#ipKeyword").val("alisa");
-    //    })
-
-    //    //Page
-    //    function GetPage() {
-    //        $(".divPage").empty();
-    //        let coachCount = $(".divCoachList .divCoachCard").length;
-    //        let pageCount = coachCount / 10;
-    //        for (let i = 1; i < pageCount + 1; i++) {
-    //            $(".divPage").append(`<button class="btnPage" id="btn${i}">${i}</button>`);
-    //        }
-    //        //頁碼click
-    //        $(".btnPage").on("click", function () {
-    //            let coachCards = $(".divCoachCard");
-    //            coachCards.hide();
-    //            let index = 10 * parseInt($(this).text());
-    //            coachCards.slice(index - 10, index).show();
-    //            $('html,body').animate({ scrollTop: 0 }, 'slow');
-    //            $(this).addClass("selectedPage").siblings().removeClass("selectedPage");
-    //        })
-    //        //Next Page
-    //        if ($(".btnPage").length > 1) {
-    //            $(".divPage").append('<button class="btnPage btnNext"><i class="fa fa-long-arrow-right"></i></button>');
-    //        }
-    //        $(".btnNext").on("click", function () {
-    //            let recent = $(".selectedPage").text();
-    //            $(`#btn${parseInt(recent) + 1}`).trigger("click");
-    //        })
-    //        //顯示第一頁
-    //        let coachCards = $(".divCoachCard");
-    //        coachCards.hide();
-    //        coachCards.slice(0, 10).show();
-    //        $(".btnPage").first().addClass("selectedPage").siblings().removeClass("selectedPage");
-    //    }
-    //    GetPage();
+        GetPage();
 
         //顯示教練數量
-        //$(document).ready(() => {
-        //    $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
-        //})
+        $(document).ready(() => {
+           $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
+        })
 
         //if未輸入關鍵字
         //$("#btnSearch").click((evt) => {
@@ -718,28 +662,28 @@
         //})
 
         //Ajax篩選後顯示教練
-        function GetCoach() {
-            $.ajax({
-                url: '@Url.Content("~/CoachFront/CoachList")',
-                type: 'post',
-                data: new FormData(document.frmFilter),
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    $(".divCoachList").empty();
-                    $("#spResultCount>b").text(`${data.length}`);
-                    $.each(data, function (index, coach) {
-                        $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
-                        //左-col-3
-                        $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
-                        $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.image}`);
-                        //右-col-9
-                        $(`#div${index}`).append(`<div class="col-9 divCoachInfo" id=divInfo${index}></div>`);
-                        $(`#divInfo${index}`).append(`<ul id=ul${index}></ul>`);
-                        //介紹、btn
-                        $(`#ul${index}`).append(`<li style="list-style:none" class="liCoachName row" id=liName${index}></li>`);
-                        $(`#liName${index}`).append(`<h3 class="col-8"><b>${coach.intro}</b></h3>`);
-                        $(`#liName${index}`).append(`<div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/${coach.fCoachId}">教練檔案</a></div>`);
+        //function GetCoach() {
+        //    $.ajax({
+        //        url: '@Url.Content("~/Student/CoachList")',
+        //        type: 'post',
+        //        data: new FormData(document.frmFilter),
+        //        processData: false,
+        //        contentType: false,
+        //        success: function (data) {
+        //            $(".divCoachList").empty();
+        //            $("#spResultCount>b").text(`${data.length}`);
+        //            $.each(data, function (index, coach) {
+        //                $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
+        //                //左-col-3
+        //                $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
+        //                $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.image}`);
+        //                //右-col-9
+        //                $(`#div${index}`).append(`<div class="col-9 divCoachInfo" id=divInfo${index}></div>`);
+        //                $(`#divInfo${index}`).append(`<ul id=ul${index}></ul>`);
+        //                //介紹、btn
+        //                $(`#ul${index}`).append(`<li style="list-style:none" class="liCoachName row" id=liName${index}></li>`);
+        //                $(`#liName${index}`).append(`<h3 class="col-8"><b>${coach.intro}</b></h3>`);
+        //                $(`#liName${index}`).append(`<div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/${coach.fCoachId}">教練檔案</a></div>`);
                         
                     //    $(".star").attr("src", "/img/coach/icon/star.png");
                     //    $(`#liRate${index}`).append(`<span id="rateCount">(${coach.rateCount})</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`);
@@ -759,9 +703,9 @@
                     //    //Slogan
                     //    $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);
                     //})
-                    GetPage();
-                }
-            });
+                //    GetPage();
+                //}
+            //});
         }
 
         //GoTop btn

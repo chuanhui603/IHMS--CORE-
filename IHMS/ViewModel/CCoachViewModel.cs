@@ -7,6 +7,7 @@ namespace IHMS.ViewModel
         public Coach Coach;
         public Member Member;
         public Course Course;
+        public Schedule Schedule;
         public CCoachViewModel()
         {
             Coach = new Coach();
