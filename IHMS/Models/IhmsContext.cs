@@ -613,6 +613,9 @@ public partial class IhmsContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("createdate");
             entity.Property(e => e.PlanId).HasColumnName("plan_id");
+            entity.Property(e => e.Registerdate)
+                .HasColumnType("datetime")
+                .HasColumnName("registerdate");
 
             entity.HasOne(d => d.SportNavigation).WithOne(p => p.Sport)
                 .HasForeignKey<Sport>(d => d.SportId)

@@ -17,104 +17,104 @@ namespace IHMS.Models
             set { _member = value; }
         }
 
-        public int MMemberId
+        public int MemberId
         {
             get { return _member.MemberId; }
             set { _member.MemberId = value; }
         }
         
-        public string? MName
+        public string? Name
         {
             get { return _member.Name; }
             set { _member.Name = value; }
         }
 
-        public string? MEmail
+        public string? Email
         {
             get { return _member.Email; }
             set { _member.Email = value; }
         }
 
-        public string? MPhone
+        public string? Phone
         {
             get { return _member.Phone; }
             set { _member.Phone = value; }
         }
 
-        public string? MAccount
+        public string? Account
         {
             get { return _member.Account; }
             set { _member.Account = value; }
         }
 
-        public string? MPassword
+        public string? Password
         {
             get { return _member.Password; }
             set { _member.Password = value; }
         }
 
-        public DateTime? MBirthday
+        public DateTime? Birthday
         {
             get { return _member.Birthday; }
             set { _member.Birthday = value; }
         }
 
-        public bool? MGender
+        public bool? Gender
         {
             get { return _member.Gender; }
             set { _member.Gender = value; }
         }
 
-        public bool? MMaritalStatus
+        public bool? MaritalStatus
         {
             get { return _member.MaritalStatus; }
             set { _member.MaritalStatus = value; }
         }
 
-        public string? MNickname
+        public string? Nickname
         {
             get { return _member.Nickname; }
             set { _member.Nickname = value; }
         }
 
-        public string? MAvatarImage
+        public string? AvatarImage
         {
             get { return _member.AvatarImage; }
             set { _member.AvatarImage = value; }
         }
         public IFormFile photo { get; set; }
 
-        public string? MResidentialCity
+        public string? ResidentialCity
         {
             get { return _member.ResidentialCity; }
             set { _member.ResidentialCity = value; }
         }
 
-        public int? MPermission
+        public int? Permission
         {
             get { return _member.Permission; }
             set { _member.Permission = value; }
         }
 
-        public string? MOccupation
+        public string? Occupation
         {
             get { return _member.Occupation; }
             set { _member.Occupation = value; }
         }
 
-        public string? MDiseaseDescription
+        public string? DiseaseDescription
         {
             get { return _member.DiseaseDescription; }
             set { _member.DiseaseDescription = value; }
         }
 
-        public string? MAllergyDescription
+        public string? AllergyDescription
         {
             get { return _member.AllergyDescription; }
             set { _member.AllergyDescription = value; }
         }
 
-        public DateTime? MLoginTime
+        public DateTime? LoginTime
         {
             get { return _member.LoginTime; }
             set { _member.LoginTime = value; }

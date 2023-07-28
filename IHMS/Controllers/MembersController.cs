@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IHMS.Models;
+using IHMS.ViewModel;
 
 
 namespace IHMS.Controllers
@@ -11,11 +12,22 @@ namespace IHMS.Controllers
         {
             _enviro = p;
         }
-        public IActionResult List()
+
+        public IActionResult List(CKeywordViewModel vm)
         {
+            string keyword = vm.txtKeyword;
             IhmsContext db = new IhmsContext();
-            var datas = from c in db.Members
+            IEnumerable<Member> datas = null;
+            if (string.IsNullOrEmpty(keyword))
+            {
+                datas = from c in db.Members
                         select c;
+            }
+            else
+                datas = db.Members.Where(p => p.Name.Contains(keyword) ||
+                p.Phone.Contains(keyword) ||
+                p.Email.Contains(keyword) ||
+                p.Account.Contains(keyword));
             return View(datas);
         }
         public ActionResult Edit(int? id)
@@ -30,7 +42,7 @@ namespace IHMS.Controllers
         public ActionResult Edit(CMember x)
         {
             IhmsContext db = new IhmsContext();
-            Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MMemberId);
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MemberId);
             if (cust != null)
             {
                 if (x.photo != null)
@@ -41,22 +53,22 @@ namespace IHMS.Controllers
                         FileMode.Create));
                     cust.AvatarImage = photoName;
                 }                
-                cust.Name = x.MName; //姓名
-                cust.Phone = x.MPhone; //電話
-                cust.Email = x.MEmail; //信箱
-                cust.Account = x.MAccount; //帳號
-                cust.Password = x.MPassword; //密碼
-                cust.Birthday = x.MBirthday; //生日
-                cust.Gender = x.MGender; //性別
-                cust.MaritalStatus = x.MMaritalStatus; //婚姻狀態
-                cust.Name = x.MName; //暱稱
-                //cust.MAvatarImage = x.MAvatarImage; // 頭像
-                cust.ResidentialCity = x.MResidentialCity; //居住城市
-                cust.Permission = x.MPermission; //權限
-                cust.Occupation = x.MOccupation; //職業
-                cust.DiseaseDescription = x.MDiseaseDescription; //疾病史
-                cust.AllergyDescription = x.MAllergyDescription; //過敏反應
-                cust.LoginTime = x.MLoginTime; //登入日期
+                cust.Name = x.Name; //姓名
+                cust.Phone = x.Phone; //電話
+                cust.Email = x.Email; //信箱
+                cust.Account = x.Account; //帳號
+                cust.Password = x.Password; //密碼
+                cust.Birthday = x.Birthday; //生日
+                cust.Gender = x.Gender; //性別
+                cust.MaritalStatus = x.MaritalStatus; //婚姻狀態
+                cust.Name = x.Name; //暱稱
+                //cust.AvatarImage = x.AvatarImage; // 頭像
+                cust.ResidentialCity = x.ResidentialCity; //居住城市
+                cust.Permission = x.Permission; //權限
+                cust.Occupation = x.Occupation; //職業
+                cust.DiseaseDescription = x.DiseaseDescription; //疾病史
+                cust.AllergyDescription = x.AllergyDescription; //過敏反應
+                cust.LoginTime = x.LoginTime; //登入日期
                 db.SaveChanges();
             }
             return RedirectToAction("List");

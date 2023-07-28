@@ -16,12 +16,13 @@ namespace IHMS.Controllers
             _logger = logger;
         }
 
+
         public IActionResult Index()
         {
 
             return View();
         }
-        public IActionResult Index2()
+        public IActionResult show()
         {
             var announcement = GetLatestAnnouncementFromDatabase();
             if (announcement != null)
@@ -32,6 +33,7 @@ namespace IHMS.Controllers
 
             return View(announcement);
         }
+
         private AnnouncementView GetLatestAnnouncementFromDatabase()
         {
             using (var connection = new SqlConnection(connectionString))

@@ -37,7 +37,7 @@ public partial class Member
 
     public string? AllergyDescription { get; set; }
 
-    public DateTime? LoginTime { get; set; }
+    public DateTime? LoginTime { get; set; }    
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 

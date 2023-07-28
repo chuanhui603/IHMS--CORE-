@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using IHMS.DTO;
 using System.Numerics;
 
@@ -177,6 +178,7 @@ namespace IHMS.APIControllers
         #region Put
 
         // PUT: api/Plans/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlan(int id, Plan plan)
         {
@@ -460,7 +462,7 @@ namespace IHMS.APIControllers
         public async Task<IActionResult> DeletePlan(int id)
         {
             DeletePlanDTO deleteitems = new DeletePlanDTO();
-
+           
             if (_context.Plans == null)
             {
                 return NotFound();
@@ -487,7 +489,7 @@ namespace IHMS.APIControllers
 
 
         #region function
-        public void deleteMethod(DeletePlanDTO delete)
+      public void deleteMethod(DeletePlanDTO delete)
         {
             for (int i = 0; i < delete.deleteDataSet.Length; i++)
             {
@@ -500,11 +502,11 @@ namespace IHMS.APIControllers
                             var query = _context.DietDetails.Where(d => d.DietId == diet.DietId);
                             foreach (var detail in query)
                             {
-                                _context.DietDetails.Remove(detail);
+                                 _context.DietDetails.Remove(detail);
                             }
-                            _context.Diets.Remove(diet);
+                             _context.Diets.Remove(diet);
                         }
-
+                       
 
                         break;
                     case "sport":
@@ -514,16 +516,16 @@ namespace IHMS.APIControllers
                             var query = _context.SportDetails.Where(d => d.SportId == sport.SportId);
                             foreach (var detail in query)
                             {
-                                _context.SportDetails.Remove(detail);
+                                 _context.SportDetails.Remove(detail);
                             }
-                            _context.Sports.Remove(sport);
+                             _context.Sports.Remove(sport);
                         }
 
                         break;
-                    default:
+                     default:
                         foreach (var water in delete.water)
                         {
-                            _context.Water.Remove(water);
+                             _context.Water.Remove(water);
                         }
                         break;
                 }
