@@ -32,9 +32,7 @@ namespace IHMS.Controllers
             IhmsContext db = new IhmsContext();
             //foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
             //{
-               var datas = from d in db.Coaches
-                            where d.Condition == 1|| d.Condition == 0|| d.Condition == 2
-                           select d;
+               var datas = db.Coaches.Include("Member").Select(c => c.Condition == 1 || c.Condition == 0 || c.Condition == 2);
             //}
             return View(datas);
             //List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();

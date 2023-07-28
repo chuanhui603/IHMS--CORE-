@@ -14,7 +14,7 @@
         }
 
         .modal-title {
-            color: #7FAD39;
+            color: #000093;
             font-weight: 600;
         }
 
@@ -33,7 +33,7 @@
         }
 
         .btn-success {
-            background-color: #7FAD39;
+            background-color: #5151A2;
             color: white;
             border: none;
         }
@@ -49,7 +49,7 @@
 
         #title {
             font-weight: 800;
-            color: #599e32;
+            color: #0080FF;
             margin-left: 20vw;
             margin-right: 20vw;
         }
@@ -80,8 +80,8 @@
         .btnPage {
             font-weight: 600;
             background-color: white;
-            color: #7fad39;
-            border: 1px solid #7fad39;
+            color: #66B3FF;
+            border: 1px solid #66B3FF;
             width: 35px;
             height: 35px;
             margin: 0px 8px;
@@ -89,12 +89,12 @@
         }
 
             .btnPage:hover {
-                background-color: #7fad39;
+                background-color: #66B3FF;
                 color: white;
             }
 
         .selectedPage {
-            background-color: #7fad39;
+            background-color: #66B3FF;
             color: white;
         }
 
@@ -350,18 +350,15 @@
         function viewResume() {
             let theCoachId = $(event.target).parents("tr").children("td:eq(0)").text();
             $.get("@Url.Content("~/Coach/getCoach")", { id: theCoachId }, function (c) {
-                
                 $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.Image});" />`)
                 $("#ddCoachId").html(c.CoachId);
                 $("#ddStatus").html(c.Condition);
-                $("#ddMemberId").html(c.MemberId);
-                
-                $("#ddCoachName").html(c.Member.Name);
+                //$("#ddMemberId").html(c.MemberId);
+                //$("#ddCoachName").html(c.Member.Name);
                 $("#ddApplyDate").html(c.applytime);
-                $("#ddCityName").html(c.Member.Residentialcity);
+                //$("#ddCityName").html(c.Member.Residentialcity);
                 $("#ddFee").html(c.commission);
                 $("#ddSkills").html(c.type);
-                
                 $("#ddSlogan").html(c.intro);
             })
         }
