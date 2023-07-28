@@ -9,13 +9,13 @@
 
         public string Sname { get; set; } = null!;
 
-        public TimeSpan Sporttime { get; set; }
+        public int? Timelong { get; set; }
 
         public int? Frequency { get; set; }
 
         public string Type { get; set; } = null!;
 
-        public string? Description { get; set; }
+        public string? Time { get; set; }
 
         public DateTime Registerdate { get; set; }
 

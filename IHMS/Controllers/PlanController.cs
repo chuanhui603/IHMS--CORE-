@@ -38,7 +38,6 @@ namespace IHMS.Controllers
                 PlanId = p.PlanId,
                 Name = _db.Members.Include("Plans").FirstOrDefault(m => m.MemberId==p.MemberId).Name,
                 Registerdate = p.RegisterDate,
-                EndDate = p.EndDate,
             });
             return View(query);
         }
@@ -86,8 +85,6 @@ namespace IHMS.Controllers
                 MemberName = _db.Members.Include("Plans").FirstOrDefault(m => m.MemberId == plan.MemberId).Name,
                 BodyPercentage = plan.BodyPercentage,
                 RegisterDate = plan.RegisterDate,
-                EndDate = plan.EndDate,
-                Pname = plan.Pname,
                 DietDate = dietdatelist,
                 DietId = dietId,
                 SportDate = sportdatelist,

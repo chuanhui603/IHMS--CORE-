@@ -9,7 +9,7 @@ public partial class Plan
 
     public int MemberId { get; set; }
 
-    public string Pname { get; set; } = null!;
+    public string? Type { get; set; }
 
     public int Weight { get; set; }
 
@@ -17,13 +17,21 @@ public partial class Plan
 
     public DateTime RegisterDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public string? Times { get; set; }
 
-    public string? Description { get; set; }
+    public int? Age { get; set; }
+
+    public double? Tdee { get; set; }
+
+    public double? Bmr { get; set; }
+
+    public int? Height { get; set; }
 
     public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
 
-    public virtual Sport? Sport { get; set; }
+    public virtual Member Member { get; set; } = null!;
+
+    public virtual ICollection<Sport> Sports { get; set; } = new List<Sport>();
 
     public virtual ICollection<Water> Water { get; set; } = new List<Water>();
 }

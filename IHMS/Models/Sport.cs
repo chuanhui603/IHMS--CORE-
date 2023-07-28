@@ -11,7 +11,5 @@ public partial class Sport
 
     public DateTime Createdate { get; set; }
 
-    public virtual ICollection<SportDetail> SportDetails { get; set; } = new List<SportDetail>();
-
-    public virtual Plan SportNavigation { get; set; } = null!;
+    public virtual Plan Plan { get; set; } = null!;
 }
