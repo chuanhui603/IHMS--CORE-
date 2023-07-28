@@ -28,39 +28,123 @@ namespace IHMS.Controllers
         // GET: Coach
         public ActionResult List_Done()
         {
-            //IhmsContext db = new IhmsContext();
+            
+            IhmsContext db = new IhmsContext();
             //foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
             //{
-            //    var datas = from d in db.Coaches
-            //                where d.Condition == 1
-            //                select d;
+               var datas = from d in db.Coaches
+                            where d.Condition == 1|| d.Condition == 0|| d.Condition == 2
+                           select d;
             //}
-            //return View(datas);
-            List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
-            foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
-            {
-                CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
-                {
-                    CoachId = c.CoachId,
-                    MemberId = c.MemberId,
-                    Image = c.Image,
-                    Intro = c.Intro,
-                    Rank = c.Rank,
-                    Commission = c.Commission,
-                    Condition = c.Condition.ToString(),
-                    Reason = c.Reason,
-                    Resume = c.Resume,
-                    Type = c.Type,
-                    Applytime = c.Applytime,
-                    Confirmtime = c.Confirmtime,
-                    Video = c.Video,
+            return View(datas);
+            //List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
+            //foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
+            //{
+            //    CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
+            //    {
+            //        CoachId = c.CoachId,
+            //        MemberId = c.MemberId,
+            //        Image = c.Image,
+            //        Intro = c.Intro,
+            //        Rank = c.Rank,
+            //        Commission = c.Commission,
+            //        Condition = c.Condition.ToString(),
+            //        Reason = c.Reason,
+            //        Resume = c.Resume,
+            //        Type = c.Type,
+            //        Applytime = c.Applytime,
+            //        Confirmtime = c.Confirmtime,
+            //        Video = c.Video
                     
-                };
-                coaches.Add(coachViewModel);
-            }
-            return View(coaches);
+            //    };
+            //    coaches.Add(coachViewModel);
+            //}
+            //return View(coaches);
+        }
+        public IActionResult getCoach(int? id)
+        {
+            var c = db.Coaches.FirstOrDefault(c => c.CoachId == id);
+            CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
+            {
+                CoachId = c.CoachId,
+                MemberId = c.MemberId,
+                Image = c.Image,
+                Intro = c.Intro,
+                Rank = c.Rank,
+                Commission = c.Commission,
+                Condition = c.Condition.ToString(),
+                Reason = c.Reason,
+                Resume = c.Resume,
+                Type = c.Type,
+                Applytime = c.Applytime,
+                Confirmtime = c.Confirmtime,
+                Video = c.Video
+            };
+
+            return Json(coachViewModel);
         }
 
+        public IActionResult passResume(int? id)
+        {
+            var theCoach = db.Coaches.FirstOrDefault(c => c.CoachId == id);
+            theCoach.Condition = 1;
+            
+            db.SaveChanges();
+            return Content("");
+        }
+        public IActionResult returnResume(int? id)
+        {
+            var theCoach = db.Coaches.FirstOrDefault(c => c.CoachId == id);
+            theCoach.Condition = 2;
+
+            db.SaveChanges();
+            return Content("");
+        }
+
+        public IActionResult loadCoach(CSearchCoachViewModel searchCoachViewModel)
+        {
+            IEnumerable<Coach> tCoaches = null;
+           
+                tCoaches = db.Coaches;
+
+            if (searchCoachViewModel.Sort == 1)
+                tCoaches = tCoaches.OrderByDescending(c => c.Applytime);
+            else
+                tCoaches = tCoaches.OrderBy(c => c.Applytime);
+
+            
+            if (!String.IsNullOrEmpty(searchCoachViewModel.KeyWord))
+                tCoaches = tCoaches.Where(c => c.Member.Name.ToLower().Contains(searchCoachViewModel.KeyWord.ToLower()) || c.CoachId.ToString().Contains(searchCoachViewModel.KeyWord));
+            if (searchCoachViewModel.Condition != null)
+                tCoaches = tCoaches.Where(c => c.Condition == searchCoachViewModel.Condition);
+
+            List<CCoachResumeViewModel> coaches = null;
+            if (tCoaches.Count() != 0)
+            {
+                coaches = new List<CCoachResumeViewModel>();
+                foreach (var c in tCoaches)
+                {
+                    CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
+                    {
+                        CoachId = c.CoachId,
+                        MemberId = c.MemberId,
+                        Image = c.Image,
+                        Intro = c.Intro,
+                        Rank = c.Rank,
+                        Commission = c.Commission,
+                        Condition = c.Condition.ToString(),
+                        Reason = c.Reason,
+                        Resume = c.Resume,
+                        Type = c.Type,
+                        Applytime = c.Applytime,
+                        Confirmtime = c.Confirmtime,
+                        Video = c.Video
+                    };
+                    coaches.Add(coachViewModel);
+                }
+            }
+            return Json(coaches);
+        }
         //public ActionResult List_UnReviewed()
         //{
         //    //IhmsContext db = new IhmsContext();
