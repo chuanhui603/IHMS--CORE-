@@ -204,10 +204,10 @@
                                 @c.CoachId
                             </td>
                             <td>
-                                
+                                @c.Member.Name
                             </td>
                             <td>
-                                
+                                @c.Member.ResidentialCity
                             </td>
                             <td>
                                 @c.Commission
@@ -353,10 +353,10 @@
                 $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.Image});" />`)
                 $("#ddCoachId").html(c.CoachId);
                 $("#ddStatus").html(c.Condition);
-                //$("#ddMemberId").html(c.MemberId);
-                //$("#ddCoachName").html(c.Member.Name);
+                $("#ddMemberId").html(c.MemberId);
+                $("#ddCoachName").html(c.Member.Name);
                 $("#ddApplyDate").html(c.applytime);
-                //$("#ddCityName").html(c.Member.Residentialcity);
+                $("#ddCityName").html(c.Member.Residentialcity);
                 $("#ddFee").html(c.commission);
                 $("#ddSkills").html(c.type);
                 $("#ddSlogan").html(c.intro);
