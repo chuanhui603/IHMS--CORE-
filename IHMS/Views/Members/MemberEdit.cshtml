@@ -2,8 +2,10 @@
 
 @{
     ViewData["Title"] = "MemberEdit";
-    Layout = "frontend_Layout";
+    Layout = "_Layout";
 }
+
+
 <head>
     <title>Title</title>
     <!-- Required meta tags -->
@@ -52,8 +54,8 @@
                                 <div class="row">
                                     <div class="col-4 reveal_b1">
                                         <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
-                                            <div class="form-group row justify-content-center">
-                                                <img src="/images/1.jpg" alt=" " class="rounded-circle img-responsive border border-ligt" id="ImgShow" />
+                                            <div class="form-group row justify-content-center">                                                
+                                                <img src="~/images/1.jpg" alt="" class="rounded-circle img-responsive border border-ligt" />
                                             </div>
                                         </div>
                                         <div class="form-group  justify-content-center">
@@ -108,7 +110,9 @@
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="會員資料修改" class="btn btn-success" />
+                                            
                             </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +139,8 @@
 <script src="~/js/Login.js"></script>
 <script>
     LoadlocalStorage()
-    LoginPermission()  
+    LoginPermission()
+    ImgShow()
 </script>
 
 @section Scripts {

@@ -67,10 +67,10 @@ function LoadlocalStorage() {
         try {
 
             // 將JSON字串轉換為JavaScript物件
-            const savedMember = JSON.parse(savedMemberJSON);         
+            const savedMember = JSON.parse(savedMemberJSON);        
             
             // 在這裡可以使用savedMember物件進行你需要的操作                
-            document.getElementById("MemberId").value = savedMember.memberId;
+            document.getElementById("MemberId").value = savedMember.memberId;            
             document.getElementById("Name").value = savedMember.name;
             document.getElementById("Email").value = savedMember.email;
             document.getElementById("Phone").value = savedMember.phone;
@@ -80,14 +80,16 @@ function LoadlocalStorage() {
             document.getElementById("Gender").value = savedMember.gender;
             document.getElementById("MaritalStatus").value = savedMember.maritalStatus;
             document.getElementById("Nickname").value = savedMember.nickname;
-            document.getElementById("AvatarImage").value = savedMember.avatarimage;
-            document.getElementById("Residentialcity").value = savedMember.residentialcity;
+            document.getElementById("AvatarImage").value = savedMember.avatarImage;
+            document.getElementById("Residentialcity").value = savedMember.residentialCity;
             document.getElementById("Permission").value = savedMember.permission;
             document.getElementById("Occupation").value = savedMember.occupation;
-            document.getElementById("Diseasedescription").value = savedMember.diseasedescription;
-            document.getElementById("Allergydescription").value = savedMember.allergydescription;
-            document.getElementById("Logintime").value = savedMember.logintime;
-            document.getElementById("ImgShow").value = "/images/1.jpg";            
+            document.getElementById("Diseasedescription").value = savedMember.diseaseDescription;
+            document.getElementById("Allergydescription").value = savedMember.allergyDescription;
+            document.getElementById("Logintime").value = savedMember.loginTime;            
+            
+
+
 
         } catch (error) {
             // 若轉換失敗或資料有誤，處理錯誤情況
@@ -98,6 +100,36 @@ function LoadlocalStorage() {
         console.log('尚未登入');
     }
 } //撈資料是這個
+function ImgShow() {//目前用不了 推測可能是vue的問題?
+    const savedMemberJSON = localStorage.getItem('currentMember');
+    if (savedMemberJSON) {
+        try {
+             
+            // 將JSON字串轉換為JavaScript物件
+            const savedMember = JSON.parse(savedMemberJSON);
+            console.log(savedMemberJSON) //有抓到
+            console.log(savedMember.avatarImage) //這邊會顯示圖檔名稱(1.jpg)         
+           
+            // 取得圖片元素
+            document.getElementById("ImgShow").src = '/images/' + savedMember.avatarImage; //不確定是不是正確寫法 因為測不了
+            const imgElement = document.getElementById("ImgShow");
+            console.log(imgElement);
+
+            
+             
+
+
+        } catch (error) {
+            // 若轉換失敗或資料有誤，處理錯誤情況
+            console.error('無效的圖片:', error);
+        }
+    } else {
+        // 若沒有取得會員資料，處理未登入情況
+        console.error('尚未登入');
+    }
+}
+ 
+
 
 
 // 在網頁載入時執行設定
