@@ -1,4 +1,5 @@
 ﻿using IHMS.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 namespace IHMS.ViewModel
@@ -6,58 +7,107 @@ namespace IHMS.ViewModel
     internal class CCoachResumeViewModel
     {
         private IhmsContext db;
-        public Schedule Schedule;
-
+        
         public CCoachResumeViewModel(IhmsContext context)
         {
             db = context;
         }
-        [DisplayName("教練編號")]
         public int CoachId { get; set; }
-        [DisplayName("會員編號")]
-        public int MemberId { get; set; }
-        [DisplayName("個人簡介")]
-        public string? Intro { get; set; }
-        [DisplayName("個人圖片")]
-        public string Image { get; set; } = null!;
-
-        public int? Rank { get; set; }
-        [DisplayName("抽成比例")]
-        public double? Commission { get; set; }
-        [DisplayName("個人履歷")]
-        public string Resume { get; set; } = null!;
-        [DisplayName("授課影片")]
-        public string? Video { get; set; }
-       
-        
-        [DisplayName("緣由")]
-        public string? Reason { get; set; }
-        [DisplayName("申請時間")]
-        public DateTime Applytime { get; set; }
-        [DisplayName("審查時間")]
-        public DateTime Confirmtime { get; set; }
-
-        public string? Type { get; set; }
-
-        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
-
-        public virtual Member Member { get; set; } = null!;
-        [DisplayName("審查狀態")]
-        public string? Condition
+        public string CoachName { get; set; }
+        public int? MemberId { get; set; }
+        public int? CityId { get; set; }
+        public string CoachImage { get; set; }
+        public int? CoachFee { get; set; }
+        public string CoachDescription { get; set; }
+        public string ApplyDate { get; set; }
+        public int? StatusNumber { get; set; }
+        public bool? Visible { get; set; }
+        public int? CourseCount { get; set; }
+        public string Slogan { get; set; }
+        public string CityName
         {
             get
             {
-                if (Condition == "0")
-                    return "未審核";
-                else if (Condition == "1")
-                    return "審核完成";
-                else if (Condition == "2")
-                    return "已退件";
+                if (CityId != null)
+                    return db.Cities.FirstOrDefault(c => c.CityId == CityId).CityName;
+                else
+                    return null;
+
+            }
+        }
+        public string ApplyDate1
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(ApplyDate))
+                {
+                    string fApplyDate = ApplyDate;
+                    string yyyy = fApplyDate.Substring(0, 4);
+                    string MM = fApplyDate.Substring(4, 2);
+                    string dd = fApplyDate.Substring(6, 2);
+                    string hh = fApplyDate.Substring(8, 2);
+                    string mm = fApplyDate.Substring(10, 2);
+                    return $"{yyyy}-{MM}-{dd} {hh}:{mm}";
+                }
                 else
                     return null;
             }
-            set { Condition = value; }
         }
-        
+        public string Status
+        {
+            get
+            {
+                if (StatusNumber != null)
+                    return db.Statuses.FirstOrDefault(s => s.StatusNumber == StatusNumber).Status1;
+                else
+                    return null;
+            }
+        }
+        public string Visible1
+        {
+            get
+            {
+                if (Visible != null)
+                {
+                    if ((bool)(Visible))
+                        return "公開";
+                    else
+                        return "未公開";
+                }
+                else
+                    return null;
+            }
+        }
+
+        public IEnumerable<string> Skills
+        {
+            get
+            {
+                if (CoachId != null && CoachId != 0)
+                    return db.CoachSkills.Where(cs => cs.CoachId == CoachId).Include(cs => cs.Skill).Select(cs => cs.Skill.SkillName);
+                else
+                    return null;
+            }
+        }
+        public IEnumerable<string> Experiences
+        {
+            get
+            {
+                if (CoachId != null && CoachId != 0)
+                    return db.CoachExperiences.Where(e => e.CoachId == CoachId).Select(e => e.Experience);
+                else
+                    return null;
+            }
+        }
+        public IEnumerable<string> Licenses
+        {
+            get
+            {
+                if (CoachId != null && CoachId != 0)
+                    return db.CoachLicenses.Where(l => l.CoachId == CoachId).Select(l => l.License);
+                else
+                    return null;
+            }
+        }
     }
 }

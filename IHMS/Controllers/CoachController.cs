@@ -28,39 +28,31 @@ namespace IHMS.Controllers
         // GET: Coach
         public ActionResult List_Done()
         {
-            
             IhmsContext db = new IhmsContext();
-            //foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
-            //{
-            var datas = from d in db.Coaches
-                        join m in db.Members
-                        on d.MemberId equals m.MemberId
-                        where d.Condition == 1 || d.Condition == 0 || d.Condition == 2
-                        select d;
-            return View(datas);
-            //List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
-            //foreach (var c in db.Coaches.OrderByDescending(c => c.Applytime))
-            //{
-            //    CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
-            //    {
-            //        CoachId = c.CoachId,
-            //        MemberId = c.MemberId,
-            //        Image = c.Image,
-            //        Intro = c.Intro,
-            //        Rank = c.Rank,
-            //        Commission = c.Commission,
-            //        Condition = c.Condition.ToString(),
-            //        Reason = c.Reason,
-            //        Resume = c.Resume,
-            //        Type = c.Type,
-            //        Applytime = c.Applytime,
-            //        Confirmtime = c.Confirmtime,
-            //        Video = c.Video
-                    
-            //    };
-            //    coaches.Add(coachViewModel);
-            //}
-            //return View(coaches);
+
+            //var datas = from c in db.Coaches
+            //            select c;
+            //return View(datas);
+            List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
+            foreach (var c in db.Coaches.OrderByDescending(c => c.ApplyDate))
+            {
+                CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
+                {
+                    CoachId = c.CoachId,
+                    CoachName = c.CoachName,
+                    MemberId = c.MemberId,
+                    CityId = c.CityId,
+                    CoachImage = c.CoachImage,
+                    CoachFee = c.CoachFee,
+                    CoachDescription = c.CoachDescription,
+                    ApplyDate = c.ApplyDate,
+                    StatusNumber = c.StatusNumber,
+                    Visible = c.Visible,
+                    Slogan = c.Slogan
+                };
+                coaches.Add(coachViewModel);
+            }
+            return View(coaches);
         }
         public IActionResult getCoach(int? id)
         {
@@ -68,18 +60,16 @@ namespace IHMS.Controllers
             CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
             {
                 CoachId = c.CoachId,
+                CoachName = c.CoachName,
                 MemberId = c.MemberId,
-                Image = c.Image,
-                Intro = c.Intro,
-                Rank = c.Rank,
-                Commission = c.Commission,
-                Condition = c.Condition.ToString(),
-                Reason = c.Reason,
-                Resume = c.Resume,
-                Type = c.Type,
-                Applytime = c.Applytime,
-                Confirmtime = c.Confirmtime,
-                Video = c.Video
+                CityId = c.CityId,
+                CoachImage = c.CoachImage,
+                CoachFee = c.CoachFee,
+                CoachDescription = c.CoachDescription,
+                ApplyDate = c.ApplyDate,
+                StatusNumber = c.StatusNumber,
+                Visible = c.Visible,
+                Slogan = c.Slogan
             };
 
             return Json(coachViewModel);
@@ -88,7 +78,7 @@ namespace IHMS.Controllers
         public IActionResult passResume(int? id)
         {
             var theCoach = db.Coaches.FirstOrDefault(c => c.CoachId == id);
-            theCoach.Condition = 1;
+            theCoach.StatusNumber = 1;
             
             db.SaveChanges();
             return Content("");
@@ -96,7 +86,7 @@ namespace IHMS.Controllers
         public IActionResult returnResume(int? id)
         {
             var theCoach = db.Coaches.FirstOrDefault(c => c.CoachId == id);
-            theCoach.Condition = 2;
+            theCoach.StatusNumber = 2;
 
             db.SaveChanges();
             return Content("");
@@ -109,15 +99,15 @@ namespace IHMS.Controllers
                 tCoaches = db.Coaches;
 
             if (searchCoachViewModel.Sort == 1)
-                tCoaches = tCoaches.OrderByDescending(c => c.Applytime);
+                tCoaches = tCoaches.OrderByDescending(c => c.ApplyDate);
             else
-                tCoaches = tCoaches.OrderBy(c => c.Applytime);
+                tCoaches = tCoaches.OrderBy(c => c.ApplyDate);
 
             
             if (!String.IsNullOrEmpty(searchCoachViewModel.KeyWord))
                 tCoaches = tCoaches.Where(c => c.Member.Name.ToLower().Contains(searchCoachViewModel.KeyWord.ToLower()) || c.CoachId.ToString().Contains(searchCoachViewModel.KeyWord));
             if (searchCoachViewModel.Condition != null)
-                tCoaches = tCoaches.Where(c => c.Condition == searchCoachViewModel.Condition);
+                tCoaches = tCoaches.Where(c => c.StatusNumber == searchCoachViewModel.Condition);
 
             List<CCoachResumeViewModel> coaches = null;
             if (tCoaches.Count() != 0)
@@ -128,18 +118,16 @@ namespace IHMS.Controllers
                     CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
                     {
                         CoachId = c.CoachId,
+                        CoachName = c.CoachName,
                         MemberId = c.MemberId,
-                        Image = c.Image,
-                        Intro = c.Intro,
-                        Rank = c.Rank,
-                        Commission = c.Commission,
-                        Condition = c.Condition.ToString(),
-                        Reason = c.Reason,
-                        Resume = c.Resume,
-                        Type = c.Type,
-                        Applytime = c.Applytime,
-                        Confirmtime = c.Confirmtime,
-                        Video = c.Video
+                        CityId = c.CityId,
+                        CoachImage = c.CoachImage,
+                        CoachFee = c.CoachFee,
+                        CoachDescription = c.CoachDescription,
+                        ApplyDate = c.ApplyDate,
+                        StatusNumber = c.StatusNumber,
+                        Visible = c.Visible,
+                        Slogan = c.Slogan
                     };
                     coaches.Add(coachViewModel);
                 }
@@ -158,7 +146,7 @@ namespace IHMS.Controllers
         {
             IhmsContext db = new IhmsContext();
             var datas = from c in db.Coaches
-                        where c.Condition == 2
+                        where c.StatusNumber == 2
                         select c;
             return View(datas);
         }
@@ -166,7 +154,7 @@ namespace IHMS.Controllers
         {
             IhmsContext db = new IhmsContext();
             var datas = from c in db.Coaches
-                        where c.Condition == 3
+                        where c.StatusNumber == 3
                         select c;
             return View(datas);
         }

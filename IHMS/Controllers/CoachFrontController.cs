@@ -40,20 +40,25 @@ namespace IHMS.Controllers
                 string keyword = v.txtKeyword.ToLower();
                 datas = _context.Coaches
                     .Include(c => c.Member)
-                    .Include(c => c.Courses)
-                    
-                    
-                    .Where(c => 
-                    (c.Member.Name.ToLower().Contains(keyword) || c.Member.ResidentialCity.ToLower().Contains(keyword)  ));
+                    .Include(c => c.City)
+                    .Include(c => c.CoachSkills).ThenInclude(cs => cs.Skill)
+                    .Include(c => c.CoachExperiences)
+                    .Include(c => c.CoachLicenses)
+                    .Include(c => c.CoachRates).AsEnumerable()
+                    .Where(c => c.Visible == true &&
+                    (c.CoachName.ToLower().Contains(keyword) || c.City.CityName.ToLower().Contains(keyword) ||
+                    c.CoachSkills.Any(cs => cs.Skill.SkillName.ToLower().Contains(keyword)) ||
+                    c.CoachDescription.ToLower().Contains(keyword) || c.Slogan.ToLower().Contains(keyword) ||
+                    c.CoachExperiences.Any(ce => ce.Experience.ToLower().Contains(keyword)) || c.CoachLicenses.Any(ce => ce.License.ToLower().Contains(keyword))));
             }
             else
             {
                 datas = _context.Coaches
                                     .Include(c => c.Member)
-                    .Include(c => c.Courses)
-                    
-                    
-                                    .Where(c => c.Condition== 1);
+                                    .Include(c => c.City)
+                                    .Include(c => c.CoachSkills).ThenInclude(cs => cs.Skill)
+                                    .Include(c => c.CoachRates).AsEnumerable()
+                                    .Where(c => c.Visible == true);
             }
             ViewBag.Keyword = v.txtKeyword;
             var coaches = CCoachViewModel.CoachList(datas.ToList());
@@ -69,11 +74,11 @@ namespace IHMS.Controllers
                 return RedirectToAction("CoachList");
 
             var data = _context.Coaches.Where(c => c.CoachId == id)
-                .Include(c => c.Image)
-                .Include(c => c.Courses)
-                .Include(c => c.Intro)
-                .Include(c => c.Type)
-                .Include(c => c.Video);
+                .Include(c => c.CoachSkills)
+                .Include(c => c.CoachAvailableTimes)
+                .Include(c => c.CoachExperiences)
+                .Include(c => c.CoachLicenses)
+                .FirstOrDefault(c => c.MemberId == id);
 
             CCoachViewModel vModel = new CCoachViewModel
             {
@@ -86,7 +91,7 @@ namespace IHMS.Controllers
         //教練預約時間表-可預約
         public IActionResult getAvailableTimeId(int? id)
         {
-            var ids = db.Schedules.Where(ca => ca.CourseId == id).Select(ca => ca.StartTime).Distinct();
+            var ids = db.Schedules.Where(ca => ca.CourseId == id).Select(ca => ca.CourseTime).Distinct();
             return Json(ids);
         }
         
@@ -127,8 +132,8 @@ namespace IHMS.Controllers
                 userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
             }
             c.MemberId = userId;
-            c.Condition = 0;
-            c.Applytime = DateTime.Now;
+            c.StatusNumber = 0;
+            c.ApplyDate = DateTime.Now.ToString();
             _context.Coaches.Add(c);
             _context.SaveChanges();
             //if (File != null)
@@ -199,11 +204,10 @@ namespace IHMS.Controllers
                 userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
             }
             Coach data = _context.Coaches
-                .Include(c => c.Image)
-                .Include(c => c.Courses)
-                .Include(c => c.Intro)
-                .Include(c => c.Type)
-                .Include(c => c.Video)
+                .Include(c => c.CoachSkills)
+                .Include(c => c.CoachAvailableTimes)
+                .Include(c => c.CoachExperiences)
+                .Include(c => c.CoachLicenses)
                 .FirstOrDefault(c => c.MemberId == userId);
             CCoachViewModel vModel = new CCoachViewModel
             {

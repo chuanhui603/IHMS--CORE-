@@ -41,8 +41,6 @@ public partial class Member
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
-    public virtual ICollection<Coach> Coaches { get; set; } = new List<Coach>();
-
     public virtual HealthInfo? HealthInfo { get; set; }
 
     public virtual ICollection<MessageBoard> MessageBoards { get; set; } = new List<MessageBoard>();
@@ -54,6 +52,4 @@ public partial class Member
     public virtual ICollection<Plan> Plans { get; set; } = new List<Plan>();
 
     public virtual ICollection<PointRecord> PointRecords { get; set; } = new List<PointRecord>();
-
-    public virtual ICollection<Score> Scores { get; set; } = new List<Score>();
 }

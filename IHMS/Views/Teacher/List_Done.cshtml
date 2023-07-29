@@ -30,22 +30,22 @@
                 序
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MemberId)
+               
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rank)
+                
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Commission)
+               
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Applytime)
+               
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Confirmtime)
+               
             </th>
 
             <th></th>
@@ -62,24 +62,24 @@
                         @count
                     </td>
                     <td>
-                        <img src="~/Images/@item.Image" width="100" height="125" />
+                        <img src="~/Images/" width="100" height="125" />
 
                     </td>
                     <td >
                         @Html.DisplayFor(modelItem => item.MemberId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Rank)
+                       
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Commission)
+                        
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Applytime)
+                        
                     </td>
                     
                     <td>
-                        @Html.DisplayFor(modelItem => item.Confirmtime)
+                        
                     </td>
                     <td>
                         @Html.ActionLink("詳細內容", "Details", "Coach", new { id = item.CoachId },

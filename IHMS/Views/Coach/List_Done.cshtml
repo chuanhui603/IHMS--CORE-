@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IHMS.Models.Coach>
+﻿@model List<IHMS.ViewModel.CCoachResumeViewModel>
 
 @{
     ViewData["Title"] = "List";
@@ -14,7 +14,7 @@
         }
 
         .modal-title {
-            color: #000093;
+            color: #7FAD39;
             font-weight: 600;
         }
 
@@ -33,7 +33,7 @@
         }
 
         .btn-success {
-            background-color: #5151A2;
+            background-color: #7FAD39;
             color: white;
             border: none;
         }
@@ -49,7 +49,7 @@
 
         #title {
             font-weight: 800;
-            color: #0080FF;
+            color: #599e32;
             margin-left: 20vw;
             margin-right: 20vw;
         }
@@ -80,8 +80,8 @@
         .btnPage {
             font-weight: 600;
             background-color: white;
-            color: #66B3FF;
-            border: 1px solid #66B3FF;
+            color: #7fad39;
+            border: 1px solid #7fad39;
             width: 35px;
             height: 35px;
             margin: 0px 8px;
@@ -89,12 +89,12 @@
         }
 
             .btnPage:hover {
-                background-color: #66B3FF;
+                background-color: #7fad39;
                 color: white;
             }
 
         .selectedPage {
-            background-color: #66B3FF;
+            background-color: #7fad39;
             color: white;
         }
 
@@ -120,13 +120,12 @@
     </style>
 }
 
-
 <h2 id="title">審核教練</h2>
 <hr />
 <section>
     @*篩選*@
     <div class="divSearch row">
-        <div class="col-1 col-form-label" id="divCount" style="font-weight:600">共 1 筆</div>
+        
         <div class="col-lg-2">
             <select class="custom-select" id="selCity">
                 <option value="0" selected>所有城市</option>
@@ -184,13 +183,15 @@
                     </th>
                     <th class="thStatus">
                         <select id="selStatus">
-                            <option value="3" selected>所有履歷狀態</option>
-                            <option value="0">未審核</option>
-                            <option value="1">審核通過</option>
-                            <option value="2">已退回</option>
+                            <option value="0" selected>所有履歷狀態</option>
+                            <option value="65">審核中</option>
+                            <option value="66">審核通過</option>
+                            <option value="67">已退回</option>
                         </select>
                     </th>
-                    
+                    <th>
+                        公開狀態
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -204,37 +205,48 @@
                                 @c.CoachId
                             </td>
                             <td>
-                                @c.Member.Name
+                                @c.CoachName
                             </td>
                             <td>
-                                @c.Member.ResidentialCity
+                                @c.CityName
                             </td>
                             <td>
-                                @c.Commission
+                                @c.CoachFee
                             </td>
                             <td>
-                                2023-07-28
+                                @c.ApplyDate
                             </td>
                             @{
-                                if (c.Condition == 1)
+                                if (c.Status == "審核中")
                                 {
-                                    <td class="colorTrue">
-                                        審核完成
+                                    <td class="colorWait">
+                                        @c.Status
                                     </td>
                                 }
-                                else if (c.Condition == 2)
+                                else if (c.Status == "已退回")
                                 {
                                     <td class="colorFalse">
-                                        已退件
+                                        @c.Status
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="colorTrue">
+                                        @c.Status
+                                    </td>
+                                }
+                                if (c.Visible1 == "公開")
+                                {
+                                    <td class="colorTrue">
+                                        @c.Visible1
                                     </td>
                                 }
                                 else
                                 {
                                     <td class="colorWait">
-                                        未審核
+                                        @c.Visible1
                                     </td>
                                 }
-                                
                             }
                             <td class="details">
                                 <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看履歷</button>
@@ -349,17 +361,36 @@
         //查看履歷
         function viewResume() {
             let theCoachId = $(event.target).parents("tr").children("td:eq(0)").text();
-            $.get("@Url.Content("~/Coach/getCoach")", { id: theCoachId }, function (c) {
-                $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.Image});" />`)
-                $("#ddCoachId").html(c.CoachId);
-                $("#ddStatus").html(c.Condition);
-                $("#ddMemberId").html(c.MemberId);
-                $("#ddCoachName").html(c.Member.Name);
-                $("#ddApplyDate").html(c.applytime);
-                $("#ddCityName").html(c.Member.Residentialcity);
-                $("#ddFee").html(c.commission);
-                $("#ddSkills").html(c.type);
-                $("#ddSlogan").html(c.intro);
+            $.get("@Url.Content("~/Admin/CoachManage/getCoach")", { id: theCoachId }, function (c) {
+                let skill = "";
+                $.each(c.skills, function (idx, val) {
+                    skill += val;
+                    skill += "、";
+                })
+                skill = skill.substr(0, skill.length - 1);
+                let experience = "";
+                $.each(c.experiences, function (idx, val) {
+                    experience += val;
+                    experience += "<br />";
+                })
+                let license = "";
+                $.each(c.licenses, function (idx, val) {
+                    license += val;
+                    license += "<br />";
+                })
+                $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.fCoachImage});" />`)
+                $("#ddCoachId").html(c.fCoachId);
+                $("#ddStatus").html(c.status);
+                $("#ddMemberId").html(c.fMemberId);
+                $("#ddVisible").html(c.visible);
+                $("#ddCoachName").html(c.fCoachName);
+                $("#ddApplyDate").html(c.applyDate);
+                $("#ddCityName").html(c.cityName);
+                $("#ddFee").html(c.fCoachFee);
+                $("#ddSkills").html(skill);
+                $("#ddExperiences").html(experience);
+                $("#ddLicenses").html(license);
+                $("#ddSlogan").html(c.fSlogan);
             })
         }
         $(".btnViewResume").on("click", viewResume);
@@ -378,9 +409,10 @@
                 icon: 'question'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get("@Url.Content("~/Coach/passResume")", { id: theCoachId }, function (c) {
+                    $.get("@Url.Content("~/Admin/CoachManage/passResume")", { id: theCoachId }, function (c) {
                         theTr.children("td:eq(5)").text("審核通過");
                         theTr.children("td:eq(5)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorTrue");
+                        theTr.children("td:eq(6)").text("公開");
                         theTr.children("td:eq(6)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorTrue");
                         SwalGreen.fire(`${theCoachName}教練通過審核`, '', 'success')
                     })
@@ -403,9 +435,10 @@
                 icon: 'question'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get("@Url.Content("~/Coach/returnResume")", { id: theCoachId }, function (c) {
+                    $.get("@Url.Content("~/Admin/CoachManage/returnResume")", { id: theCoachId }, function (c) {
                         theTr.children("td:eq(5)").text("已退回");
                         theTr.children("td:eq(5)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorFalse");
+                        theTr.children("td:eq(6)").text("未公開");
                         theTr.children("td:eq(6)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorWait");
                         SwalGreen.fire(`已退回${theCoachName}的履歷`, '', 'error')
                     })
@@ -423,7 +456,7 @@
             else {//orderby
                 isDesc = 0;
             }
-            $.post("@Url.Content("~/Coach/loadCoach")", { "CityId": $("#selCity").val(), "SkillId": $("#selSkill").val(), "KeyWord": $("#inpKeyword").val(), "Sort": isDesc, "StatusNum": $("#selStatus").val() }, function (coaches) {
+            $.post("@Url.Content("~/Admin/CoachManage/loadCoach")", { "CityId": $("#selCity").val(), "SkillId": $("#selSkill").val(), "KeyWord": $("#inpKeyword").val(), "Sort": isDesc, "StatusNum": $("#selStatus").val() }, function (coaches) {
                 let html = "";
                 $.each(coaches, function (idx, val) {
                     html += `<tr><td>${val.fCoachId}</td>`;

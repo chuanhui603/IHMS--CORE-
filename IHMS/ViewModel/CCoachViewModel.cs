@@ -1,18 +1,20 @@
 ﻿using IHMS.Models;
-
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 namespace IHMS.ViewModel
 {
     public class CCoachViewModel
     {
         public Coach Coach;
         public Member Member;
-        public Course Course;
-        public Schedule Schedule;
         public CCoachViewModel()
         {
             Coach = new Coach();
         }
-        
         public CCoachViewModel(Coach c)
         {
             Coach = c;
@@ -27,87 +29,78 @@ namespace IHMS.ViewModel
             }
             return list;
         }
-        
         public int CoachId
         {
             get { return Coach.CoachId; }
         }
-        public int? MemberId
+        public int? FMemberId
         {
-            get { return Coach.MemberId; }
-            set { Coach.MemberId = (int)value; }
+            get { return Coach.CoachId; }
+            set { Coach.CoachId = (int)value; }
         }
-        public string Name
+        //public bool? Gender
+        //{
+        //    get { return Coach.Member.FGender; }
+        //    set { Coach.Member.FGender = value; }
+        //}
+        public string CoachName
         {
-            get { return Member.Name; }
-            set { Member.Name = value; }
+            get { return Coach.CoachName; }
+            set { Coach.CoachName = value; }
         }
-        public bool? Gender
+        public int? CityId
         {
-            get { return Member.Gender; }
-            set { Member.Gender = value; }
+            get { return Coach.CityId; }
+            set { Coach.CityId = value; }
         }
-        public string City
+        public string CityName
         {
-            get { return Member.ResidentialCity; }
-            set { Member.ResidentialCity = value; }
+            get { return Coach.City.CityName; }
+            set { Coach.City.CityName = value; }
         }
-        public string Intro
+        public string CoachImage
         {
-            get { return Coach.Intro; }
-            set { Coach.Intro = value; }
+            get { return Coach.CoachImage; }
+            set { Coach.CoachImage = value; }
         }
-        public string Image
+        public int? CoachFee
         {
-            get { return Coach.Image; }
-            set { Coach.Image = value; }
+            get { return Coach.CoachFee; }
+            set { Coach.CoachFee = value; }
         }
-        
-        public string Type
+        public string ApplyDate
         {
-            get { return Coach.Type; }
-            set { Coach.Type = value; }
+            get { return Coach.ApplyDate; }
+            set { Coach.ApplyDate = value; }
         }
-        public double? Commission
+        public int? StatusNumber
         {
-            get { return Coach.Commission; }
-            set { Coach.Commission = value; }
+            get { return Coach.StatusNumber; }
+            set { Coach.StatusNumber = value; }
         }
-        public DateTime ApplyDate
+        public bool? Visible
         {
-            get { return Coach.Applytime; }
-            set { Coach.Applytime = value; }
+            get { return Coach.Visible; }
+            set { Coach.Visible = value; }
         }
-        public DateTime ConfirmDate
+        public int? CourseCount
         {
-            get { return Coach.Confirmtime; }
-            set { Coach.Confirmtime = value; }
+            get { return Coach.CourseCount; }
+            set { Coach.CourseCount = value; }
         }
-        public int? Rank
+        public string CoachDescription
         {
-            get { return Coach.Rank; }
-            set { Coach.Rank = value; }
+            get { return Coach.CoachDescription; }
+            set { Coach.CoachDescription = value; }
         }
-        public string Resume
+        public string Slogan
         {
-            get { return Coach.Resume; }
-            set { Coach.Resume = value; }
+            get { return Coach.Slogan; }
+            set { Coach.Slogan = value; }
         }
-        public string Video
+        public int RateCount
         {
-            get { return Coach.Video; }
-            set { Coach.Video = value; }
+            get { return Coach.CoachRates.Count(); }
         }
-        public int Condition
-        {
-            get { return Coach.Condition; }
-            set { Coach.Condition= value; }
-        }
-        public string Reason
-        {
-            get { return Coach.Reason; }
-            set { Coach.Reason = value; }
-        }
-        
     }
 }
