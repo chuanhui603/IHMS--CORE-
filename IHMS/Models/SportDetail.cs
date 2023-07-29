@@ -22,4 +22,6 @@ public partial class SportDetail
     public int? Timelong { get; set; }
 
     public bool? Isdone { get; set; }
+
+    public int? Sets { get; set; }
 }

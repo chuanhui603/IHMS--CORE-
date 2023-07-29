@@ -227,13 +227,13 @@ public partial class IhmsContext : DbContext
                 .HasColumnName("decription");
             entity.Property(e => e.DietId).HasColumnName("diet_id");
             entity.Property(e => e.Dname)
-                .HasMaxLength(50)
+                .HasMaxLength(30)
                 .HasColumnName("dname");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
             entity.Property(e => e.Type)
-                .HasMaxLength(50)
+                .HasMaxLength(20)
                 .HasColumnName("type");
 
             entity.HasOne(d => d.Diet).WithMany(p => p.DietDetails)
@@ -628,6 +628,7 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
+            entity.Property(e => e.Sets).HasColumnName("sets");
             entity.Property(e => e.Sname)
                 .HasMaxLength(50)
                 .HasColumnName("sname");

@@ -19,7 +19,7 @@ public partial class Plan
 
     public string? Times { get; set; }
 
-    public int? Age { get; set; }
+    public int Age { get; set; }
 
     public double? Tdee { get; set; }
 

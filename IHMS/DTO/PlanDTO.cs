@@ -12,7 +12,6 @@ namespace IHMS.DTO
         public string? Type { get; set; }
         public int Age { get; set; }
         public int Weight { get; set; }
-        public double Bmi { get; set; }
         public string? Times { get; set; }
         public int? Height { get; set; }
         public DateTime RegisterDate { get; set; }
