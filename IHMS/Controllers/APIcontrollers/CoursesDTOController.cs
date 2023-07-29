@@ -30,8 +30,10 @@ namespace IHMS.Controllers.APIcontrollers
             return  _context.Courses;
         }
 
-        // GET: api/CoursesDTO/3
-        [HttpGet("GetCourseByOrderid/{orderId}")]
+        
+        [Route("~/api/[controller]/GetCourseByOrderid/{orderId:int}")] 
+       // GET: api/CoursesDTO/3
+       [HttpGet("GetCourseByOrderid/{orderId}")]
         public async Task<List<Course>> GetCourseByOrderid(int orderId)
         {
             List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
