@@ -73,6 +73,7 @@ namespace IHMS.Controllers.APIcontrollers
 
         // POST: api/PointRecordsDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //點數新增
         [HttpPost]
         public async Task<string> PostPointRecord(PointRecordRequest pointRecordRequest , IhmsContext _context)
         {
