@@ -28,6 +28,7 @@
     <Folder Include="DTO\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\messageimage\" />
+    <Folder Include="wwwroot\articleimage\" />
   </ItemGroup>
 
   <ItemGroup>
