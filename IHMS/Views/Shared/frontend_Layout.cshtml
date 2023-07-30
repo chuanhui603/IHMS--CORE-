@@ -54,7 +54,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn"
                      data-wow-delay="0.1s">
                     <!--LOGO 如果有其他LOGO則進行更換 -->
-                    <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
+                    <a href="http://localhost:5174/" class="navbar-brand ms-4 ms-lg-0">
                         <h1 class="fw-bold text-warning m-0">
                             I<span class="text-secondary">H</span>MS
                         </h1>
@@ -69,29 +69,32 @@
                     <!-- 導覽連結 -->
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav p-4 p-lg-0">
-                            <a href="index.html" class="nav-item nav-link active">首頁</a>
+                            <a href="http://localhost:5174/" class="nav-item nav-link">首頁</a>
                             <div class="nav-item dropdown">
                                 <a href="#"
                                    class="nav-link dropdown-toggle"
                                    data-bs-toggle="dropdown">會員專區</a>
                                 <div class="dropdown-menu m-0">
-                                    <a href="plan.html" class="dropdown-item">計畫總覽</a>
-                                    <a href="feature.html" class="dropdown-item">購買紀錄</a>
-                                    <a href="testimonial.html" class="dropdown-item">點數紀錄</a>
+                                    <a href="http://localhost:5174/plan" class="dropdown-item">計畫總覽</a>
+                                    <a href="http://localhost:5174/orders" class="dropdown-item">購買紀錄</a>
+                                    <a href="http://localhost:5174/PointRecord" class="dropdown-item">點數紀錄</a>
                                     <a href="member.html" class="dropdown-item">會員設定</a>
                                 </div>
-                            </div>
+                            </div>                         
+                            <a href="https://localhost:7127/Student/CoachList" class="nav-link">課程總覽</a>
+                            <a href="http://localhost:5174/announcements" class="nav-item nav-link">公告</a>
+                            <a href="http://localhost:5174/MessageBoardList" class="nav-item nav-link">討論區</a>
                             <div class="nav-item dropdown">
-                                <a href="#"
-                                   class="nav-link dropdown-toggle"
-                                   data-bs-toggle="dropdown">課程專區</a>
-                                <div class="dropdown-menu m-0">
-                                    <a href="blog.html" class="dropdown-item">欄位1</a>
-                                    <a href="feature.html" class="dropdown-item">欄位2</a>
-                                    <a href="testimonial.html" class="dropdown-item">欄位3</a>
+                                <div class="nav-item dropdown">
+                                    <div class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">客服</a>
+                                        <div class="dropdown-menu m-0">
+                                            <a href="http://localhost:5174/custom-service" class="dropdown-item">回報客服</a>
+                                            <a href="http://localhost:5174/custom-service-List" class="dropdown-item">客服回應</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">討論區</a>
                         </div>
 
                         <!-- 登入後功能畫面 -->
@@ -107,8 +110,8 @@
                             </a>
 
                             <!-- 登入前功能畫面 -->
-                            <a href="https://localhost:7127/Login/Login" class="ms-3 p-1 text-body"></i>登入</a>                           
-                            <button type="button" class="ms-3 p-1 text-body" onclick="logout()">登出</button>
+                            <a href="https://localhost:7127/Login/Login" class="ms-3 p-1 text-body">登入</a>                           
+                            <span class="ms-3 p-1 btnlogout" onclick="logout()">登出</span>
                             <!--登入前隱藏 登入後展示 -->
                             <div class="ms-3 p-1">點數: <span>$150.00</span></div>
                         </div>

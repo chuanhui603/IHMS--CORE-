@@ -7,8 +7,12 @@
   --font-style: "Font Awesome 5 Free";
 }
 
+.btnlogout:hover{
+    cursor:pointer
+}
+
 .backimg {
-  background: url(../img/bg-icon.png) center center repeat;
+    background: url(../img/bg-icon.png) center center repeat;
 }
 
 .back-to-top {
