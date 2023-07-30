@@ -1,0 +1,724 @@
+@model IEnumerable<IHMS.Models.Coach>
+
+@{
+    IhmsContext db = new IhmsContext();
+    Layout = "frontend_Layout";
+
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/coach.css" rel="stylesheet" />
+    <style>
+        .breadcrumb__text h2, .breadcrumb__option span {
+            color: #ffffff;
+        }
+
+        .breadcrumb__option a {
+            color: #ffffff;
+        }
+
+        
+        #title {
+            background: url(../img/coach/Banner.jpg) center center repeat;
+            background-size:cover;               
+            background-position: center;
+        }
+
+        #title {
+            margin-top: 80px; /* 向下調整80像素 */
+        }
+
+        .divSelCity {
+            padding-left: 10px;
+            text-align: right;
+        }
+
+            .divSelCity > div {
+                width: 180px;
+            }
+
+        #selCity {
+            display: inline !important;
+        }
+
+        .nice-select {
+            display: none;
+        }
+
+        .divFilter {
+            padding-right: 40px;
+        }
+
+            .divFilter input {
+                margin-right: 5px;
+            }
+
+        .divLeftTopic {
+            margin-bottom: 15px;
+        }
+
+        .bTopic {
+            color: #7fad39 !important;
+            font-size: 18px;
+        }
+
+        .keyTopic {
+            margin-bottom: 10px;
+            padding: 10px 0px;
+            border-bottom: 1px solid lightgray;
+        }
+
+        .spChoose {
+            float: right;
+            color: #7fad39;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .filterCard {
+            margin-bottom: 25px;
+        }
+
+        #btnClear {
+            display: block;
+            padding: 5px;
+            width: 100%;
+            background-color: #7fad39;
+            color: white;
+            font-weight: 500;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .skillCount {
+            font-weight: 600;
+            color: gray;
+        }
+
+        /*關鍵字*/
+        .divSearch {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .divKeyword {
+            display: flex;
+        }
+
+        .divSubmit {
+            height: 38px;
+            padding: 0px;
+            margin: 0px;
+            text-align: center;
+        }
+
+        .hero__search__form, .divCoachList {
+            width: 100%;
+        }
+
+        .inKeyword {
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 0px;
+        }
+
+        .btnSearch {
+            height: 38px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+        }
+
+        .divLink {
+            display: flex;
+            justify-content: right;
+            height: 70px;
+        }
+
+        .divOther {
+            padding: 0px;
+        }
+
+            .divOther span {
+                color: #5F822B;
+                line-height: 70px;
+            }
+
+            .divOther i {
+                color: #5F822B;
+            }
+
+        .divUrl {
+            margin-left: 10px;
+            padding: 10px;
+            line-height: 48px;
+            border: 1px solid #BFD69C;
+            border-radius: 20px;
+        }
+
+            .divUrl i {
+                color: #DFEACE;
+            }
+
+            .divUrl a {
+                color: #7FAD39;
+                text-decoration: none;
+                transition: .3s;
+            }
+
+                .divUrl a:hover {
+                    color: #5F822B;
+                }
+
+        .divNoResult {
+            text-align: center;
+        }
+        /*列表*/
+        .divRight {
+            padding: 0px 20px;
+        }
+
+        .divCoachCount {
+            text-align: right;
+        }
+
+        .divCoachCard {
+            display: flex;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid lightgray;
+            transition: .3s;
+        }
+
+            .divCoachCard:hover {
+                border: 1px solid #7FAD39;
+                box-shadow: 2px 2px 5px lightgray;
+            }
+
+        .divImg {
+            text-align: right;
+            display: flex;
+            align-items: center;
+        }
+
+        .imgCoach {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            margin: auto;
+        }
+
+        .divCoachInfo {
+            padding: 20px;
+        }
+
+        .imgIcon {
+            height: 20px;
+        }
+
+        .li {
+            margin: 5px 0px;
+        }
+
+        .liCoachName {
+            margin-bottom: 10px;
+            display: flex;
+        }
+
+        .liSlogan {
+            margin-top: 18px;
+        }
+
+            .liSlogan span {
+                line-height: 30px;
+            }
+
+        .divPage {
+            text-align: right;
+        }
+
+        .btn-success {
+            background-color: #7fad39;
+            border: none;
+        }
+
+        .star {
+            height: 18px;
+        }
+
+        .starOrig {
+            filter: grayscale(1);
+        }
+
+        .liAvgRate {
+            margin-bottom: 20px !important;
+            display: flex;
+        }
+
+        .divBtnDetail {
+            padding: 0px;
+            border: 2px solid #7fad39;
+            border-radius: 5px;
+            transition: .3s;
+        }
+
+            .divBtnDetail a {
+                display: block;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                padding: 8px;
+                color: #7fad39;
+                font-weight: 600;
+            }
+
+            .divBtnDetail:hover {
+                background-color: #7fad39;
+            }
+
+            .divBtnDetail a:hover {
+                font-weight: 500;
+                color: white;
+            }
+
+        #divSearchResult {
+            margin-bottom: 20px;
+            line-height: 38px;
+        }
+
+        .spSearchFilter {
+            margin: 0px 4px;
+            border: 1px solid #CFE0B5;
+            border-radius: 5px;
+            background-color: #FBFCF9;
+            padding: 0px 4px;
+        }
+
+            .spSearchFilter::before {
+                content: "#";
+                color: gray;
+            }
+
+        #gotop {
+            position: fixed;
+            z-index: 90;
+            right: 30px;
+            bottom: 31px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            color: #fff;
+            background: #7fad39;
+            line-height: 50px;
+            border-radius: 50%;
+            transition: all 0.5s;
+            text-align: center;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        }
+
+        .btnPage {
+            font-weight: 600;
+            background-color: white;
+            color: #7fad39;
+            border: 1px solid #7fad39;
+            width: 35px;
+            height: 35px;
+            margin: 0px 8px;
+            transition: .4s;
+        }
+
+            .btnPage:hover {
+                background-color: #7fad39;
+                color: white;
+            }
+
+        .selectedPage {
+            background-color: #7fad39;
+            color: white;}
+    </style>
+}
+
+
+@*banner大圖*@
+
+
+<section>
+    <div id="title">
+        <div>
+            <div class="row text-center" >
+                <div class="col-lg-12 breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>私人教練專區</h2>
+                    <div class="breadcrumb__option">
+                        <a href="~/CoachFront/CoachList">Home</a>
+                        <span>Training</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+            <div class="col-lg-3">
+                <div class="reveal_l1">
+                    <form method="post" id="frmFilter" name="frmFilter">
+                        <div class="divFilter">
+                            <div class="divLeftTopic">
+                                <b class="bTopic">篩選條件</b>
+                            </div>
+                            <div class="filterCard">
+                                <div class="keyTopic">
+                                    <h6><b>地區</b></h6>
+                                </div>
+                                <div>
+                                    <select class="custom-select" id="selCity" name="FCityId">
+                                        <option value="0" selected disabled>請選擇地區</option>
+                                        @*@{
+                                            foreach (var c in db.TCities.Where(c => c.TCoaches.Any()).OrderBy(c => c.FCityOrder).ToList())
+                                            {
+                                                <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
+                                            }
+                                        }*@
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="filterCard">
+                                <div class="keyTopic">
+                                    <h6><b>教練性別</b></h6>
+                                </div>
+                                <div>
+                                    <input type="checkbox" value="True" name="fGender[]" /><label>男性</label><br />
+                                    <input type="checkbox" value="False" name="fGender[]" /><label>女性</label><br />
+                                </div>
+                            </div>
+                            <div class="filterCard">
+                                <div class="keyTopic">
+                                    <h6>
+                                        <b>專長項目</b><span class="spChoose animate__animated animate__fadeIn" id="spAllSkill">全選</span>
+                                        <span class="spChoose animate__animated animate__fadeIn" id="spCancelSkill" hidden>取消全選</span>
+                                    </h6>
+                                </div>
+                                <div>
+                                    @*@{
+                                        foreach (var s in db.TSkills.ToList())
+                                        {
+                                            <input type="checkbox" value="@s.FSkillId" name="fCoachSkill[]" />
+                                            <label>
+                                                @s.FSkillName
+                                            </label>
+                                            <span class="skillCount">(@db.TCoachSkills.Where(cs => cs.FSkillId == s.FSkillId).Count())</span>
+
+                                            <br />
+                                        }
+                                    }*@
+                                </div>
+                            </div>
+                            <div class="filterCard">
+                                <div class="keyTopic">
+                                    <h6>
+                                        <b>可上課時段</b><span class="spChoose animate__animated animate__fadeIn" id="spAllTime">全選</span>
+                                        <span class="spChoose animate__animated animate__fadeIn" id="spCancelTime" hidden>取消全選</span>
+                                    </h6>
+                                </div>
+                                <div>
+                                    @*@{
+                                        foreach (var t in db.TAvailableTimes.Where(at => at.FAvailableTimeId <= 6).ToList())
+                                        {
+                                            <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" />
+
+                                            <label>@t.FAvailableTime</label>
+
+                                            <br />
+                                        }
+                                    }*@
+                                </div>
+                            </div>
+                            <div class="divClear">
+                                <button id="btnClear" class="animate__fadeIn">清除條件</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-9 divRight">
+                <div class="divSearch row">
+                    <form class="col-lg-7" method="post">
+                        <div class="divKeyword reveal_t1">
+                            <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="Search..." value="@ViewBag.Keyword">
+                            <div class="divSubmit">
+                                <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                            <button class="btn btn-light" id="btnDemo" style="margin-left:10px">Demo</button>
+                        </div>
+                    </form>
+                    <div class="divLink col-lg-5">
+                        <div class="divOther reveal_t1"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想找學生？</b></span></div>
+                        <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/CoachFront/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
+                    </div>
+                </div>
+                <div id="divSearchResult">
+                    <span id="spResultCount">共&nbsp;&nbsp;<b></b>&nbsp;&nbsp;位教練</span>
+                    <span id="spSearch" hidden>/&nbsp;&nbsp;篩選條件：</span>
+                    <span id="spFilter"></span>
+                </div>
+                <div class="divCoachList">
+                    @{
+                        
+                        
+                            <div class="divCoachCard row animate__animated animate__fadeIn" id=2>
+                                <div class="col-3 divImg">
+                                <img src="/img/coach/coachImage/2f632566-4180-414e-ad04-d30d45912393.jpg" class="imgCoach">
+                                </div>
+                                <div class="col-9 divCoachInfo">
+                                    <ul>
+                                        <li style="list-style:none" class="liCoachName row">
+                                            <h3 class="col-8"><b>教練一號</b></h3>
+                                            <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/2">教練檔案</a></div>
+                                        </li>
+                                        
+                                        <li style="list-style:none" class="li">
+                                            <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
+                                            <span>高雄</span>
+                                        </li>
+                                        <li style="list-style:none" class="li">
+                                            <img src="~/img/Coach/icon/skill.png" class="imgIcon" />
+                                            <b>&nbsp;&nbsp;&nbsp;專業： </b>
+                                            @{
+                                                string s = "";
+                                                s ="健身運動";
+                                                <span class="spSkill">@s</span>
+                                            }
+                                        </li>
+                                        <li style="list-style:none" class="liSlogan"><span>健身從今天開始</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                    
+                </div>
+                <div class="product__pagination divPage"></div>
+                <a id="gotop">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script>
+        //Demo
+        $("#btnDemo").click((evt) => {
+            evt.preventDefault();
+            $("#ipKeyword").val("alisa");
+        })
+
+        //Page
+        function GetPage() {
+            $(".divPage").empty();
+            let coachCount = $(".divCoachList .divCoachCard").length;
+            let pageCount = coachCount / 10;
+            for (let i = 1; i < pageCount + 1; i++) {
+                $(".divPage").append(`<button class="btnPage" id="btn${i}">${i}</button>`);
+            }
+            //頁碼click
+            $(".btnPage").on("click", function () {
+                let coachCards = $(".divCoachCard");
+                coachCards.hide();
+                let index = 10 * parseInt($(this).text());
+                coachCards.slice(index - 10, index).show();
+                $('html,body').animate({ scrollTop: 0 }, 'slow');
+                $(this).addClass("selectedPage").siblings().removeClass("selectedPage");
+            })
+            //Next Page
+            if ($(".btnPage").length > 1) {
+                $(".divPage").append('<button class="btnPage btnNext"><i class="fa fa-long-arrow-right"></i></button>');
+            }
+            $(".btnNext").on("click", function () {
+                let recent = $(".selectedPage").text();
+                $(`#btn${parseInt(recent) + 1}`).trigger("click");
+            })
+            //顯示第一頁
+            let coachCards = $(".divCoachCard");
+            coachCards.hide();
+            coachCards.slice(0, 10).show();
+            $(".btnPage").first().addClass("selectedPage").siblings().removeClass("selectedPage");
+        }
+        GetPage();
+
+        //顯示教練數量
+        $(document).ready(() => {
+           $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
+        })
+
+        //if未輸入關鍵字
+        //$("#btnSearch").click((evt) => {
+        //    if ($("#ipKeyword").val() == "") {
+        //        evt.preventDefault();
+        //        SwalGreen.fire({
+        //            icon: 'warning',
+        //            title: '請輸入關鍵字'
+        //        })
+        //    }
+        //})
+
+        //多重篩選觸發事件、顯示搜尋結果
+        //$("#selCity").change(() => {
+        //    ShowFilter();
+        //    GetCoach();
+        //})
+        //$("input[name='fGender[]'], input[name='fCoachSkill[]'], input[name='fCoachTime[]']").click(() => {
+        //    if ($("input[name='fCoachSkill[]']:checked").length < 9) {
+        //        $("#spAllSkill").prop("hidden", false);
+        //        $("#spCancelSkill").prop("hidden", true);
+        //    }
+        //    else {
+        //        $("#spAllSkill").prop("hidden", true);
+        //        $("#spCancelSkill").prop("hidden", false);
+        //    }
+        //    if ($("input[name='fCoachTime[]']:checked").length < 6) {
+        //        $("#spAllTime").prop("hidden", false);
+        //        $("#spCancelTime").prop("hidden", true);
+        //    }
+        //    else {
+        //        $("#spAllTime").prop("hidden", true);
+        //        $("#spCancelTime").prop("hidden", false);
+        //    }
+        //    ShowFilter();
+        //    GetCoach();
+        //})
+        //function ShowFilter() {
+        //    $("#spSearch").prop("hidden", false);
+        //    $("#spFilter").empty();
+        //    if ($("#selCity option:selected").val() != 0) {
+        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`);
+        //    }
+        //    $("input[name='fGender[]']:checked").each(function () {
+        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        //    })
+        //    $("input[name='fCoachSkill[]']:checked").each(function () {
+        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        //    })
+        //    $("input[name='fCoachTime[]']:checked").each(function () {
+        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        //    })
+        //}
+
+        //全選
+        //$("#spAllSkill").click(() => {
+        //    $("input[name='fCoachSkill[]']").prop("checked", true);
+        //    $("#spAllSkill").prop("hidden", true);
+        //    $("#spCancelSkill").prop("hidden", false);
+        //    ShowFilter();
+        //    GetCoach();
+        //})
+        //$("#spAllTime").click(() => {
+        //    $("input[name='fCoachTime[]']").prop("checked", true);
+        //    $("#spAllTime").prop("hidden", true);
+        //    $("#spCancelTime").prop("hidden", false);
+        //    ShowFilter();
+        //    GetCoach();
+        //})
+
+        //取消全選
+        //$("#spCancelSkill").click(() => {
+        //    $("input[name='fCoachSkill[]']").prop("checked", false);
+        //    $("#spAllSkill").prop("hidden", false);
+        //    $("#spCancelSkill").prop("hidden", true);
+        //    ShowFilter();
+        //    GetCoach();
+        //})
+        //$("#spCancelTime").click(() => {
+        //    $("input[name='fCoachTime[]']").prop("checked", false);
+        //    $("#spAllTime").prop("hidden", false);
+        //    $("#spCancelTime").prop("hidden", true);
+        //    ShowFilter();
+        //    GetCoach();
+        //})
+
+        //清除條件
+        //$("#btnClear").click((evt) => {
+        //    evt.preventDefault();
+        //    $("#selCity").val("0");
+        //    $("input[type='checkbox']").prop("checked", false);
+        //    GetCoach();
+        //    $("#spFilter").empty();
+        //    $("#spSearch").prop("hidden", true);
+        //    $("#spAllSkill").prop("hidden", false);
+        //    $("#spCancelSkill").prop("hidden", true);
+        //    $("#spAllTime").prop("hidden", false);
+        //    $("#spCancelTime").prop("hidden", true);
+        //})
+
+        //Ajax篩選後顯示教練
+        //function GetCoach() {
+        //    $.ajax({
+        //        url: '@Url.Content("~/Student/CoachList")',
+        //        type: 'post',
+        //        data: new FormData(document.frmFilter),
+        //        processData: false,
+        //        contentType: false,
+        //        success: function (data) {
+        //            $(".divCoachList").empty();
+        //            $("#spResultCount>b").text(`${data.length}`);
+        //            $.each(data, function (index, coach) {
+        //                $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
+        //                //左-col-3
+        //                $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
+        //                $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.image}`);
+        //                //右-col-9
+        //                $(`#div${index}`).append(`<div class="col-9 divCoachInfo" id=divInfo${index}></div>`);
+        //                $(`#divInfo${index}`).append(`<ul id=ul${index}></ul>`);
+        //                //介紹、btn
+        //                $(`#ul${index}`).append(`<li style="list-style:none" class="liCoachName row" id=liName${index}></li>`);
+        //                $(`#liName${index}`).append(`<h3 class="col-8"><b>${coach.intro}</b></h3>`);
+        //                $(`#liName${index}`).append(`<div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/${coach.fCoachId}">教練檔案</a></div>`);
+                        
+                    //    $(".star").attr("src", "/img/coach/icon/star.png");
+                    //    $(`#liRate${index}`).append(`<span id="rateCount">(${coach.rateCount})</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`);
+                    //    $(`#liRate${index}`).append(`<span id="courseCount">${coach.fCourseCount} 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>`);
+                    //    //City
+                    //    $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liCity${index}></li>`);
+                    //    $(`#liCity${index}`).append(`<img class="imgIcon iconCity" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>${coach.cityName}</span>`);
+                    //    $(".iconCity").attr("src", "/img/Coach/icon/location.png");
+                    //    //Skill
+                    //    $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liSkill${index}><img class="imgIcon iconSkill" /><b>&nbsp;&nbsp;&nbsp;專長： </b></li>`);
+                    //    $(".iconSkill").attr("src", "/img/Coach/icon/skill.png");
+                    //    $(`#liSkill${index}`).append(`<span class="spSkill" id=spSkill${index}></span>`);
+                    //    $.get("@Url.Content("~/Student/GetSkills")", { "id": `${coach.fCoachId}` },
+                    //        function (skills) {
+                    //            $(`#spSkill${index}`).text(`${skills}`);
+                    //        })
+                    //    //Slogan
+                    //    $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);
+                    //})
+                //    GetPage();
+                //}
+            //});
+        }
+
+        //GoTop btn
+        $('#gotop').click(function () {
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            return false;
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 400) {
+                $('#gotop').fadeIn();
+            } else {
+                $('#gotop').fadeOut();
+            }
+        });
+    </script>
+}

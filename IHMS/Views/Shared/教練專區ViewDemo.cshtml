@@ -1,0 +1,86 @@
+﻿
+
+@section Styles{
+    <style>
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
+
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                color: black;
+                font-weight: 800;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+        .sidebar__item ul li a {
+            border: dashed 2px #7fad39;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 1vw;
+            margin-right: 8vw;
+            margin-bottom:1vh;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">教練專區Demo</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="./index.html">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>教練專區</h4>
+                        <ul>
+                            <li><a href="~/Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                        </ul>
+                        <br />
+                        <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7" style="height:400px" >
+                @*※※※會員專區View內容請從此開始※※※*@
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+}

@@ -1,0 +1,18 @@
+﻿.selectedCategory {
+    color: #7fad39 !important;
+    font-weight:bold;
+    padding: 0 15px 0 15px;
+}
+.sort-asc::after {
+    content: "↑";
+}
+
+.sort-desc::after {
+    content: "↓";
+}
+
+.selectedPage {
+    background-color: #7fad39;
+    color: white;
+}
+

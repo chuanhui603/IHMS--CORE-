@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="DTO\" />
-    <Folder Include="APIControllers\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\messageimage\" />
   </ItemGroup>

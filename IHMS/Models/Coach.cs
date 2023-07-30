@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace IHMS.Models;
 
@@ -29,6 +30,8 @@ public partial class Coach
 
     public string? Slogan { get; set; }
 
+    public virtual City? City { get; set; }
+
     public virtual ICollection<CoachAvailableTime> CoachAvailableTimes { get; set; } = new List<CoachAvailableTime>();
 
     public virtual ICollection<CoachContact> CoachContacts { get; set; } = new List<CoachContact>();
@@ -40,4 +43,8 @@ public partial class Coach
     public virtual ICollection<CoachRate> CoachRates { get; set; } = new List<CoachRate>();
 
     public virtual ICollection<CoachSkill> CoachSkills { get; set; } = new List<CoachSkill>();
+    public virtual Member Member { get; set; }
+    
+    
+
 }

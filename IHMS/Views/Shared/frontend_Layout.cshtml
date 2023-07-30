@@ -33,7 +33,8 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
-    
+
+    @RenderSection("Styles", required: false)
 </head>
 
 
@@ -78,7 +79,7 @@
                                     <a href="plan.html" class="dropdown-item">計畫總覽</a>
                                     <a href="feature.html" class="dropdown-item">購買紀錄</a>
                                     <a href="testimonial.html" class="dropdown-item">點數紀錄</a>
-                                    <a href="https://localhost:7127/Members/MemberEdit" class="dropdown-item">會員設定</a>
+                                    <a href="member.html" class="dropdown-item">會員設定</a>
                                 </div>
                             </div>
                             <div class="nav-item dropdown">
@@ -116,13 +117,15 @@
                 </nav>
             </div>
             <!-- 導覽列 End -->
+
             <!-- template內容 Start -->
             <!-- 使用時style去掉 -->
-            <div class="container p-0 mb-5" style="height: 100vh">
-                  @RenderBody()
-                    
+            <div class="container p-0 mb-5 mt-3" >
+            @RenderBody()
+            @RenderSection("Scripts", required: false)
             </div>
             <!-- template內容 End -->
+
             <!-- 頁腳 Start -->
             <div class="container-fluid bg-dark footer mt-5 p-3 wow fadeIn"
                  data-wow-delay="0.1s">
@@ -154,7 +157,7 @@
 
     <!-- JavaScript Libraries -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
 
     <script>
