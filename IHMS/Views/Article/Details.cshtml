@@ -1,0 +1,23 @@
+﻿@model IHMS.Controllers.Article
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Model.title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>@Model.title</h1>
+        <p>@Model.contents</p>
+        <p>@Model.time.ToString("yyyy/MM/dd HH:mm:ss")</p>
+        <div>
+@foreach(var image in Model.images)
+{
+    <img src="@image" alt="文章圖片" style="max-width:500px;" />
+}
+        </div>
+        <a href="/Article/ViewAll" class="btn btn-primary">返回文章列表</a>
+    </div>
+</body>
+</html>

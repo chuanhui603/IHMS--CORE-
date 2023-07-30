@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace IHMS.APIContollers
+namespace IHMS.APIControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -35,7 +35,7 @@ namespace IHMS.APIContollers
         }
 
 
-       
+
 
         [HttpGet("{messageId}")]
         public async Task<IActionResult> Get(int messageId)

@@ -4,16 +4,16 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using Dapper;
-using Microsoft.Extensions.Configuration; 
+using Microsoft.Extensions.Configuration;
 
-namespace IHMS.Controllers
+namespace IHMS.APIControllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ImageController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IConfiguration _configuration; 
+        private readonly IConfiguration _configuration;
         private string _connectionString; // 變更為實例變數
         // DI，注入 IConfiguration 到控制器
         public ImageController(IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
