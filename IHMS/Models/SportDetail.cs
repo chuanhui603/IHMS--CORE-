@@ -26,4 +26,6 @@ public partial class SportDetail
     public int? Sets { get; set; }
 
     public DateTime? Sportdate { get; set; }
+
+    public virtual Sport Sport { get; set; } = null!;
 }

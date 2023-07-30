@@ -22,4 +22,6 @@ public partial class Course
     public virtual CoachContact? CoachContact { get; set; }
 
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+
+    public virtual ICollection<Score> Scores { get; set; } = new List<Score>();
 }

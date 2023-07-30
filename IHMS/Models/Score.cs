@@ -15,5 +15,7 @@ public partial class Score
 
     public DateTime? ScoredDate { get; set; }
 
+    public virtual Course Course { get; set; } = null!;
+
     public virtual Member Member { get; set; } = null!;
 }

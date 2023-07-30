@@ -39,6 +39,8 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Course> Courses { get; set; }
 
+    public virtual DbSet<CustomerService> CustomerServices { get; set; }
+
     public virtual DbSet<Diet> Diets { get; set; }
 
     public virtual DbSet<DietDetail> DietDetails { get; set; }
@@ -140,7 +142,7 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.Member).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Cart_Schedule");
+                .HasConstraintName("FK_Cart_Members");
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -269,6 +271,36 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.CoachContact).WithMany(p => p.Courses)
                 .HasForeignKey(d => d.CoachContactId)
                 .HasConstraintName("FK_Course_CoachContacts");
+        });
+
+        modelBuilder.Entity<CustomerService>(entity =>
+        {
+            entity.HasKey(e => e.CustomerServiceId).HasName("PK_custome service");
+
+            entity.ToTable("CustomerService");
+
+            entity.Property(e => e.CustomerServiceId).HasColumnName("customer_service_id");
+            entity.Property(e => e.Contents)
+                .HasMaxLength(1500)
+                .HasColumnName("contents");
+            entity.Property(e => e.CreatedTime)
+                .HasColumnType("datetime")
+                .HasColumnName("created_time");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.Reply)
+                .HasMaxLength(1500)
+                .HasColumnName("reply");
+            entity.Property(e => e.Title)
+                .HasMaxLength(150)
+                .HasColumnName("title");
+            entity.Property(e => e.UpdatedTime)
+                .HasColumnType("datetime")
+                .HasColumnName("updated_time");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.CustomerServices)
+                .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_custome service_Members");
         });
 
         modelBuilder.Entity<Diet>(entity =>
@@ -438,6 +470,11 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .HasColumnName("title");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.MessageBoards)
+                .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_message board_Members");
         });
 
         modelBuilder.Entity<MessageBoardDetail>(entity =>
@@ -462,7 +499,7 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.Member).WithMany()
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_message board details_message board");
+                .HasConstraintName("FK_message board details_Members");
         });
 
         modelBuilder.Entity<MessageBoardImage>(entity =>
@@ -641,6 +678,11 @@ public partial class IhmsContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("scored_date");
 
+            entity.HasOne(d => d.Course).WithMany(p => p.Scores)
+                .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Score_Course");
+
             entity.HasOne(d => d.Member).WithMany(p => p.Scores)
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -696,6 +738,11 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Type)
                 .HasMaxLength(20)
                 .HasColumnName("type");
+
+            entity.HasOne(d => d.Sport).WithMany(p => p.SportDetails)
+                .HasForeignKey(d => d.SportId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sport_Detail_Sport");
         });
 
         modelBuilder.Entity<Status>(entity =>

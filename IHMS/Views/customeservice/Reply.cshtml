@@ -1,5 +1,10 @@
 ﻿@model CustomerServiceReport
 
+
+@{
+
+    Layout = "_Layout";
+}
 <h1>回覆客服回報</h1>
 
 <form method="post" action="@Url.Action("SubmitReply", "customeservice", new { id = Model.customer_service_id })">

@@ -1,5 +1,7 @@
 ﻿@model QuestionsetViewModel
-
+@{
+    Layout = "_Layout";
+}
 <h2>編輯問題</h2>
 
 @using (Html.BeginForm("Edit", "Questionset", FormMethod.Post, new { id = "editForm" }))

@@ -1,5 +1,8 @@
 ﻿@model List<QuestionsetViewModel>
 
+    @{
+    Layout = "_Layout";
+    }
 <h1>預設AI問答集</h1>
 <a href="@Url.Action("CreateQuestion", "Questionset")" class="btn btn-success">新增問題</a>
 <table class="table">
