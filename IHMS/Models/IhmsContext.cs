@@ -19,6 +19,7 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Answer> Answers { get; set; }
 
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }

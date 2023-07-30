@@ -33,16 +33,16 @@ namespace IHMS.ViewModel
         {
             get { return Coach.CoachId; }
         }
-        public int? FMemberId
+        public int? MemberId
         {
             get { return Coach.CoachId; }
             set { Coach.CoachId = (int)value; }
         }
-        //public bool? Gender
-        //{
-        //    get { return Coach.Member.FGender; }
-        //    set { Coach.Member.FGender = value; }
-        //}
+        public bool? Gender
+        {
+            get { return Coach.Member.Gender; }
+            set { Coach.Member.Gender = value; }
+        }
         public string CoachName
         {
             get { return Coach.CoachName; }

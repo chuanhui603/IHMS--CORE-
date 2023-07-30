@@ -1,4 +1,4 @@
-@model IEnumerable<IHMS.Models.Coach>
+@model IEnumerable<IHMS.ViewModel.CCoachViewModel>
 
 @{
     IhmsContext db = new IhmsContext();
@@ -381,12 +381,12 @@
                                 <div>
                                     <select class="custom-select" id="selCity" name="FCityId">
                                         <option value="0" selected disabled>請選擇地區</option>
-                                        @*@{
-                                            foreach (var c in db.TCities.Where(c => c.TCoaches.Any()).OrderBy(c => c.FCityOrder).ToList())
+                                        @{
+                                            foreach (var c in db.Cities.Where(c => c.Coaches.Any()).OrderBy(c => c.CityOrder).ToList())
                                             {
-                                                <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
+                                                <option value="@c.CityId" id="@c.CityId">@c.CityName</option>
                                             }
-                                        }*@
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -407,40 +407,21 @@
                                     </h6>
                                 </div>
                                 <div>
-                                    @*@{
-                                        foreach (var s in db.TSkills.ToList())
+                                    @{
+                                        foreach (var s in db.Skills.ToList())
                                         {
-                                            <input type="checkbox" value="@s.FSkillId" name="fCoachSkill[]" />
+                                            <input type="checkbox" value="@s.SkillId" name="fCoachSkill[]" />
                                             <label>
-                                                @s.FSkillName
+                                                @s.SkillName
                                             </label>
-                                            <span class="skillCount">(@db.TCoachSkills.Where(cs => cs.FSkillId == s.FSkillId).Count())</span>
+                                            <span class="skillCount">(@db.CoachSkills.Where(cs => cs.SkillId == s.SkillId).Count())</span>
 
                                             <br />
                                         }
-                                    }*@
+                                    }
                                 </div>
                             </div>
-                            <div class="filterCard">
-                                <div class="keyTopic">
-                                    <h6>
-                                        <b>可上課時段</b><span class="spChoose animate__animated animate__fadeIn" id="spAllTime">全選</span>
-                                        <span class="spChoose animate__animated animate__fadeIn" id="spCancelTime" hidden>取消全選</span>
-                                    </h6>
-                                </div>
-                                <div>
-                                    @*@{
-                                        foreach (var t in db.TAvailableTimes.Where(at => at.FAvailableTimeId <= 6).ToList())
-                                        {
-                                            <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" />
-
-                                            <label>@t.FAvailableTime</label>
-
-                                            <br />
-                                        }
-                                    }*@
-                                </div>
-                            </div>
+                            
                             <div class="divClear">
                                 <button id="btnClear" class="animate__fadeIn">清除條件</button>
                             </div>
@@ -461,7 +442,7 @@
                     </form>
                     <div class="divLink col-lg-5">
                         <div class="divOther reveal_t1"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想找學生？</b></span></div>
-                        <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/CoachFront/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
+                        <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
                     </div>
                 </div>
                 <div id="divSearchResult">
@@ -471,38 +452,58 @@
                 </div>
                 <div class="divCoachList">
                     @{
-                        
-                        
-                            <div class="divCoachCard row animate__animated animate__fadeIn" id=2>
+                        int count = 0;
+                        foreach (var coach in Model)
+                        {
+                            count++;
+                            <div class="divCoachCard row animate__animated animate__fadeIn" id="coach_@count">
                                 <div class="col-3 divImg">
-                                <img src="/img/coach/coachImage/2f632566-4180-414e-ad04-d30d45912393.jpg" class="imgCoach">
+                                    <img src="/img/coach/coachImage/@coach.CoachImage" class="imgCoach">
                                 </div>
                                 <div class="col-9 divCoachInfo">
                                     <ul>
                                         <li style="list-style:none" class="liCoachName row">
-                                            <h3 class="col-8"><b>教練一號</b></h3>
-                                            <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/2">教練檔案</a></div>
+                                            <h3 class="col-8"><b>@coach.CoachName</b></h3>
+                                            <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/@coach.CoachId">教練檔案</a></div>
                                         </li>
-                                        
+                                        <li style="list-style:none" class="li liAvgRate">
+                                            <span id="avg_@coach.CoachId"></span>&nbsp;&nbsp;&nbsp;
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1_@coach.CoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star2_@coach.CoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star3_@coach.CoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4_@coach.CoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5_@coach.CoachId" />&nbsp;&nbsp;&nbsp;
+                                            <span id="rateCount">(@coach.RateCount)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span id="courseCount">@coach.CourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
+                                        </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                            <span>高雄</span>
+                                            <span>@coach.CityName</span>
                                         </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/skill.png" class="imgIcon" />
-                                            <b>&nbsp;&nbsp;&nbsp;專業： </b>
+                                            <b>&nbsp;&nbsp;&nbsp;專長： </b>
                                             @{
                                                 string s = "";
-                                                s ="健身運動";
+                                                foreach (var c in coach.Coach.CoachSkills)
+                                                {
+                                                    string skillName = c.Skill.SkillName;
+                                                    s += skillName;
+                                                    s += "、";
+                                                }
+                                                if (s.Length != 0)
+                                                {
+                                                    s = s.Substring(0, s.Length - 1);
+                                                }
                                                 <span class="spSkill">@s</span>
                                             }
                                         </li>
-                                        <li style="list-style:none" class="liSlogan"><span>健身從今天開始</span></li>
+                                        <li style="list-style:none" class="liSlogan"><span>@coach.Slogan</span></li>
                                     </ul>
                                 </div>
                             </div>
                         }
-                    
+                    }
                 </div>
                 <div class="product__pagination divPage"></div>
                 <a id="gotop">
@@ -512,7 +513,6 @@
         </div>
     </div>
 </section>
-
 
 @section Scripts{
     
@@ -562,58 +562,58 @@
            $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
         })
 
-        //if未輸入關鍵字
-        //$("#btnSearch").click((evt) => {
-        //    if ($("#ipKeyword").val() == "") {
-        //        evt.preventDefault();
-        //        SwalGreen.fire({
-        //            icon: 'warning',
-        //            title: '請輸入關鍵字'
-        //        })
-        //    }
-        //})
+        if未輸入關鍵字
+        $("#btnSearch").click((evt) => {
+            if ($("#ipKeyword").val() == "") {
+                evt.preventDefault();
+                SwalGreen.fire({
+                    icon: 'warning',
+                    title: '請輸入關鍵字'
+                })
+            }
+        })
 
-        //多重篩選觸發事件、顯示搜尋結果
-        //$("#selCity").change(() => {
-        //    ShowFilter();
-        //    GetCoach();
-        //})
-        //$("input[name='fGender[]'], input[name='fCoachSkill[]'], input[name='fCoachTime[]']").click(() => {
-        //    if ($("input[name='fCoachSkill[]']:checked").length < 9) {
-        //        $("#spAllSkill").prop("hidden", false);
-        //        $("#spCancelSkill").prop("hidden", true);
-        //    }
-        //    else {
-        //        $("#spAllSkill").prop("hidden", true);
-        //        $("#spCancelSkill").prop("hidden", false);
-        //    }
-        //    if ($("input[name='fCoachTime[]']:checked").length < 6) {
-        //        $("#spAllTime").prop("hidden", false);
-        //        $("#spCancelTime").prop("hidden", true);
-        //    }
-        //    else {
-        //        $("#spAllTime").prop("hidden", true);
-        //        $("#spCancelTime").prop("hidden", false);
-        //    }
-        //    ShowFilter();
-        //    GetCoach();
-        //})
-        //function ShowFilter() {
-        //    $("#spSearch").prop("hidden", false);
-        //    $("#spFilter").empty();
-        //    if ($("#selCity option:selected").val() != 0) {
-        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`);
-        //    }
-        //    $("input[name='fGender[]']:checked").each(function () {
-        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
-        //    })
-        //    $("input[name='fCoachSkill[]']:checked").each(function () {
-        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
-        //    })
-        //    $("input[name='fCoachTime[]']:checked").each(function () {
-        //        $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
-        //    })
-        //}
+        多重篩選觸發事件、顯示搜尋結果
+        $("#selCity").change(() => {
+            ShowFilter();
+            GetCoach();
+        })
+        $("input[name='fGender[]'], input[name='fCoachSkill[]'], input[name='fCoachTime[]']").click(() => {
+            if ($("input[name='fCoachSkill[]']:checked").length < 9) {
+                $("#spAllSkill").prop("hidden", false);
+                $("#spCancelSkill").prop("hidden", true);
+            }
+            else {
+                $("#spAllSkill").prop("hidden", true);
+                $("#spCancelSkill").prop("hidden", false);
+            }
+            if ($("input[name='fCoachTime[]']:checked").length < 6) {
+                $("#spAllTime").prop("hidden", false);
+                $("#spCancelTime").prop("hidden", true);
+            }
+            else {
+                $("#spAllTime").prop("hidden", true);
+                $("#spCancelTime").prop("hidden", false);
+            }
+            ShowFilter();
+            GetCoach();
+        })
+        function ShowFilter() {
+            $("#spSearch").prop("hidden", false);
+            $("#spFilter").empty();
+            if ($("#selCity option:selected").val() != 0) {
+                $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`);
+            }
+            $("input[name='fGender[]']:checked").each(function () {
+                $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+            })
+            $("input[name='fCoachSkill[]']:checked").each(function () {
+                $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+            })
+            $("input[name='fCoachTime[]']:checked").each(function () {
+                $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+            })
+        }
 
         //全選
         //$("#spAllSkill").click(() => {
