@@ -14,7 +14,7 @@
         }
 
         .modal-title {
-            color: #7FAD39;
+            color: #0000C6;
             font-weight: 600;
         }
 
@@ -33,7 +33,7 @@
         }
 
         .btn-success {
-            background-color: #7FAD39;
+            background-color: #0000C6;
             color: white;
             border: none;
         }
@@ -49,7 +49,7 @@
 
         #title {
             font-weight: 800;
-            color: #599e32;
+            color: #003D79;
             margin-left: 20vw;
             margin-right: 20vw;
         }
@@ -80,8 +80,8 @@
         .btnPage {
             font-weight: 600;
             background-color: white;
-            color: #7fad39;
-            border: 1px solid #7fad39;
+            color: #0080FF;
+            border: 1px solid #0080FF;
             width: 35px;
             height: 35px;
             margin: 0px 8px;
@@ -89,12 +89,12 @@
         }
 
             .btnPage:hover {
-                background-color: #7fad39;
+                background-color: #0080FF;
                 color: white;
             }
 
         .selectedPage {
-            background-color: #7fad39;
+            background-color: #0080FF;
             color: white;
         }
 
@@ -140,15 +140,8 @@
         <div class="col-lg-3">
             <select class="custom-select" id="selSkill">
                 <option value="0" selected>所有專長</option>
-                <option value="1">肌肥大訓練</option>
-                <option value="2">增肌減脂</option>
-                <option value="3">體態評估雕塑</option>
-                <option value="4">功能性訓練</option>
-                <option value="5">TRX課程訓練</option>
-                <option value="6">壺鈴課程訓練</option>
-                <option value="7">拳擊訓練</option>
-                <option value="8">備賽指導</option>
-                <option value="9">銀髮族訓練</option>
+                <option value="1">增肌重訓</option>
+                <option value="2">減脂體態雕塑</option>
             </select>
         </div>
         <div class="col-lg-1" style="padding-right:0">
@@ -361,7 +354,7 @@
         //查看履歷
         function viewResume() {
             let theCoachId = $(event.target).parents("tr").children("td:eq(0)").text();
-            $.get("@Url.Content("~/Admin/CoachManage/getCoach")", { id: theCoachId }, function (c) {
+            $.get("@Url.Content("~/Coach/getCoach")", { id: theCoachId }, function (c) {
                 let skill = "";
                 $.each(c.skills, function (idx, val) {
                     skill += val;
