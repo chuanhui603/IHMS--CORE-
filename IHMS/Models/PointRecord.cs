@@ -13,7 +13,7 @@ public partial class PointRecord
 
     public int BankNumber { get; set; }
 
-    public DateTime? Createtime { get; set; }
+    public DateTime? Createtime { get; set; } = DateTime.Now;
 
     public DateTime? Updatetime { get; set; }
 
