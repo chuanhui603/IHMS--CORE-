@@ -14,6 +14,4 @@ public partial class Schedule
     public int? StatusNumber { get; set; }
 
     public virtual Course? Course { get; set; }
-
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

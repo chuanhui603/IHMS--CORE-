@@ -69,7 +69,7 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Schedule> Schedules { get; set; }
 
-    public virtual DbSet<Skill> Skills { get; set; }
+    public virtual DbSet<Score> Scores { get; set; }
 
     public virtual DbSet<Skill> Skills { get; set; }
 
@@ -140,7 +140,7 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.Member).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Cart_Members");
+                .HasConstraintName("FK_Cart_Schedule");
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -163,6 +163,10 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.City).WithMany(p => p.Coaches)
                 .HasForeignKey(d => d.CityId)
                 .HasConstraintName("FK_Coach_Cities1");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.Coaches)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_Coach_Members");
         });
 
         modelBuilder.Entity<CoachAvailableTime>(entity =>
@@ -254,23 +258,6 @@ public partial class IhmsContext : DbContext
                 .HasConstraintName("FK_CoachSkill_Skills");
         });
 
-        modelBuilder.Entity<CoachSkill>(entity =>
-        {
-            entity.ToTable("CoachSkill");
-
-            entity.Property(e => e.CoachSkillId).HasColumnName("CoachSkillID");
-            entity.Property(e => e.CoachId).HasColumnName("coach_id");
-            entity.Property(e => e.SkillId).HasColumnName("SkillID");
-
-            entity.HasOne(d => d.Coach).WithMany(p => p.CoachSkills)
-                .HasForeignKey(d => d.CoachId)
-                .HasConstraintName("FK_CoachSkill_Coach");
-
-            entity.HasOne(d => d.Skill).WithMany(p => p.CoachSkills)
-                .HasForeignKey(d => d.SkillId)
-                .HasConstraintName("FK_CoachSkill_Skills");
-        });
-
         modelBuilder.Entity<Course>(entity =>
         {
             entity.ToTable("Course");
@@ -342,7 +329,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B85345D188B9A");
+            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534D9DD96E9");
 
             entity.ToTable("HealthInfo");
 
@@ -374,7 +361,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<Member>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__Members__B29B8534DC7B3829");
+            entity.HasKey(e => e.MemberId).HasName("PK__Members__B29B85349B599CC2");
 
             entity.Property(e => e.MemberId).HasColumnName("member_id");
             entity.Property(e => e.Account)
@@ -637,12 +624,22 @@ public partial class IhmsContext : DbContext
                 .HasConstraintName("FK_Schedule_Course");
         });
 
-        modelBuilder.Entity<Skill>(entity =>
+        modelBuilder.Entity<Score>(entity =>
         {
-            entity.Property(e => e.SkillId).HasColumnName("SkillID");
-            entity.Property(e => e.SkillDescription).HasMaxLength(50);
-            entity.Property(e => e.SkillImage).HasMaxLength(50);
-            entity.Property(e => e.SkillName).HasMaxLength(50);
+            entity.ToTable("Score");
+
+            entity.Property(e => e.ScoreId).HasColumnName("score_id");
+            entity.Property(e => e.CourseId).HasColumnName("course_id");
+            entity.Property(e => e.MemberId).HasColumnName("member_id");
+            entity.Property(e => e.Score1).HasColumnName("score");
+            entity.Property(e => e.ScoredDate)
+                .HasColumnType("datetime")
+                .HasColumnName("scored_date");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.Scores)
+                .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Score_Members");
         });
 
         modelBuilder.Entity<Skill>(entity =>
@@ -694,16 +691,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Type)
                 .HasMaxLength(20)
                 .HasColumnName("type");
-        });
-
-        modelBuilder.Entity<Status>(entity =>
-        {
-            entity.ToTable("Status");
-
-            entity.Property(e => e.StatusId).HasColumnName("StatusID");
-            entity.Property(e => e.Status1)
-                .HasMaxLength(50)
-                .HasColumnName("Status");
         });
 
         modelBuilder.Entity<Status>(entity =>
