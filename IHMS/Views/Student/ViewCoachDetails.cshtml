@@ -175,6 +175,11 @@
             padding-left: 50px;
         }
 
+        .coach-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the coaches vertically within the container */
+        }
         .recBar {
             text-align: right;
             height: 2px;
@@ -679,13 +684,13 @@
                        function (data) {
                            $(".divCoaches").empty();
                            $.each(data, function (index, item) {
-                               $(".divCoaches").append(`<a href="/Student/ViewCoachDetails/${item.fCoachId}" id=a${index} class="aRec"></a>`);
+                               $(".divCoaches").append(`<a href="/Student/ViewCoachDetails/${item.CoachId}" id=a${index} class="aRec"></a>`);
                                $(`#a${index}`).append(`<div class="row divRec" id=rec${index}></div>`);
                                $(`#rec${index}`).append(`<div class="col-5" id=d1${index}></div>`).append(`<div class="col-7 divRecCoach" id=d2${index}></div>`)
                                    .append(`<div class="divRecList" id=d3${index}></div>`);
                                $(`#d1${index}`).append(`<img id=img${index} class="coach_img">`);
-                               $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.fCoachImage}`);
-                               $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.fCoachName}</b></h4></div>`).append(`<div><span class="spRec">${item.fSlogan}</span></div>`);
+                               $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.CoachImage}`);
+                               $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.CoachName}</b></h4></div>`).append(`<div><span class="spRec">${item.Slogan}</span></div>`);
                                $(`#d3${index}`).append(`<ul class="ulRec" id=ul${index}>`);
                                $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=l1${index}></li>`).append(`<li style="list-style:none" class="li" id=l2${index}></li>`);
                                $(`#l1${index}`).append(`<img class="icon location"/><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;${item.cityName}</span>`);
@@ -694,7 +699,7 @@
                                $(".skill").attr("src", "@Url.Content("~/img/Coach/icon/skill.png")");
 
                                //取得專長項目
-                               $.getJSON("@Url.Content("~/Student/GetSkillName")", { "id": `${item.fCoachId}` },
+                               $.getJSON("@Url.Content("~/Student/GetSkillName")", { "id": `${item.CoachId}` },
                                    function (skills) {
                                        let s = "";
                                        $.each(skills, function (index, skill) {

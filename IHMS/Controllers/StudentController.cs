@@ -86,7 +86,7 @@ namespace IHMS.Controllers
                 .Include(c => c.CoachSkills).ThenInclude(cs => cs.Skill).AsEnumerable()
                 .Where(c => c.Visible == true && c.CityId == cityId && c.CoachId != id &&
                 (c.CoachSkills.Select(cs => cs.SkillId).ToArray().Intersect(skills)).Count() > 0)
-                .OrderBy(c => Guid.NewGuid()).Take(5);
+                .OrderBy(c => Guid.NewGuid()).Take(3);
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());
             return Json(coaches);
@@ -102,6 +102,11 @@ namespace IHMS.Controllers
             var nums = db.Courses.Where(c => c.CoachContact.CoachId == id && c.StatusNumber == 55).Select(c => c.AvailableTimeNum).Distinct();
             return Json(nums);
         }
-
+        //取得推薦教練專長
+        public IActionResult GetSkillName(int id)
+        {
+            var data = _context.CoachSkills.Where(cs => cs.CoachId == id).Include(cs => cs.Skill).Select(cs => cs.Skill.SkillName).ToArray();
+            return Json(data);
+        }
     }
 }
