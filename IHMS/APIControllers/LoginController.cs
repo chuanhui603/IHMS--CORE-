@@ -135,8 +135,9 @@ namespace IHMS.APIControllers
             bool isPasswordCorrect = string.Compare(password, member.Password, false) == 0;
             if (isPasswordCorrect)
             {
+                
                 // 登入成功
-                return Ok(new { message = "登入成功" });
+                return Ok(new { message = "登入成功"});
             }
             else
             {

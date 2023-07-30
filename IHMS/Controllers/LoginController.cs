@@ -7,10 +7,6 @@ namespace IHMS.Controllers
         public IActionResult Login()
         {
             return View();
-        }
-        public IActionResult MemberEdit()
-        {
-            return View();
-        }
+        }       
     }
 }
