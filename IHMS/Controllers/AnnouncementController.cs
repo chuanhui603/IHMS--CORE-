@@ -33,7 +33,7 @@ namespace IHMS.Controllers
             string connectionString = _configuration.GetConnectionString("IHMSConnection");
             model.time = DateTime.Now;
 
-                model.an_time = DateTime.Now;
+                model.time = DateTime.Now;
 
                 using (var connection = new SqlConnection(connectionString))
                 {
@@ -45,7 +45,7 @@ namespace IHMS.Controllers
                         CreatedDate = model.time,
                         Image = string.Empty // 先將圖片欄位設為空，稍後會更新為實際的檔案名稱
                     };
-                    connection.Execute(query, parameters);
+
                 }
 
                 if (imageFile != null && imageFile.Length > 0)

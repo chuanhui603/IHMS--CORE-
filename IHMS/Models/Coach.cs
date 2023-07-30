@@ -7,31 +7,37 @@ public partial class Coach
 {
     public int CoachId { get; set; }
 
-    public int MemberId { get; set; }
+    public string? CoachName { get; set; }
 
-    public string? Intro { get; set; }
+    public int? MemberId { get; set; }
 
-    public string Image { get; set; } = null!;
+    public int? CityId { get; set; }
 
-    public int? Rank { get; set; }
+    public string? CoachImage { get; set; }
 
-    public double? Commission { get; set; }
+    public int? CoachFee { get; set; }
 
-    public string Resume { get; set; } = null!;
+    public string? CoachDescription { get; set; }
 
-    public string? Video { get; set; }
+    public string? ApplyDate { get; set; }
 
-    public int Condition { get; set; }
+    public int? StatusNumber { get; set; }
 
-    public string? Reason { get; set; }
+    public bool? Visible { get; set; }
 
-    public DateTime Applytime { get; set; }
+    public int? CourseCount { get; set; }
 
-    public DateTime Confirmtime { get; set; }
+    public string? Slogan { get; set; }
 
-    public string? Type { get; set; }
+    public virtual ICollection<CoachAvailableTime> CoachAvailableTimes { get; set; } = new List<CoachAvailableTime>();
 
-    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+    public virtual ICollection<CoachContact> CoachContacts { get; set; } = new List<CoachContact>();
 
-    public virtual Member Member { get; set; } = null!;
+    public virtual ICollection<CoachExperience> CoachExperiences { get; set; } = new List<CoachExperience>();
+
+    public virtual ICollection<CoachLicense> CoachLicenses { get; set; } = new List<CoachLicense>();
+
+    public virtual ICollection<CoachRate> CoachRates { get; set; } = new List<CoachRate>();
+
+    public virtual ICollection<CoachSkill> CoachSkills { get; set; } = new List<CoachSkill>();
 }

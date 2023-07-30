@@ -35,10 +35,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 //加上才有防Cors
-app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseCors("AllowAll");
 app.UseRouting();
 app.UseCors("AllowAll");
 app.UseAuthorization();

@@ -11,15 +11,19 @@ public partial class SportDetail
 
     public string Sname { get; set; } = null!;
 
-    public TimeSpan Sporttime { get; set; }
-
     public int? Frequency { get; set; }
-
-    public string? Image { get; set; }
 
     public string? Type { get; set; }
 
-    public string? Description { get; set; }
+    public DateTime Registerdate { get; set; }
 
-    public virtual Sport Sport { get; set; } = null!;
+    public string? Time { get; set; }
+
+    public int? Timelong { get; set; }
+
+    public bool? Isdone { get; set; }
+
+    public int? Sets { get; set; }
+
+    public DateTime? Sportdate { get; set; }
 }

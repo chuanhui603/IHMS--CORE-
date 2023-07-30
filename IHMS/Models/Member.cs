@@ -1,5 +1,4 @@
-﻿using IHMS.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace IHMS.Models;
@@ -38,19 +37,17 @@ public partial class Member
 
     public string? AllergyDescription { get; set; }
 
-    public DateTime? LoginTime { get; set; }    
+    public DateTime? LoginTime { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
-    public virtual ICollection<Coach> Coaches { get; set; } = new List<Coach>();
-
     public virtual HealthInfo? HealthInfo { get; set; }
-
-    public virtual ICollection<MessageBoard> MessageBoards { get; set; } = new List<MessageBoard>();
 
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ICollection<Plan> Plans { get; set; } = new List<Plan>();
 
     public virtual ICollection<PointRecord> PointRecords { get; set; } = new List<PointRecord>();
 
