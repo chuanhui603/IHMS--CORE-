@@ -1,11 +1,12 @@
 ﻿<style>
     th, td {
         white-space: nowrap;
+        text-align: center;
     }
 
     .table-responsive {
         overflow-x: auto;
-        overflow-y: scroll; 
+        overflow-y: scroll;
         white-space: nowrap;
         max-height: 600px; /* 設置欄位最大高度 */
     }
@@ -25,23 +26,31 @@
 
 @{
     ViewData["Title"] = "List";
+    Layout = "_Layout";
 }
 
 <h1>會員資料列表</h1>
+@using (Html.BeginForm())
+{
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">新增會員</a>
-</p>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">新增會員</a>
+        關鍵字 @Html.TextBox("txtKeyword")  <input type="submit" value="查詢" />
+    </p>
+
+}
+
+
 
 <div class="table-responsive">
-    <table class="table table-striped table-bordered">
-        <thead>
-        
+    <table class="table">
+        <thead class="table-dark">
+
             <tr>
                 <th>序</th>
                 <th>會員圖片</th>
                 <th>名稱</th>
-                <th>Email</th>                
+                <th>Email</th>
                 <th>帳號</th>
                 <th>密碼</th>
                 <th>電話</th>
@@ -59,15 +68,19 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                int serialNumber = 0;
+            }
             @foreach (var item in Model)
             {
+                serialNumber++;
                 <tr>
-                    <td>@item.MemberId</td>
+                    <td>@serialNumber</td>
                     <td>
                         <img src="~/images/@item.AvatarImage" width="100" height="100" />
                     </td>
                     <td class="text-truncate">@item.Name</td>
-                    <td class="text-truncate">@item.Email</td>                    
+                    <td class="text-truncate">@item.Email</td>
                     <td class="text-truncate">@item.Account</td>
                     <td class="text-truncate">@item.Password</td>
                     <td class="text-truncate">@item.Phone</td>
@@ -108,7 +121,7 @@
                         }
                     </td>
                     <td class="text-truncate">@item.Nickname</td>
-                    <td class="text-truncate">@item.ResidentialCity</td>                    
+                    <td class="text-truncate">@item.ResidentialCity</td>
                     <td>
                         @if (item.Permission >= 1 && item.Permission <= 100)
                         {
@@ -132,10 +145,11 @@
                     <td class="text-truncate">@item.DiseaseDescription</td>
                     <td class="text-truncate">@item.AllergyDescription</td>
                     <td>@item.LoginTime</td>
-                    <td class="fixed-actions">
-                        @Html.ActionLink("修改", "Edit", "Members", new { id = item.MemberId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-danger" })
+                    <td class="fixed-actions" style="background-color: #4169E1;">
+                        @Html.ActionLink("修改", "Edit", "Members", new { id = item.MemberId }, new { @class = "btn btn-dark" })
+                        @Html.ActionLink("刪除", "Delete", "Members", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除嗎?')", @class = "btn btn-dark" })
                     </td>
+
                 </tr>
             }
         </tbody>

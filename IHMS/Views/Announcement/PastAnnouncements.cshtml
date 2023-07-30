@@ -3,36 +3,36 @@
 <h1>公告</h1>
 @if (Model.Any())
 {
-<table class="table">
-<thead>
-<tr>
+    <table class="table">
+        <thead>
+            <tr>
 <th>標題</th>
 <th>內容</th>
 <th>日期</th>
 <th>圖片</th>
 <th></th> <!-- 新增刪除按鈕所在的欄位 -->
-</tr>
-</thead>
-<tbody>
-@foreach (var announcement in Model)
-{
-<tr>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var announcement in Model)
+            {
+                <tr>
 <td>@announcement.title</td>
 <td>@announcement.contents</td>
 <td>@announcement.time.ToString("yyyy-MM-dd")</td>
-<td>
+                    <td>
 @if (!string.IsNullOrEmpty(announcement.image))
-{
+                        {
 <img src="~/AnnouncementImage/@announcement.image" alt="公告圖片" width="100px" />
-}
-</td>
+                        }
+                    </td>
 <td>
 <button class="btn btn-danger deleteButton" data-id="@announcement.announcemet_id" data-toggle="modal" data-target="#confirmDeleteModal">刪除</button>
 </td>
-</tr>
-}
-</tbody>
-</table>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else
 {

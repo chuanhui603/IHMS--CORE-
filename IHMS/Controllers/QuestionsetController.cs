@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using IHMS.Models;
 using Microsoft.Data.SqlClient;
 using IHMS.Models;
 

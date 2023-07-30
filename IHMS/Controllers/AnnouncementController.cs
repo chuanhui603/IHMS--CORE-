@@ -18,7 +18,6 @@ namespace IHMS.Controllers
             return View();
         }
 
-       // private readonly string connectionString = "Data Source=.;Initial Catalog=IHMS;Integrated Security=True;TrustServerCertificate=True"; // 替換為你的資料庫連接字串
         private readonly IWebHostEnvironment _environment;
         private readonly IConfiguration _configuration;
 
@@ -34,10 +33,11 @@ namespace IHMS.Controllers
             string connectionString = _configuration.GetConnectionString("IHMSConnection");
             model.time = DateTime.Now;
 
+                model.an_time = DateTime.Now;
+
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    var query = "INSERT INTO Announcement (title, contents, time, image) VALUES (@Title, @Content, @CreatedDate, @Image)";
                     var parameters = new
                     {
                         Title = model.title,

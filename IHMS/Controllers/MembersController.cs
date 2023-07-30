@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IHMS.Models;
+using IHMS.ViewModel;
 
 
 namespace IHMS.Controllers
@@ -11,11 +12,22 @@ namespace IHMS.Controllers
         {
             _enviro = p;
         }
-        public IActionResult List()
+
+        public IActionResult List(CKeywordViewModel vm)
         {
+            string keyword = vm.txtKeyword;
             IhmsContext db = new IhmsContext();
-            var datas = from c in db.Members
+            IEnumerable<Member> datas = null;
+            if (string.IsNullOrEmpty(keyword))
+            {
+                datas = from c in db.Members
                         select c;
+            }
+            else
+                datas = db.Members.Where(p => p.Name.Contains(keyword) ||
+                p.Phone.Contains(keyword) ||
+                p.Email.Contains(keyword) ||
+                p.Account.Contains(keyword));
             return View(datas);
         }
         public ActionResult Edit(int? id)
@@ -56,7 +68,7 @@ namespace IHMS.Controllers
                 cust.Occupation = x.Occupation; //職業
                 cust.DiseaseDescription = x.DiseaseDescription; //疾病史
                 cust.AllergyDescription = x.AllergyDescription; //過敏反應
-                cust.LoginTime = x.login_time; //登入日期
+                cust.LoginTime = x.LoginTime; //登入日期
                 db.SaveChanges();
             }
             return RedirectToAction("List");
