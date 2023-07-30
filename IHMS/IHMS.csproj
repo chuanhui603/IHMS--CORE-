@@ -36,6 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Article\Details.cshtml" />
+    <None Include="Views\Article\Index.cshtml" />
+    <None Include="Views\Article\ViewAll.cshtml" />
+    <None Include="Views\customeservice\Index.cshtml" />
+    <None Include="Views\customeservice\Reply.cshtml" />
     <None Include="wwwroot\img\undraw_posting_photo.svg" />
     <None Include="wwwroot\img\undraw_profile.svg" />
     <None Include="wwwroot\img\undraw_profile_1.svg" />

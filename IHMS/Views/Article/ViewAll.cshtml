@@ -1,0 +1,24 @@
+﻿@model List<IHMS.Controllers.Article>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>所有文章</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="jumbotron">
+            <h1 class="display-4">所有文章</h1>
+            <hr class="my-4" />
+            <ul class="list-group">
+                @foreach (var article in Model)
+                {
+                    <li class="list-group-item"><a href="@Url.Action("Details", "Article", new { id = article.article_id })">@article.title</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
