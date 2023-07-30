@@ -14,6 +14,7 @@ using NuGet.Packaging.Signing;
 
 namespace IHMS.APIControllers
 {
+    [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase

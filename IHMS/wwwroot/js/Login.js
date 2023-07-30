@@ -25,7 +25,7 @@ async function login(event) {
         if (res.ok) {
             const member = await res.json();   
 
-            // 登入成功         
+            // 登入成功
             
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
             // 將會員資訊存入 localStorage
@@ -41,6 +41,7 @@ async function login(event) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
     }
+
     window.addEventListener('load', function () {
         checkLoginStatus();
     });
@@ -67,10 +68,10 @@ function LoadlocalStorage() {
         try {
 
             // 將JSON字串轉換為JavaScript物件
-            const savedMember = JSON.parse(savedMemberJSON);        
+            const savedMember = JSON.parse(savedMemberJSON);         
             
             // 在這裡可以使用savedMember物件進行你需要的操作                
-            document.getElementById("MemberId").value = savedMember.memberId;            
+            document.getElementById("MemberId").value = savedMember.memberId;
             document.getElementById("Name").value = savedMember.name;
             document.getElementById("Email").value = savedMember.email;
             document.getElementById("Phone").value = savedMember.phone;
@@ -87,7 +88,7 @@ function LoadlocalStorage() {
             document.getElementById("Diseasedescription").value = savedMember.diseaseDescription;
             document.getElementById("Allergydescription").value = savedMember.allergyDescription;
             document.getElementById("Logintime").value = savedMember.loginTime;            
-            
+
 
 
 
