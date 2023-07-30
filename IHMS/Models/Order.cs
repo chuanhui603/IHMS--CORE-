@@ -16,7 +16,8 @@ public partial class Order
     public string State { get; set; } = null!;
 
     public string? Reason { get; set; }
-    public DateTime? Createtime { get; set; } = DateTime.Now;
+
+    public DateTime? Createtime { get; set; }
 
     public DateTime? Updatetime { get; set; }
 

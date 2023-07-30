@@ -18,15 +18,9 @@ public partial class SportDetail
     public DateTime Registerdate { get; set; }
 
     public string? Time { get; set; }
-    public string? Type { get; set; }
-
-    public DateTime Registerdate { get; set; }
-
-    public string? Time { get; set; }
 
     public int? Timelong { get; set; }
 
-    public int? Timelong { get; set; }
     public bool? Isdone { get; set; }
 
     public int? Sets { get; set; }

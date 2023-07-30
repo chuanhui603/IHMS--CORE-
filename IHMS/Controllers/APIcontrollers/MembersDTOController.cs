@@ -46,7 +46,7 @@ namespace IHMS.Controllers.APIcontrollers
                         .SelectMany(schedule => _context.Courses
                             .Where(course => course.CourseId == schedule.CourseId)
                             .SelectMany(course => _context.Coaches
-                                .Where(coach => coach.CoachId == course.CoachId)
+                                .Where(coach => coach.CoachId == course.CoachContactId)
                                 .SelectMany(coach => _context.Members
                                 .Where(member => member.MemberId == coach.MemberId)
                                 )

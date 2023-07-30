@@ -543,6 +543,11 @@ public partial class IhmsContext : DbContext
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetail_Orders");
+
+            entity.HasOne(d => d.Schedule).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.ScheduleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderDetail_Schedule");
         });
 
         modelBuilder.Entity<Plan>(entity =>

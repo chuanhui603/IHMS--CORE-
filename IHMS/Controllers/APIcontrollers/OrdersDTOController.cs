@@ -51,7 +51,7 @@ namespace IHMS.Controllers.APIcontrollers
                     List<Course> courses = await _context.Courses.Where(od => od.CourseId == schedule.CourseId).ToListAsync();
                     foreach (Course course in courses)
                     {
-                        List<Coach> coaches = await _context.Coaches.Where(od => od.CoachId == course.CoachId).ToListAsync();
+                        List<Coach> coaches = await _context.Coaches.Where(od => od.CoachId == course.CoachContactId).ToListAsync();
                         foreach(Coach coach in coaches)
                         {
                             coachesList.AddRange(coaches);
