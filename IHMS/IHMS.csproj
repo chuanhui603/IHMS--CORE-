@@ -87,6 +87,7 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <Folder Include="wwwroot\SportImg\" />
   </ItemGroup>
 
   <ItemGroup>

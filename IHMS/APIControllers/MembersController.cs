@@ -14,7 +14,6 @@ using NuGet.Packaging.Signing;
 
 namespace IHMS.APIControllers
 {
-    [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
@@ -192,6 +191,9 @@ namespace IHMS.APIControllers
 
             return "註冊成功";
         }
+
+
+
 
         // DELETE: api/Members/5
         [HttpDelete("{id}")]
