@@ -7,21 +7,19 @@ public partial class Course
 {
     public int CourseId { get; set; }
 
-    public int CoachId { get; set; }
+    public int? CoachContactId { get; set; }
 
-    public string Coursename { get; set; } = null!;
+    public string? CourseName { get; set; }
 
-    public string? Intro { get; set; }
+    public int? CourseTotal { get; set; }
 
-    public string? Video { get; set; }
+    public int? StatusNumber { get; set; }
 
-    public string? Image1 { get; set; }
+    public bool? Visible { get; set; }
 
-    public string? Image2 { get; set; }
+    public int? AvailableTimeNum { get; set; }
 
-    public string? Image3 { get; set; }
-
-    public virtual Coach Coach { get; set; } = null!;
+    public virtual CoachContact? CoachContact { get; set; }
 
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 

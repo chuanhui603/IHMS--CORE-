@@ -9,7 +9,7 @@ public partial class Plan
 
     public int MemberId { get; set; }
 
-    public string Pname { get; set; } = null!;
+    public string? Type { get; set; }
 
     public int Weight { get; set; }
 
@@ -17,7 +17,15 @@ public partial class Plan
 
     public DateTime RegisterDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public string? Times { get; set; }
+
+    public int Age { get; set; }
+
+    public double? Tdee { get; set; }
+
+    public double? Bmr { get; set; }
+
+    public int? Height { get; set; }
 
     public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
 

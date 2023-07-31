@@ -43,6 +43,8 @@ public partial class Member
 
     public virtual ICollection<Coach> Coaches { get; set; } = new List<Coach>();
 
+    public virtual ICollection<CustomerService> CustomerServices { get; set; } = new List<CustomerService>();
+
     public virtual HealthInfo? HealthInfo { get; set; }
 
     public virtual ICollection<MessageBoard> MessageBoards { get; set; } = new List<MessageBoard>();

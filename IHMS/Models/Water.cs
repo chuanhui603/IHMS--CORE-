@@ -11,7 +11,7 @@ public partial class Water
 
     public int? Drink { get; set; }
 
-    public DateTime? Date { get; set; }
+    public DateTime? Createdate { get; set; }
 
     public virtual Plan Plan { get; set; } = null!;
 }
