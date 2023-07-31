@@ -18,11 +18,7 @@ namespace IHMS.Controllers
     {
         private IhmsContext db;
         private readonly IhmsContext _context;
-        public CoachFrontController(IhmsContext context)
-        {
-            db = context;
-            _context = context;
-        }
+        
 
         private IWebHostEnvironment _environment;
         public CoachFrontController(IhmsContext context, IWebHostEnvironment environment)
@@ -91,10 +87,15 @@ namespace IHMS.Controllers
         //教練預約時間表-可預約
         public IActionResult getAvailableTimeId(int? id)
         {
-            var ids = db.Schedules.Where(ca => ca.CourseId == id).Select(ca => ca.CourseTime).Distinct();
+            var ids = db.CoachAvailableTimes.Where(ca => ca.CoachId == id).Select(ca => ca.AvailableTimeId).Distinct();
             return Json(ids);
         }
-        
+        //已額滿課程時間
+        public IActionResult getAvailableTimeNum(int? id)
+        {
+            var nums = db.Courses.Where(c => c.CoachContact.CoachId == id && c.StatusNumber == 55).Select(c => c.AvailableTimeNum).Distinct();
+            return Json(nums);
+        }
         //通知教練
         public IActionResult createContact(Member Email)
         {
@@ -103,15 +104,12 @@ namespace IHMS.Controllers
             return Content("");
         }
 
+
         //填寫履歷
         public IActionResult CreateResume()
         {
             int userId = 8; //備用帳號
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
-            }
+
             Coach c = _context.Coaches.FirstOrDefault(c => c.MemberId == userId);
             if (c != null)
                 return RedirectToAction("EditResume");
@@ -121,76 +119,74 @@ namespace IHMS.Controllers
             };
             return View(vModel);
         }
-
         [HttpPost] //送出履歷
-        public IActionResult CreateResume(Coach c)
+        public IActionResult CreateResume(Coach c, IFormFile File, int[] CoachSkill, int[] CoachTime, string[] Experience, string[] License)
         {
             int userId = 8;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
-            }
+           
+           
             c.MemberId = userId;
-            c.StatusNumber = 0;
-            c.ApplyDate = DateTime.Now.ToString();
+            c.StatusNumber = 1;
+            c.Visible = false;
+            c.ApplyDate = DateTime.Now.ToString("yyyyMMddHHmmss");
             _context.Coaches.Add(c);
             _context.SaveChanges();
-            //if (File != null)
-            //{
-            //    string photoName = Guid.NewGuid().ToString() + ".jpg";
-            //    File.CopyTo(new FileStream(_environment.WebRootPath + "/img/coach/coachImage/" + photoName, FileMode.Create));
-            //    c.Image = photoName;
-            //}
+            if (File != null)
+            {
+                string photoName = Guid.NewGuid().ToString() + ".jpg";
+                File.CopyTo(new FileStream(_environment.WebRootPath + "/img/coach/coachImage/" + photoName, FileMode.Create));
+                c.CoachImage = photoName;
+            }
+
             //新增Skills            
-            //foreach (int skill in )
-            //{
-            //    Coach newSkill = new Coach
-            //    {
-            //        CoachId = c.CoachId,
-            //        Type= c.
-            //    };
-            //    _context.TCoachSkills.Add(newSkill);
-            //}
+            foreach (int skillId in CoachSkill)
+            {
+                CoachSkill newSkill = new CoachSkill
+                {
+                    CoachId = c.CoachId,
+                    SkillId = skillId
+                };
+                _context.CoachSkills.Add(newSkill);
+            }
 
             //新增AvailableTime            
-            //foreach (int timeId in Schedule)
-            //{
-            //    Schedule newTime = new Schedule();
-            //    {
-            //        FCoachId = c.CoachId,
-            //        FAvailableTimeId = timeId
-            //    };
-            //    _context.TCoachAvailableTimes.Add(newTime);
-            //}
+            foreach (int timeId in CoachTime)
+            {
+                CoachAvailableTime newTime = new CoachAvailableTime
+                {
+                    CoachId = c.CoachId,
+                    AvailableTimeId = timeId
+                };
+                _context.CoachAvailableTimes.Add(newTime);
+            }
 
             //新增Experience            
-            //foreach (string Exp in fExperience)
-            //{
-            //    if (Exp != null)
-            //    {
-            //        TCoachExperience newExp = new TCoachExperience
-            //        {
-            //            FCoachId = c.FCoachId,
-            //            FExperience = Exp.Trim()
-            //        };
-            //        _context.TCoachExperiences.Add(newExp);
-            //    }
-            //}
+            foreach (string Exp in Experience)
+            {
+                if (Exp != null)
+                {
+                    CoachExperience newExp = new CoachExperience
+                    {
+                        CoachId = c.CoachId,
+                        Experience = Exp.Trim()
+                    };
+                    _context.CoachExperiences.Add(newExp);
+                }
+            }
 
             //新增License           
-            //foreach (string Lic in fLicense)
-            //{
-            //    if (Lic != null)
-            //    {
-            //        TCoachLicense newLic = new TCoachLicense
-            //        {
-            //            FCoachId = c.FCoachId,
-            //            FLicense = Lic.Trim()
-            //        };
-            //        _context.TCoachLicenses.Add(newLic);
-            //    }
-            //}
+            foreach (string Lic in License)
+            {
+                if (Lic != null)
+                {
+                    CoachLicense newLic = new CoachLicense
+                    {
+                        CoachId = c.CoachId,
+                        License = Lic.Trim()
+                    };
+                    _context.CoachLicenses.Add(newLic);
+                }
+            }
             _context.SaveChanges();
             return Content("Success", "text/plain");
         }
@@ -198,11 +194,7 @@ namespace IHMS.Controllers
         public IActionResult EditResume()
         {
             int userId = 11;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
-            }
+
             Coach data = _context.Coaches
                 .Include(c => c.CoachSkills)
                 .Include(c => c.CoachAvailableTimes)
@@ -217,93 +209,88 @@ namespace IHMS.Controllers
         }
 
         [HttpPost]  //送出修改
-        public IActionResult EditResume(Coach c)
+        public IActionResult EditResume(Coach c, IFormFile File, int[] CoachSkill, int[] CoachTime, string[] Experience, string[] License)
         {
             int userId = 11;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
-            }
+            
             Coach coach = _context.Coaches.FirstOrDefault(c => c.MemberId == userId);
-            //if (coach != null)
-            //{
-            //    if (File != null)
-            //    {
-            //        string photoName = Guid.NewGuid().ToString() + ".jpg";
-            //        File.CopyTo(new FileStream(_environment.WebRootPath + "/img/coach/coachImage/" + photoName, FileMode.Create));
-            //        coach.FCoachImage = photoName;
-            //    }
-            //    coach.FCityId = c.FCityId;
-            //    coach.FCoachFee = c.FCoachFee;
-            //    coach.FCoachDescription = c.FCoachDescription;
-            //    coach.FSlogan = c.FSlogan;
+            if (coach != null)
+            {
+                if (File != null)
+                {
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";
+                    File.CopyTo(new FileStream(_environment.WebRootPath + "/img/coach/coachImage/" + photoName, FileMode.Create));
+                    coach.CoachImage = photoName;
+                }
+                coach.CityId = c.CityId;
+                coach.CoachFee = c.CoachFee;
+                coach.CoachDescription = c.CoachDescription;
+                coach.Slogan = c.Slogan;
 
-            //    //新增Skills
-            //    var currentSkills = _context.TCoachSkills.Where(cs => cs.FCoachId == coach.FCoachId).ToList();
-            //    foreach (var skill in currentSkills)
-            //        _context.TCoachSkills.Remove(skill);
-            //    foreach (int skillId in fCoachSkill)
-            //    {
-            //        TCoachSkill newSkill = new TCoachSkill
-            //        {
-            //            FCoachId = coach.FCoachId,
-            //            FSkillId = skillId
-            //        };
-            //        _context.TCoachSkills.Add(newSkill);
-            //    }
+                //新增Skills
+                var currentSkills = _context.CoachSkills.Where(cs => cs.CoachId == coach.CoachId).ToList();
+                foreach (var skill in currentSkills)
+                    _context.CoachSkills.Remove(skill);
+                foreach (int skillId in CoachSkill)
+                {
+                    CoachSkill newSkill = new CoachSkill
+                    {
+                        CoachId = coach.CoachId,
+                        SkillId = skillId
+                    };
+                    _context.CoachSkills.Add(newSkill);
+                }
 
-            //    //新增AvailableTime
-            //    var currentTime = _context.TCoachAvailableTimes.Where(at => at.FCoachId == coach.FCoachId).ToList();
-            //    foreach (var time in currentTime)
-            //        _context.TCoachAvailableTimes.Remove(time);
-            //    foreach (int timeId in fCoachTime)
-            //    {
-            //        TCoachAvailableTime newTime = new TCoachAvailableTime
-            //        {
-            //            FCoachId = coach.FCoachId,
-            //            FAvailableTimeId = timeId
-            //        };
-            //        _context.TCoachAvailableTimes.Add(newTime);
-            //    }
+                //新增AvailableTime
+                var currentTime = _context.CoachAvailableTimes.Where(at => at.CoachId == coach.CoachId).ToList();
+                foreach (var time in currentTime)
+                    _context.CoachAvailableTimes.Remove(time);
+                foreach (int timeId in CoachTime)
+                {
+                    CoachAvailableTime newTime = new CoachAvailableTime
+                    {
+                        CoachId = coach.CoachId,
+                        AvailableTimeId = timeId
+                    };
+                    _context.CoachAvailableTimes.Add(newTime);
+                }
 
-            //    //新增Experience
-            //    var currentExp = _context.TCoachExperiences.Where(e => e.FCoachId == coach.FCoachId).ToList();
-            //    foreach (var exp in currentExp)
-            //        _context.TCoachExperiences.Remove(exp);
-            //    foreach (string Exp in fExperience)
-            //    {
-            //        if (Exp != null)
-            //        {
-            //            TCoachExperience newExp = new TCoachExperience
-            //            {
-            //                FCoachId = coach.FCoachId,
-            //                FExperience = Exp.Trim()
-            //            };
-            //            _context.TCoachExperiences.Add(newExp);
-            //        }
-            //    }
+                //新增Experience
+                var currentExp = _context.CoachExperiences.Where(e => e.CoachId == coach.CoachId).ToList();
+                foreach (var exp in currentExp)
+                    _context.CoachExperiences.Remove(exp);
+                foreach (string Exp in Experience)
+                {
+                    if (Exp != null)
+                    {
+                        CoachExperience newExp = new CoachExperience
+                        {
+                            CoachId = coach.CoachId,
+                            Experience = Exp.Trim()
+                        };
+                        _context.CoachExperiences.Add(newExp);
+                    }
+                }
 
-            //    //新增License
-            //    var currentLic = _context.TCoachLicenses.Where(e => e.FCoachId == coach.FCoachId).ToList();
-            //    foreach (var lic in currentLic)
-            //        _context.TCoachLicenses.Remove(lic);
-            //    foreach (string Lic in fLicense)
-            //    {
-            //        if (Lic != null)
-            //        {
-            //            TCoachLicense newLic = new TCoachLicense
-            //            {
-            //                FCoachId = coach.FCoachId,
-            //                FLicense = Lic.Trim()
-            //            };
-            //            _context.TCoachLicenses.Add(newLic);
-            //        }
-            //    }
-            //}
+                //新增License
+                var currentLic = _context.CoachLicenses.Where(e => e.CoachId == coach.CoachId).ToList();
+                foreach (var lic in currentLic)
+                    _context.CoachLicenses.Remove(lic);
+                foreach (string Lic in License)
+                {
+                    if (Lic != null)
+                    {
+                        CoachLicense newLic = new CoachLicense
+                        {
+                            CoachId = coach.CoachId,
+                            License = Lic.Trim()
+                        };
+                        _context.CoachLicenses.Add(newLic);
+                    }
+                }
+            }
             _context.SaveChanges();
             return Content("Success", "text/plain");
         }
-
     }
 }

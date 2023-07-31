@@ -18,21 +18,14 @@ namespace IHMS.Controllers
         {
             db = _context;
         }
-        //private IWebHostEnvironment _enviro = null;
-
-        //public CoachController(IWebHostEnvironment e)
-        //{
-        //    _enviro = e;
-        //}
+        
 
         // GET: Coach
         public ActionResult List_Done()
         {
             IhmsContext db = new IhmsContext();
 
-            //var datas = from c in db.Coaches
-            //            select c;
-            //return View(datas);
+            
             List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
             foreach (var c in db.Coaches.OrderByDescending(c => c.ApplyDate))
             {
