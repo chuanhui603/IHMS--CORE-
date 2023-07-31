@@ -1,37 +1,38 @@
-﻿@using IHMS.Models;
-@model IEnumerable<AnnouncementView>
+﻿@model IEnumerable<IHMS.Models.AnnouncementView>
 
-@{
-    ViewData["Title"] = "Past Announcements";
+    @{
     Layout = "_Layout";
-}
+    }
 
-<h1>Past Announcements</h1>
-
+<h1>公告</h1>
 @if (Model.Any())
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Date</th>
-                <th>Image</th> <!-- 新增圖片欄位 -->
+<th>標題</th>
+<th>內容</th>
+<th>日期</th>
+<th>圖片</th>
+<th></th> <!-- 新增刪除按鈕所在的欄位 -->
             </tr>
         </thead>
         <tbody>
             @foreach (var announcement in Model)
             {
                 <tr>
-                    <td>@announcement.an_title</td>
-                    <td>@announcement.an_content</td>
-                    <td>@announcement.an_time.ToString("yyyy-MM-dd")</td>
+<td>@announcement.title</td>
+<td>@announcement.contents</td>
+<td>@announcement.time.ToString("yyyy-MM-dd")</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(announcement.an_image))
+@if (!string.IsNullOrEmpty(announcement.image))
                         {
-                            <img src="~/AnnouncementImage/@announcement.an_image" alt="Announcement Image" width="100px" />
+<img src="~/AnnouncementImage/@announcement.image" alt="公告圖片" width="100px" />
                         }
                     </td>
+<td>
+<button class="btn btn-danger deleteButton" data-id="@announcement.announcemet_id" data-toggle="modal" data-target="#confirmDeleteModal">刪除</button>
+</td>
                 </tr>
             }
         </tbody>
@@ -39,5 +40,58 @@
 }
 else
 {
-    <p>No past announcements found.</p>
+<p>沒有公告</p>
+}
+
+<!-- 確認刪除的 Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">確認刪除</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>您確定要刪除這則公告嗎？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">確定刪除</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+var deleteId;
+ // 按下刪除按鈕時取得公告的識別碼
+        $('.deleteButton').click(function () {
+            deleteId = $(this).data('id');
+        });
+
+        // 按下確定刪除按鈕時觸發刪除動作
+        $('#confirmDeleteButton').click(function () {
+            deleteAnnouncement(deleteId);
+            $('#confirmDeleteModal').modal('hide');
+        });
+
+        // 刪除公告的函式
+        function deleteAnnouncement(id) {
+            $.ajax({
+                url: '@Url.Action("Delete", "Announcement")' + '?id=' + id,
+                type: 'POST',
+                success: function (response) {
+                    window.location.reload(); // 重新載入頁面
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+</script>
 }

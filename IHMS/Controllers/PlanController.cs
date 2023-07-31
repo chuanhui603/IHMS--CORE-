@@ -20,11 +20,6 @@ namespace IHMS.Controllers
         {
             _db = d;
         }
-
-        public ActionResult test()
-        {
-            return PartialView();
-        }
         public ActionResult List()
         {
             // var planlist = (from p in db.Plans select p);      //不ToList會觸發重複使用資料庫         
@@ -43,7 +38,6 @@ namespace IHMS.Controllers
                 PlanId = p.PlanId,
                 Name = _db.Members.Include("Plans").FirstOrDefault(m => m.MemberId==p.MemberId).Name,
                 Registerdate = p.RegisterDate,
-                EndDate = p.EndDate,
             });
             return View(query);
         }
@@ -74,25 +68,23 @@ namespace IHMS.Controllers
             var dietId = new List<int>();
             var sportdatelist = new List<DateTime>();
             var sportId = new List<int>();
-            //foreach (var diet in dietquery)
-            //{
-            //    dietdatelist.Add(diet.Date);
-            //    dietId.Add(diet.DietId);
-            //}
+            foreach (var diet in dietquery)
+            {
+                dietdatelist.Add(diet.Createdate);
+                dietId.Add(diet.DietId);
+            }
 
-            //foreach (var sport in sportquery)
-            //{
-            //    sportdatelist.Add(sport.Date);
-            //    sportId.Add(sport.SportId);
-            //}
+            foreach (var sport in sportquery)
+            {
+                sportdatelist.Add(sport.Createdate);
+                sportId.Add(sport.SportId);
+            }
             PPlanViewModel vm = new PPlanViewModel
             {
                 PlanId = plan.PlanId,
                 MemberName = _db.Members.Include("Plans").FirstOrDefault(m => m.MemberId == plan.MemberId).Name,
                 BodyPercentage = plan.BodyPercentage,
                 RegisterDate = plan.RegisterDate,
-                EndDate = plan.EndDate,
-                Pname = plan.Pname,
                 DietDate = dietdatelist,
                 DietId = dietId,
                 SportDate = sportdatelist,

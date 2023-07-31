@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader());
 });
 
+builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 
@@ -33,12 +34,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseCors("AllowAll");
-
-
+//加上才有防Cors
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseCors("AllowAll");
 app.UseRouting();
 app.UseCors("AllowAll");
 app.UseAuthorization();

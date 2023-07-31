@@ -2,24 +2,29 @@
 @{
     ViewData["Title"] = "Announcement";
     Layout = "_Layout";
+   
 }
 
 <br />
 
-<h1>發布公告</h1>
 
+
+<h1>發布公告</h1>
+<div class="mb-3">
+    @Html.ActionLink("歷史公告紀錄", "PastAnnouncements", "Announcement", null, new { @class = "btn btn-success" })
+</div>
 @using (Html.BeginForm("Create", "Announcement", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="mb-3">
         <label for="title" class="form-label">標題:</label>
         <br />
-        @Html.TextBoxFor(model => model.an_title, new { id = "title", @class = "form-control" })
+        @Html.TextBoxFor(model => model.title, new { id = "title", @class = "form-control" })
     </div>
 
     <div class="mb-3">
         <label for="content" class="form-label">內容文字:</label>
         <br />
-        @Html.TextAreaFor(model => model.an_content, new { id = "content", @class = "form-control", style = "height: 200px;" })
+        @Html.TextAreaFor(model => model.contents, new { id = "content", @class = "form-control", style = "height: 200px;" })
     </div>
 
     <div class="mb-3">

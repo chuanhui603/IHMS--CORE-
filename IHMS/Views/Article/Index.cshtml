@@ -1,0 +1,67 @@
+﻿@model List<IHMS.Controllers.Article>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>新增文章</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+ca5nbxpPhEPL87Win29r30APMMZu2z1LHPvz1oKvV5sIlM" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>新增文章</h1>
+        <hr />
+        <form asp-controller="Article" asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="title" class="form-label">標題：</label>
+                <input type="text" name="title" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="contents" class="form-label">內容：</label>
+                <textarea name="contents" rows="4" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">上傳圖片：</label>
+                <input type="file" id="image" name="image[]" class="form-control" multiple />
+                <div id="preview"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">發表</button>
+        </form>
+        <hr />
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='@Url.Action("ViewAll", "Article")'">過去發布的文章</button>
+
+
+        
+    </div>
+    <script>
+    document.getElementById('image').addEventListener('change', function(e) {
+        var preview = document.getElementById('preview');
+        preview.innerHTML = ''; // 清除預覽
+        var validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg']; // 允許的圖片格式
+
+        for (var i = 0; i < e.target.files.length; i++) {
+            var file = e.target.files[i];
+
+            // 驗證圖片格式
+            if (!validImageTypes.includes(file.type)) {
+                alert('文件 ' + file.name + ' 不是一個有效的圖片格式！');
+                e.target.value = '';
+                continue;
+            }
+
+            preview.innerHTML += '<p>' + file.name + '</p>'; // 顯示檔案名稱
+
+            // 如果檔案是圖片，則顯示圖片預覽
+            if (file.type.startsWith('image/')) {
+                var img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.height = 60;
+                img.onload = function() {
+                    URL.revokeObjectURL(this.src);
+                }
+                preview.appendChild(img);
+            }
+        }
+    });
+    </script>
+</body>
+</html>

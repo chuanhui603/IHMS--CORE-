@@ -1,0 +1,110 @@
+﻿@model IHMS.Models.Member
+
+@{
+    ViewData["Title"] = "SignIn";
+    Layout = null; // 禁用布局页面
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login Page</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <style>
+        /* 加入 X 圖標的樣式 */
+        .close-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 調整標題的位置，讓 X 圖標固定在右上角 */
+        .login-title {
+            position: relative;
+            padding-right: 50px; /* 給 X 圖標留出空間 */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <section class="vh-100 gradient-custom">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+
+                                <div class="mb-md-5 mt-md-4 pb-5">
+                                    <a href="http://localhost:5174/" class="close-icon">&times;</a>
+                                    <h2 class="fw-bold mb-2 text-uppercase">IHMS</h2>
+                                    <p class="text-white-50 mb-5">建立您的IHMS帳戶!</p>
+                                    
+                                    <form asp-action="SignIn" >
+                                        <div asp-validation-summary="ModelOnly" class="form-outline form-white mb-4"></div>
+
+                                        <div class="form-group">
+                                            <label asp-for="Name" class="form-label"></label>
+                                            <input asp-for="Name" class="form-control form-control-lg" placeholder="請輸入您的帳號" required />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="form-label"></label>
+                                            <input asp-for="Email" class="form-control form-control-lg" placeholder="請輸入您的信箱" required />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Account" class="form-label"></label>
+                                            <input asp-for="Account" class="form-control form-control-lg" placeholder="請輸入您的帳號" required />
+                                            <span asp-validation-for="Account" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Password" class="form-label"></label>
+                                            <input asp-for="Password" class="form-control form-control-lg" placeholder="請輸入您的密碼" required />
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+
+                                        </br>
+                                        <button class="btn btn-outline-light btn-lg px-5" type="submit" value="SignIn">註冊</button>
+
+                                        <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                                            <button type="button" class="btn btn-outline-light btn-lg px-3" onclick="註冊Demo()">Demo註冊</button>
+                                            
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                                <div>
+                                    <p class="mb-0">已經有帳號嗎? <a href="https://localhost:7127/Login/Login" class="text-white-50 fw-bold">登入</a></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </header>
+    <script src="~/js/Login.js"></script>
+</body>
+
+<div>
+  @*  <a asp-action="List">取消</a>*@
+</div>
+
+@section Scripts {
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}

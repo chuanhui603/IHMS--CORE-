@@ -1,0 +1,27 @@
+﻿@model CustomerServiceReport
+
+
+@{
+
+    Layout = "_Layout";
+}
+<h1>回覆客服回報</h1>
+
+<form method="post" action="@Url.Action("SubmitReply", "customeservice", new { id = Model.customer_service_id })">
+    <div class="form-group">
+        <label for="title">主旨</label>
+        <input type="text" id="title" name="title" class="form-control" value="@Model.Title" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="contents">內容</label>
+        <textarea id="contents" name="contents" class="form-control" readonly>@Model.Contents</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="reply">回覆</label>
+        <textarea id="reply" name="reply" class="form-control">@Model.Reply</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">提交回覆</button>
+</form>

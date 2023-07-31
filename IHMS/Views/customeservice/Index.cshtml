@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CustomerServiceReport>
+
+
+@{
+    Layout = "_Layout";
+}
+<h1>客服回報</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>主旨</th>
+                <th>內容預覽</th>
+                <th>時間</th>
+                <th>狀態</th> <!-- 新增一個狀態欄位 -->
+                <th></th> <!-- 回答按鈕所在的欄位 -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model)
+            {
+                <tr>
+                    <td>@report.Title</td>
+                    <td>@(report.Contents.Length > 50 ? report.Contents.Substring(0, 50) + "..." : report.Contents)</td>
+                    <td>@report.created_time?.ToString("yyyy-MM-dd HH:mm")</td>
+
+                    <!-- 狀態欄位 -->
+                    <td>@(report.updated_time <= report.created_time || report.updated_time == null ? "未回覆" : "已回覆")</td>
+
+                    <td>
+                        <a href="@Url.Action("Reply", "customeservice", new { id = report.customer_service_id })" class="btn btn-primary">回答</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+}
+else
+{
+    <p>沒有客服回報</p>
+}

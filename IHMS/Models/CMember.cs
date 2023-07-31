@@ -114,7 +114,7 @@ namespace IHMS.Models
             set { _member.AllergyDescription = value; }
         }
 
-        public DateTime? login_time
+        public DateTime? LoginTime
         {
             get { return _member.LoginTime; }
             set { _member.LoginTime = value; }
