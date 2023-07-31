@@ -80,9 +80,9 @@ namespace IHMS.APIControllers
                 // 例如回傳 NotFound() 或其他適當的錯誤回應
                 return NotFound();
             }
-        }        
+        }
 
-        // GET: api/Members/5
+        // GET: api/Members/5        
         [HttpGet("{id}")]
         public async Task<MembersDTO> GetMember(int id)
         {
@@ -121,9 +121,11 @@ namespace IHMS.APIControllers
 
         // PUT: api/Members/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("~/api/[controller]/MemberEdit")]
         [HttpPut("{id}")]
-        public async Task<string> PutMember(int id, MembersDTO MemDTO)//修改會員資料
+        public async Task<string> MemberEdit(int id, [FromBody] MembersDTO MemDTO)//修改會員資料
         {
+            
             {
                 if (id != MemDTO.MemberId)
                 {

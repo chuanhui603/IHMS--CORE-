@@ -41,11 +41,80 @@ async function login(event) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
     }
-
     window.addEventListener('load', function () {
         checkLoginStatus();
     });
 }//登入用這個
+
+async function MemberEdit(event) {
+    event.preventDefault(); // 取消表單預設提交行為
+
+    // 取得要修改的會員資料（假設您有個表單並且收集了要修改的資料）
+    const formData = new FormData(event.target);
+    const memberId = formData.get("MemberId"); // 假設MemberId是您要修改的會員的ID    
+    const newAccount = formData.get("Account");
+    const newEmail = formData.get("Email");
+    const newName = formData.get("Name");
+    const newPassword = formData.get("Password");    
+    const newPhone = formData.get("Phone");
+    const newBirthday = formData.get("Birthday");
+    const newResidentialCity = formData.get("ResidentialCity");
+    const newDiseaseDescription = formData.get("DiseaseDescription");
+    const newAllergyDescription = formData.get("AllergyDescription");
+    // 建立要提交的資料
+
+    const data = {
+        memberId: memberId,
+        account: newAccount,        
+        email: newEmail,        
+        name: newName,
+        password: newPassword,
+        phone: newPhone,
+        birthday: newBirthday,
+        residentialcity: newResidentialCity,
+        diseasedescription: newDiseaseDescription,
+        allergydescription: newAllergyDescription,        
+
+    };       
+
+    try {
+        const response = await fetch(`/api/[controller]/MemberEdit/${memberId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data), // 將資料轉換為JSON格式
+        });
+
+        const result = await response.json();
+        // 根據伺服器回傳的結果處理相應的行為
+        console.log(result); // 在這裡您可以根據回傳的訊息來顯示成功或失敗的訊息，或是重新載入會員資料等等
+    } catch (error) {
+        console.error("發生錯誤:", error);
+    }
+}
+
+
+// 在Login.js檔案中新增以下程式碼
+function MemberEdit() {
+    var memberId = $("#MemberId").val(); // 獲取會員ID
+    // 使用AJAX或其他方式向後端發送請求獲取會員資料
+    $.ajax({
+        url: "/Members/MemberEdit", // 替換成後端處理資料的API路徑
+        method: "GET",
+        data: { id: memberId }, // 將會員ID作為請求參數
+        success: function (data) {
+            // 將從後端獲取的會員資料填充到表單中
+            $("#Account").val(data.Account);
+            $("#Email").val(data.Email);
+            $("#Name").val(data.Name);
+            // 其他欄位類似...
+        },
+        error: function (error) {
+            console.log("載入會員資料失敗", error);
+        }
+    });
+}
 
 
 //從localStorage讀出資料放進會員修改頁面的欄位中
@@ -87,7 +156,7 @@ function LoadlocalStorage() {
             document.getElementById("Occupation").value = savedMember.occupation;
             document.getElementById("Diseasedescription").value = savedMember.diseaseDescription;
             document.getElementById("Allergydescription").value = savedMember.allergyDescription;
-            document.getElementById("Logintime").value = savedMember.loginTime;            
+            document.getElementById("Logintime").value = savedMember.loginTime;         
 
 
 

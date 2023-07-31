@@ -1,0 +1,226 @@
+﻿@model IHMS.Models.Member
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /*會員專區導覽列*/
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
+
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                border: 1px solid #4F6C24;
+                color: #4F6C24;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            margin-bottom: 1vh;
+        }
+
+        .sidebar__item {
+            border: 1px solid lightgray;
+            box-shadow: 2px 2px 5px lightgray;
+            padding: 20px;
+            margin-right: 30px;
+            margin-bottom: 20px;
+        }
+
+            .sidebar__item h5 {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #4F6C24;
+                color: white;
+            }
+
+            .sidebar__item li:hover {
+                transition: .2s;
+                background-color: #EFF5E6;
+            }
+
+            .sidebar__item i {
+                margin-right: 5px;
+            }
+
+        .liThis {
+            background-color: #EFEDED;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/banner/banner_mem.png" id="bannerTop">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">個人資料</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*會員專區垂直導覽列*@
+            <div class="col-lg-3 col-md-5 reveal_b1">
+                <div class="sidebar" style="position:sticky;top:150px;">
+                    <div class="sidebar__item">
+                        <h5>會員專區</h5>
+                        <ul>
+                            <li class="liThis"><a href="~/member/edit" class="row"><i class="fa-solid fa-user-pen col-2"></i>個人資料</a></li>
+                            <li><a href="~/Diary/DiaryMain" class="row"><i class="fa-solid fa-utensils col-2"></i>飲食日誌</a></li>
+                            <li><a href="~/Member/OrderList" class="row"><i class="fa-solid fa-cart-shopping col-2"></i>訂單查詢</a></li>
+                            <li><a href="~/Student/CandidateList" class="row"><i class="fa-solid fa-heart col-2"></i>候選教練</a></li>
+                            <li><a href="~/Student/CourseList" class="row"><i class="fa-solid fa-dumbbell col-2"></i>課程列表</a></li>
+                            <li><a href="~/Student/ViewCourseCalendar" class="row"><i class="fa-solid fa-calendar-day col-2"></i>課程行事曆</a></li>
+                            <li><a href="~/Problem/CheckReply" class="row"><i class="fa-solid fa-comments col-2"></i>客服記錄</a></li>
+                        </ul>
+                    </div>
+                    <a href="~/Coach/CreateResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*<div class="offset-md-10 col-md-4">
+                <button class="btn btn-success " data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                <i class="fa fa-key"></i> 重設密碼
+                </button>
+                </div>*@
+                <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 reveal_b1">
+                                <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
+                                    <div class="form-group row justify-content-center">
+                                        <img src="~/images/@Model.AvatarImage" onerror="this.src='/img/member/defaultImage.jpg'" alt=" " class="rounded-circle img-responsive  border border-ligt" id="imgShow" />
+                                    </div>
+                                </div>
+                                <div class="form-group  justify-content-center">
+                                    <div class="col offset-md-2">
+                                        <label id="lblPicture" class="col-form-label col-form-label-lg">
+                                            <input id="imgLoad" type="file" name="photo" class="form-control" style="display:none;" />
+                                            <i class="fa fa-photo"></i> 上傳圖片
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8 reveal_b2">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="MemberId" />
+                                <div class="form-group row justify-content-center mt-5">
+                                    <div class="col-md-3">
+                                        <label asp-for="Account" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="Account" class="form-control" disabled />
+                                    </div>
+                                    <span asp-validation-for="Account" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-3">
+                                        <label asp-for="Name" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="Name" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-3">
+                                        <label asp-for="Birthday" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="Birthday" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="Birthday" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-3">
+                                        <label asp-for="ResidentialCity" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="ResidentialCity" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="ResidentialCity" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-3">
+                                        <label asp-for="Phone" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="Phone" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-3">
+                                        <label asp-for="Email" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="Email" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="text-center" style="justify-content: center; display: flex; margin-top:20px;">
+                                    @*<div class="col-md-6">*@
+                                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                                        <i class="fa fa-key"></i> 重設密碼
+                                    </button>
+                                    <input type="submit" value="會員資料修改" class=" btn btn-success" />
+                                    @*</div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        $('#lblPicture').mouseover(function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $()
+        document.querySelector('#imgLoad').addEventListener("change", function () {
+            document.getElementById('imgShow').src = window.URL.createObjectURL(this.files[0]);
+        });
+    </script>
+}
+
+
+
+
+
