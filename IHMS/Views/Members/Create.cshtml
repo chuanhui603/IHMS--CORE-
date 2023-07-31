@@ -110,17 +110,16 @@
                 <input asp-for="AllergyDescription" class="form-control" />
                 <span asp-validation-for="AllergyDescription" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <input type="submit" value="送出" class="btn btn-primary" />
+                <a asp-action="List" class="btn btn-danger">取消</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="List">取消</a>
-</div>
+
 
 @section Scripts {
 

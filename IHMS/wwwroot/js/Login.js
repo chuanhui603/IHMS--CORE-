@@ -29,7 +29,7 @@ async function login(event) {
             
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
             // 將會員資訊存入 localStorage
-            localStorage.setItem('currentMember', JSON.stringify(member));
+            localStorage.setItem('currentMember', JSON.stringify(member));            
 
             location.href = "https://localhost:7127";            
            
@@ -242,7 +242,8 @@ function LoginPermission(userData) {
         alert(`歡迎來到IHMS健康管理平台，${userData.name}老師！`);
         console.log('您是老師，可以進行特定操作！');
     } else if (permissionLevel === 3000) {
-        // 會員可以做的事情
+        // 會員可以做的事情        
+        window.location.href = 'https://localhost:7127/Login/Edit/1';
         alert(`歡迎來到IHMS健康管理平台，${userData.name}會員！`);
         console.log('您是會員，可以進行一般操作！');
     } else {

@@ -66,17 +66,12 @@ namespace IHMS.Controllers
                 cust.Email = x.Email; //信箱
                 cust.Account = x.Account; //帳號
                 cust.Password = x.Password; //密碼
-                cust.Birthday = x.Birthday; //生日
-                cust.Gender = x.Gender; //性別
-                cust.MaritalStatus = x.MaritalStatus; //婚姻狀態
-                cust.Nickname = x.Nickname; //暱稱
+                cust.Birthday = x.Birthday; //生日                               
                 //cust.AvatarImage = x.AvatarImage; // 頭像
-                cust.ResidentialCity = x.ResidentialCity; //居住城市
-                cust.Permission = x.Permission; //權限
-                cust.Occupation = x.Occupation; //職業
+                cust.ResidentialCity = x.ResidentialCity; //居住城市              
                 cust.DiseaseDescription = x.DiseaseDescription; //疾病史
                 cust.AllergyDescription = x.AllergyDescription; //過敏反應
-                cust.LoginTime = x.LoginTime; //登入日期
+               
                 db.SaveChanges();
             }
             return RedirectToAction("MemberEdit");
