@@ -184,9 +184,9 @@
                     <th class="thStatus">
                         <select id="selStatus">
                             <option value="0" selected>所有履歷狀態</option>
-                            <option value="65">審核中</option>
-                            <option value="66">審核通過</option>
-                            <option value="67">已退回</option>
+                            <option value="1">未審核</option>
+                            <option value="2">審核通過</option>
+                            <option value="3">已退回</option>
                         </select>
                     </th>
                     <th>
@@ -217,7 +217,7 @@
                                 @c.ApplyDate
                             </td>
                             @{
-                                if (c.Status == "審核中")
+                                if (c.Status == "未審核")
                                 {
                                     <td class="colorWait">
                                         @c.Status

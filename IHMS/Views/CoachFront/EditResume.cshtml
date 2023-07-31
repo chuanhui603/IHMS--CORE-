@@ -1,0 +1,731 @@
+﻿@model IHMS.ViewModel.CCoachViewModel
+@{
+    IhmsContext db = new IhmsContext();
+    Layout = "frontend_Layout";
+
+}
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .frmResume {
+            width: 100%;
+        }
+
+        .selCity {
+            width: 60%;
+            vertical-align: central;
+        }
+
+        #selCity {
+            display: inline !important;
+        }
+
+        .nice-select {
+            display: none;
+        }
+
+        .divImgLabel {
+            margin: 0px;
+        }
+
+        .divImg {
+            margin: 0px;
+        }
+
+            .divImg img {
+                margin-top: 10px;
+                width: 270px;
+                height: 300px;
+            }
+
+        .divUpload {
+            margin-top: 20px;
+        }
+
+        .inFile::file-selector-button {
+            background-color: #7FAD39;
+            color: white;
+            border: 1px solid #7FAD39;
+            border-radius: 5px;
+            transition: .2s;
+        }
+
+            .inFile::file-selector-button:hover {
+                background-color: #40561C;
+                color: white;
+            }
+
+        .divName, .divFee {
+            margin-bottom: 15px !important;
+        }
+
+        #inFee, #inName {
+            width: 60%;
+        }
+
+        .divPlus button {
+            background-color: transparent;
+            border: none;
+        }
+
+        .divSubmit {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            vertical-align: central;
+        }
+
+            .form-group > label, legend {
+                font-weight: 600;
+            }
+
+        .spRemind {
+            font-size: 14px;
+            font-weight: 500;
+            color: #7fad39;
+        }
+
+        .btn-success {
+            border: none;
+            background-color: #7fad39;
+        }
+
+
+        .newInput {
+            margin-bottom: 25px;
+        }
+
+        #btnNewExp {
+            position: absolute;
+            top: 525px;
+            right: 10px;
+        }
+
+        #btnNewLic {
+            position: absolute;
+            right: 10px;
+        }
+
+        .divImgUpload {
+            padding-left: 0px;
+        }
+
+        /*教練專區導覽列*/
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
+
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                border: 1px solid #6F4315;
+                color: #6F4315;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            margin-bottom: 1vh;
+        }
+
+        .sidebar__item {
+            border: 1px solid lightgray;
+            box-shadow: 2px 2px 5px lightgray;
+            padding: 20px;
+            margin-right: 30px;
+            margin-bottom: 20px;
+        }
+
+            .sidebar__item h5 {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #452A0D;
+                color: white;
+            }
+
+            .sidebar__item li:hover {
+                transition: .2s;
+                background-color: #EDE8E2;
+            }
+
+            .sidebar__item i {
+                margin-right: 8px;
+            }
+
+        .liThis {
+            background-color: #EFEDED;
+        }
+
+        .text-danger {
+            font-size: 16px;
+        }
+
+        #gotop {
+            position: fixed;
+            z-index: 90;
+            right: 30px;
+            bottom: 31px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            color: #fff;
+            background: #7fad39;
+            line-height: 50px;
+            border-radius: 50%;
+            transition: all 0.5s;
+            text-align: center;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/banner/banner_coach.png">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">履歷管理</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Student/CoachList">Home</a>
+                        <span>Coach</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*教練專區左側導覽列*@
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar" style="position:sticky;top:150px;">
+                    <div class="sidebar__item">
+                        <h5>教練專區</h5>
+                        <ul>
+                            <li class="liThis"><a href="~/Coach/CreateResume"><i class="fa-solid fa-pen"></i>履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList" class="aLimit"><i class="fa-solid fa-user-check"></i>招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList" class="aLimit"><i class="fa-solid fa-dumbbell"></i>教課列表</a></li>
+                        </ul>
+                    </div>
+                    <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div class="row">
+                    <div class="col-xl-11">
+                        <form class="frmResume" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
+                            <input type="hidden" value="@Model.CoachId" name="CoachId" id="CoachId" />
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="form-group row divName">
+                                        <label for="inName" class="col-sm-3 col-form-label">顯示名稱</label>
+                                        <div class="col-sm-9">
+                                            <input value="@Model.CoachName" class="form-control" name="FCoachName" id="inName" />
+                                            &nbsp;<span class="text-danger" id="spName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="selCity" class="col-sm-3 col-form-label">所在城市</label>
+                                        <div class="col-sm-9">
+                                            <select id="selCity" class="selCity" name="FCityId">
+                                                <option selected disabled>請選擇所在城市</option>
+                                                @{
+                                                    foreach (var c in db.Cities.OrderBy(c => c.CityOrder).ToList())
+                                                    {
+                                                        <option value="@c.CityId" id="@c.CityId">@c.CityName</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <fieldset class="form-group row">
+                                        <legend class="col-form-label col-sm-3 float-sm-left pt-0">專長種類</legend>
+                                        <div class="col-sm-9 row divSkill" id="divSkill">
+                                            <div class="col-6">
+                                                @{
+                                                    foreach (var q in db.Skills.ToList().Take(5))
+                                                    {
+
+                                                        <input type="checkbox" value="@q.SkillId" name="fCoachSkill[]" />
+
+                                                        <label>&nbsp;@q.SkillName</label>
+
+                                                        <br />
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="col-6">
+                                                @{
+                                                    foreach (var q in db.Skills.ToList().TakeLast(4))
+                                                    {
+                                                        <input type="checkbox" value="@q.SkillId" name="fCoachSkill[]" />
+
+                                                        <label>&nbsp;@q.SkillName</label>
+
+                                                        <br />
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="form-group row">
+                                        <legend class="col-form-label col-sm-3 float-sm-left pt-0">可上課時段</legend>
+                                        <div class="col-sm-9 row divTime" id="divTime">
+                                            <div class="col-6">
+                                                @{
+                                                    foreach (var q in db.AvailableTimes.ToList().Take(3))
+                                                    {
+
+                                                        <input type="checkbox" value="@q.AvailableTimeId" name="fCoachTime[]" />
+
+                                                        <label>&nbsp;@q.AvailableTime1</label>
+
+                                                        <br />
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="col-6">
+                                                @{
+                                                    foreach (var q in db.AvailableTimes.ToList().Skip(3).Take(3))
+                                                    {
+
+                                                        <input type="checkbox" value="@q.AvailableTimeId" name="fCoachTime[]" />
+
+                                                        <label>&nbsp;@q.AvailableTime1</label>
+
+                                                        <br />
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="form-group row divFee">
+                                        <label for="inputFee" class="col-sm-3 col-form-label">參考費用</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" value="@Model.CoachFee" name="FCoachFee" id="inFee" />
+                                            &nbsp;<span class="text-danger" id="spFee"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 divImgUpload">
+                                    <div class="form-group">
+                                        <label class="col-form-label">照片上傳</label><br />
+                                        <div class="form-group divImg">
+                                            @{
+                                                if (@Model.CoachImage != null)
+                                                {
+                                                    <img src="~/img/coach/coachImage/@Model.CoachImage" id="imgUploaded" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/img/coach/NoImage.png" id="imgUploaded" />
+                                                }
+                                            }
+                                            <div class="input-group divUpload custom-file">
+                                                <input type="file" name="File" class="inFile">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
+                                <div class="col-sm-10" id="divExp">
+                                    @{
+                                        int expCount = 0;
+                                        foreach (var exp in Model.Coach.CoachExperiences.ToList())
+                                        {
+                                            expCount++;
+                                            <input value="@exp.Experience" class="form-control newInput" name="fExperience[]" id="exp_@expCount" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" id="lblLic">相關證照<br /><span class="spRemind">*最多填寫10項</span></label>
+                                <div class="col-sm-10" id="divLic">
+                                    @{
+                                        foreach (var lic in Model.Coach.CoachLicenses.ToList())
+                                        {
+                                            <input value="@lic.License" class="form-control newInput" name="fLicense[]" />
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">介紹<br /><span class="spRemind">*字數限200字</span></label>
+                                <div class="col-sm-10">
+                                    <textarea style="height:150px" name="FCoachDescription" class="form-control" id="textDes">@Model.CoachDescription</textarea>
+                                    <span class="text-danger" id="spDescription"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Slogan<br /><span class="spRemind">*字數限50字</span></label>
+                                <div class="col-sm-10">
+                                    <textarea style="height:100px" name="FSlogan" class="form-control" id="textSlogan">@Model.Slogan</textarea>
+                                    <span class="text-danger" id="spSlogan"></span>
+                                </div>
+                            </div>
+                            <div class="form-group divSubmit">
+                                <input type="button" value="Demo" id="btnDemo" class="btn btn-light" />
+                                <input type="button" value="設為非公開" id="btnHide" class="btn btn-success" />
+                                <input type="button" value="設為公開" id="btnDisplay" class="btn btn-success" />&nbsp;&nbsp;
+                                <input type="submit" value="送出修改" id="btnSubmit" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xl-1">
+                        <div class="col-sm-3 divPlus">
+                            <button id="btnNewExp"><i class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                        <div class="col-sm-3 divPlus">
+                            <button id="btnNewLic"><i class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a id="gotop">
+            <i class="fa fa-angle-up"></i>
+        </a>
+    </div>
+</section>
+
+@section Scripts{
+    @{
+        //勾選現有Skill
+        foreach (var c in Model.Coach.CoachSkills)
+        {
+            <script>
+                $("#divSkill :checkbox[value=@c.SkillId]").prop("checked", true);
+            </script>
+        }
+
+        //勾選現有Time
+        foreach (var t in Model.Coach.CoachAvailableTimes)
+        {
+            <script>
+                $("#divTime :checkbox[value=@t.AvailableTimeId]").prop("checked", true);
+            </script>
+        }
+
+        //btn顯示-設為非公開/公開
+        if (Model.Visible == true)
+        {
+            <script>
+                $("#btnHide").show();
+                $("#btnDisplay").hide();
+            </script>
+        }
+        else
+        {
+            <script>
+                $("#btnHide").hide();
+                $("#btnDisplay").show();
+            </script>
+        }
+
+        //履歷審核中即無法修改、進入教練專區
+        if (Model.StatusNumber == 1)
+        {
+            <script>
+                $("#btnSubmit").hide();
+                $("#btnHide").hide();
+                $("#btnDisplay").hide();
+                $("#btnNewExp").prop("disabled", true);
+                $("#btnNewLic").prop("disabled", true);
+                $("#frmResume :input").prop("disabled", true);
+
+                $(".aLimit").click((evt) => {
+                    evt.preventDefault();
+                    SwalGreen.fire({
+                        title: '您尚無教練權限。',
+                        text: '您的履歷正在審核中，審核通過後方可使用教練專區功能。',
+                        icon: 'warning',
+                        confirmButtonText: '確定',
+                        showCloseButton: true
+                    })
+                })
+            </script>
+        }
+
+        //退回填寫中
+        if (Model.StatusNumber == 3)
+        {
+            <script>
+                $("#btnHide").hide();
+                $("#btnDisplay").hide();
+                $("#btnSubmit").val("送出");
+                $(".aLimit").click((evt) => {
+                    evt.preventDefault();
+                    SwalGreen.fire({
+                        title: '您尚無教練權限。',
+                        text: '請先成為教練後，方可使用教練專區功能。',
+                        icon: 'warning',
+                        confirmButtonText: '確定',
+                        showCloseButton: true
+                    })
+                })
+            </script>
+        }
+    }
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        //GoTop btn
+        $('#gotop').click(function () {
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            return false;
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 400) {
+                $('#gotop').fadeIn();
+            } else {
+                $('#gotop').fadeOut();
+            }
+        });
+
+        //Demo
+        $("#btnDemo").click(() => {
+            $("#exp_6").val("2021 IFBB PRO 健身工廠菁英賽女子比基尼全場總冠軍");
+        })
+
+        //顯示CoachCity
+        $("#selCity").val("@Model.CityId");
+
+        //對齊新增證照btn位置
+        function getBtnPosition() {
+            let lblLic = $("#lblLic").offset().top;
+            $("#btnNewLic").offset({ top: `${lblLic}` });
+        };
+        getBtnPosition();
+
+        //新增Exp欄位
+        let expCount = @Model.Coach.CoachExperiences.Count();
+        if (@Model.Coach.CoachExperiences.Count == 0) {
+            let exp = document.createElement("input");
+            exp.setAttribute("name", "fExperience[]");
+            exp.classList = "form-control newInput";
+            $("#divExp").append(exp);
+            expCount++;
+        }
+        $("#btnNewExp").click(() => {
+            if (expCount >= 10) {
+                return confirm("經歷上限為10項");
+            }
+            else {
+                let exp = document.createElement("input");
+                exp.setAttribute("name", "fExperience[]");
+                exp.setAttribute("id", `exp_${expCount + 1}`);    //for Demo
+                exp.classList = "form-control newInput animate__animated animate__fadeIn";
+                $("#divExp").append(exp);
+
+                getBtnPosition();
+            }
+            expCount++;
+        })
+
+        //新增Lic欄位
+        let licCount = @Model.Coach.CoachLicenses.Count();
+        if (@Model.Coach.CoachLicenses.Count == 0) {
+            let lic = document.createElement("input");
+            lic.setAttribute("name", "fLicense[]");
+            lic.classList = "form-control newInput";
+            $("#divLic").append(lic);
+            licCount++;
+        }
+        $("#btnNewLic").click(() => {
+            if (licCount >= 10) {
+                return confirm("相關證照上限為10項");
+            }
+            else {
+                let lic = document.createElement("input");
+                lic.setAttribute("name", "fLicense[]");
+                lic.classList = "form-control newInput animate__animated animate__fadeIn";
+                $("#divLic").append(lic);
+            }
+            licCount++;
+        })
+
+        //圖片預覽
+        document.querySelector(".inFile").addEventListener("change", function (e) {
+            const file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#imgUploaded").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }, false);
+
+        //顯示名稱--檢查字數不超過50
+        $("#inName").keyup(() => {
+            if ($("#inName").val().length > 50)
+                $("#spName").html("*字數超過50字");
+            else
+                $("#spName").html("");
+        })
+
+        //希望待遇--檢查為數字
+        $("#inFee").blur(() => {
+            if ($.isNumeric($("#inFee").val()) == false)
+                $("#spFee").html("*請填寫數字");
+            else if ($("#inFee").val() == "0")
+                $("#spFee").html("*希望待遇不可為0");
+            else
+                $("#spFee").html("");
+        })
+
+        //介紹--檢查字數不超過200
+        $("#textDes").keyup(() => {
+            if ($("#textDes").val().length > 200)
+                $("#spDescription").html("*字數超過200字");
+            else
+                $("#spDescription").html("");
+        })
+
+        //Slogan--檢查字數不超過50
+        $("#textSlogan").keyup(() => {
+            if ($("#textSlogan").val().length > 50)
+                $("#spSlogan").html("*字數超過50字");
+            else
+                $("#spSlogan").html("");
+        })
+
+        //Submit前檢查欄位是否為空
+        $("#btnSubmit").click((evt) => {
+            evt.preventDefault();
+            if ($("#inName").val() == "" || $("#selCity").val() == null || $(".divSkill :checked").length <= 0 || $(".divTime :checked").length <= 0
+                || $(".divFee input").val() == "" || $("#textDes").val() == "" || $("#textSlogan").val() == "") {
+                SwalGreen.fire({
+                    title: '請填寫完整資料',
+                    icon: 'warning',
+                    confirmButtonText: '確定',
+                    showCloseButton: true
+                })
+            }
+            else if ($(".text-danger").text() != "") {
+                SwalGreen.fire({
+                    title: '填寫之資料不符合規定',
+                    icon: 'warning',
+                    confirmButtonText: '確定',
+                    showCloseButton: true
+                })
+            }
+            else {
+                //Ajax submit
+                SwalGreen.fire({
+                    title: '確認修改履歷？',
+                    icon: 'question',
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    showCancelButton: true,
+                    showCloseButton: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData(document.Resume);
+                        $.ajax({
+                            url: "EditResume",
+                            type: "POST",
+                            data: formData,
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                        }).done(function (response) {
+                            if (response == "Success") {
+                                SwalGreen.fire({
+                                    icon: 'success',
+                                    title: '修改成功'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+
+        //設為未公開/公開(更改Visible)
+        $("#btnHide").click(() => {
+            SwalGreen.fire({
+                title: '確認將履歷設為非公開？',
+                text: '提醒您，一旦將履歷設為非公開，使用者將無法查看您的資料及發送通知。',
+                icon: 'question',
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                showCancelButton: true,
+                showCloseButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get("@Url.Content("~/Coach/ToggleVisible")", { "id": "@Model.CoachId" },
+                        function (response) {
+                            console.log(response)
+                            if (response == "False") {
+                                SwalGreen.fire({
+                                    icon: 'success',
+                                    title: '已將履歷設為非公開'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $("#btnHide").hide();
+                                        $("#btnDisplay").show();
+                                    }
+                                })
+                            }
+                        })
+                }
+            })
+        })
+
+        $("#btnDisplay").click(() => {
+            SwalGreen.fire({
+                title: '確認將履歷設為公開？',
+                icon: 'question',
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                showCancelButton: true,
+                showCloseButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get("@Url.Content("~/Coach/ToggleVisible")", { "id": "@Model.CoachId" },
+                        function (response) {
+                            console.log(response)
+                            if (response == "True") {
+                                SwalGreen.fire({
+                                    icon: 'success',
+                                    title: '已將履歷設為公開'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $("#btnHide").show();
+                                        $("#btnDisplay").hide();
+                                    }
+                                })
+                            }
+                        })
+                }
+            })
+        })
+
+    </script>
+}

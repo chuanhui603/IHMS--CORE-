@@ -11,5 +11,7 @@ public partial class CoachAvailableTime
 
     public int? AvailableTimeId { get; set; }
 
+    public virtual AvailableTime? AvailableTime { get; set; }
+
     public virtual Coach? Coach { get; set; }
 }
