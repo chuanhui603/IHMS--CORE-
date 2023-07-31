@@ -72,7 +72,7 @@ namespace IHMS.Controllers
         {
             var theCoach = db.Coaches.FirstOrDefault(c => c.CoachId == id);
             theCoach.StatusNumber = 2;
-            
+            theCoach.Visible = true;
             db.SaveChanges();
             return Content("");
         }
@@ -88,7 +88,9 @@ namespace IHMS.Controllers
         public IActionResult loadCoach(CSearchCoachViewModel searchCoachViewModel)
         {
             IEnumerable<Coach> tCoaches = null;
-           
+            if (searchCoachViewModel.SkillId != 0)
+                tCoaches = db.CoachSkills.Where(cs => cs.SkillId == searchCoachViewModel.SkillId).Select(cs => cs.Coach);
+            else
                 tCoaches = db.Coaches;
 
             if (searchCoachViewModel.Sort == 1)
@@ -96,11 +98,13 @@ namespace IHMS.Controllers
             else
                 tCoaches = tCoaches.OrderBy(c => c.ApplyDate);
 
-            
+            if (searchCoachViewModel.CityId != 0)
+                tCoaches = tCoaches.Where(c => c.CityId == searchCoachViewModel.CityId);
             if (!String.IsNullOrEmpty(searchCoachViewModel.KeyWord))
-                tCoaches = tCoaches.Where(c => c.Member.Name.ToLower().Contains(searchCoachViewModel.KeyWord.ToLower()) || c.CoachId.ToString().Contains(searchCoachViewModel.KeyWord));
-            if (searchCoachViewModel.Condition != null)
-                tCoaches = tCoaches.Where(c => c.StatusNumber == searchCoachViewModel.Condition);
+                tCoaches = tCoaches.Where(c => c.CoachName.ToLower()
+                .Contains(searchCoachViewModel.KeyWord.ToLower()) || c.CoachId.ToString().Contains(searchCoachViewModel.KeyWord));
+            if (searchCoachViewModel.StatusNum != 0)
+                tCoaches = tCoaches.Where(c => c.StatusNumber == searchCoachViewModel.StatusNum);
 
             List<CCoachResumeViewModel> coaches = null;
             if (tCoaches.Count() != 0)

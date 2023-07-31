@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections;
-
+using IHMS.Views;
 
 namespace IHMS.Controllers
 {
@@ -291,6 +291,84 @@ namespace IHMS.Controllers
             }
             _context.SaveChanges();
             return Content("Success", "text/plain");
+        }
+        //教課列表
+        public IActionResult TeachingList()
+        {
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
+            }
+            var coach = _context.Coaches.Where(c => c.StatusNumber == 2).FirstOrDefault(c => c.MemberId == userId);
+            if (coach == null)
+                return RedirectToAction("CreateResume");
+
+            var data = _context.Courses
+                .Include(c => c.CoachContact).ThenInclude(cc => cc.Member)
+                .Include(c => c.Reservations)
+                .Where(c => c.FCoachContact.FCoachId == coach.CoachId).ToList();
+            return View(CTeachingListViewModel.CourseList(data));
+        }
+
+        //完成排課
+        public IActionResult ReservationDone(int id)
+        {
+            var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+            reservation.FStatusNumber = 61;
+            _context.SaveChanges();
+
+            //若Reservation皆結束，即修改課程狀態為「已結束」
+            int courseId = (int)reservation.FCourseId;
+            if (_context.TReservations.Where(r => r.FCourseId == courseId).Select(r => r.FStatusNumber).ToList().All(num => num == 61))
+            {
+                var thisCourse = _context.TCourses.FirstOrDefault(c => c.FCourseId == courseId);
+                thisCourse.FStatusNumber = 56;
+            }
+            _context.SaveChanges();
+            return Content("Success", "text/plain");
+        }
+        //更改時間
+        public IActionResult EditReservation(int id, string date, string time)
+        {
+            //取得該教練排課
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
+            var reservations = _context.TReservations.Include(r => r.FCourse).ThenInclude(c => c.FCoachContact)
+                .Where(r => r.FCourse.FCoachContact.FCoachId == coachId);
+
+            //比對教練該時段是否已額滿
+            var occupied = reservations.Where(r => r.FCourseTime.Substring(0, 8) == date.Replace("-", ""))
+                .Select(r => Convert.ToInt32(r.FCourseTime.Substring(8, 2))).ToList();
+            if (occupied.Contains(Convert.ToInt32(time)))
+                return Content("Fail", "text/plain");
+            else
+            {
+                var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+                string newDate = date.Replace("-", "");
+                string newTime = time.Length == 1 ? "0" + time : time;
+                reservation.FCourseTime = newDate + newTime + "00";
+                _context.SaveChanges();
+                return Content("Success", "text/plain");
+            }
+        }
+        //取得進行中課程
+        public IActionResult GetCourseInProcess(int id)
+        {
+            var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
+            return Json(courses);
+        }
+        //取得已結束課程
+        public IActionResult GetCourseDone(int id)
+        {
+            var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
+            return Json(courses);
         }
     }
 }
