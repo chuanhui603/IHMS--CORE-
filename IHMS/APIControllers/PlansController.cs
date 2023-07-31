@@ -57,7 +57,7 @@ namespace IHMS.APIControllers
                 Type = p.Type,
                 MemberId = p.MemberId,
                 Weight = p.Weight,
-
+                Gender =p.Gender,
 
             }).FirstOrDefault();
 

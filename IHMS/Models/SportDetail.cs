@@ -24,4 +24,8 @@ public partial class SportDetail
     public bool? Isdone { get; set; }
 
     public int? Sets { get; set; }
+
+    public DateTime? Sportdate { get; set; }
+
+    public virtual Sport Sport { get; set; } = null!;
 }

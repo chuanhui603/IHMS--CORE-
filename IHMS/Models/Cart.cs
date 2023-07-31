@@ -12,6 +12,4 @@ public partial class Cart
     public int ScheduleId { get; set; }
 
     public virtual Member Member { get; set; } = null!;
-
-    public virtual Schedule Schedule { get; set; } = null!;
 }
