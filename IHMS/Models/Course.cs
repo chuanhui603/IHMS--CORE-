@@ -7,6 +7,8 @@ public partial class Course
 {
     public int CourseId { get; set; }
 
+
+
     public int? CoachContactId { get; set; }
 
     public string? CourseName { get; set; }

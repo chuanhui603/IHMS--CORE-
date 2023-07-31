@@ -32,12 +32,15 @@ namespace IHMS.Controllers.APIcontrollers
 
         // GET: api/PointRecordsDTO/1
         //顯示某會員的某筆資料
+        //取點數資料
         [HttpGet("{id}")]
-        public async Task<PointRecord> GetPointRecord(int id)
+        public async Task<int> GetPointRecord(int id)
         {          
-            var pointRecord = await _context.PointRecords.FindAsync(id);         
-
-            return pointRecord;
+         
+            var total = _context.PointRecords.Select(s => s.Count).ToList().Sum()*500;
+            var cost = _context.Orders.Select(s => s.Pointstotal).Sum();
+            
+            return total-cost;
         }
 
         // PUT: api/PointRecordsDTO/5
@@ -74,7 +77,7 @@ namespace IHMS.Controllers.APIcontrollers
         // POST: api/PointRecordsDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<string> PostPointRecord(PointRecordRequest pointRecordRequest , IhmsContext _context)
+        public async Task<string> PostPointRecord(PointRecordRequest pointRecordRequest)
         {
             if ( _context.Members == null)
             {
@@ -92,6 +95,8 @@ namespace IHMS.Controllers.APIcontrollers
                 Count = pointRecordRequest.Count,
                 BankNumber = bankNumber,             
                 Member = targeMebmer,
+                Createtime=DateTime.Now
+
             };
             _context.PointRecords.Add(Pointre);
             await _context.SaveChangesAsync();

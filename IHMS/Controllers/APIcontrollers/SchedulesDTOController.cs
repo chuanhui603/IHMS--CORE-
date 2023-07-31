@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
+using IHMS.ViewModel.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -29,32 +30,37 @@ namespace IHMS.Controllers.APIcontrollers
         }
 
         // GET: api/SchedulesDTO/5
-        [HttpGet("{id}")]
-        public async Task<List<Schedule>> GetSchedule(int orderId)
+        [HttpGet("GetOrderDetailByOrderid/{orderId}")]
+        public async Task<ScheduleDTO> GetSchedule(int orderId)
         {
-            List<Schedule> scheduleList = new List<Schedule>();
+
             //使用訂單ID和訂單詳細資料ID查詢相關的訂單詳細資料
-
-            List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
-            foreach (OrderDetail orderDetail in orderDetails)
+           
+            var ScheduleId =  _context.OrderDetails.FirstOrDefault(od => od.OrderId == orderId).ScheduleId;
+            var data = _context.Schedules.Where(s => s.ScheduleId == ScheduleId).FirstOrDefault();
+            var scheduleList = new ScheduleDTO
             {
-                List<Schedule> schedules = await _context.Schedules.Where(od => od.ScheduleId == orderDetail.ScheduleId).ToListAsync();
-                foreach (Schedule schedule in schedules)
-                {
-                    scheduleList.AddRange(schedules);
+                CourseTime = data.CourseTime
+            };
+            //foreach (OrderDetail orderDetail in orderDetails)
+            //{
+            //    List<Schedule> schedules = await _context.Schedules.Where(od => od.ScheduleId == orderDetail.ScheduleId).ToListAsync();
+            //    foreach (Schedule schedule in schedules)
+            //    {
+            //        scheduleList.AddRange(schedules);
 
-                    //List<Course> courses = await _context.Courses.Where(od => od.CourseId == schedule.CourseId).ToListAsync();
-                    //foreach (Course course in courses)
-                    //{
-                    //    List<Coach> coaches = await _context.Coaches.Where(od => od.CoachId == course.CoachId).ToListAsync();
-                    //    foreach (Coach coach in coaches)
-                    //    {
-                    //        scheduleList.AddRange(coaches);
-                    //    }
-                    //}
-                }
+            //        //List<Course> courses = await _context.Courses.Where(od => od.CourseId == schedule.CourseId).ToListAsync();
+            //        //foreach (Course course in courses)
+            //        //{
+            //        //    List<Coach> coaches = await _context.Coaches.Where(od => od.CoachId == course.CoachId).ToListAsync();
+            //        //    foreach (Coach coach in coaches)
+            //        //    {
+            //        //        scheduleList.AddRange(coaches);
+            //        //    }
+            //        //}
+            //    }
 
-            }
+
             return scheduleList;
 
 
