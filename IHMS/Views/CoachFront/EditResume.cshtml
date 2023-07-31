@@ -243,7 +243,7 @@
                                     <div class="form-group row divName">
                                         <label for="inName" class="col-sm-3 col-form-label">顯示名稱</label>
                                         <div class="col-sm-9">
-                                            <input value="@Model.FCoachName" class="form-control" name="FCoachName" id="inName" />
+                                            <input value="@Model.CoachName" class="form-control" name="FCoachName" id="inName" />
                                             &nbsp;<span class="text-danger" id="spName"></span>
                                         </div>
                                     </div>
@@ -253,9 +253,9 @@
                                             <select id="selCity" class="selCity" name="FCityId">
                                                 <option selected disabled>請選擇所在城市</option>
                                                 @{
-                                                    foreach (var c in db.TCities.OrderBy(c => c.FCityOrder).ToList())
+                                                    foreach (var c in db.Cities.OrderBy(c => c.CityOrder).ToList())
                                                     {
-                                                        <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
+                                                        <option value="@c.CityId" id="@c.CityId">@c.CityName</option>
                                                     }
                                                 }
                                             </select>
@@ -269,9 +269,9 @@
                                                     foreach (var q in db.Skills.ToList().Take(5))
                                                     {
 
-                                                        <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" />
+                                                        <input type="checkbox" value="@q.SkillId" name="fCoachSkill[]" />
 
-                                                        <label>&nbsp;@q.FSkillName</label>
+                                                        <label>&nbsp;@q.SkillName</label>
 
                                                         <br />
                                                     }
@@ -299,9 +299,9 @@
                                                     foreach (var q in db.AvailableTimes.ToList().Take(3))
                                                     {
 
-                                                        <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" />
+                                                        <input type="checkbox" value="@q.AvailableTimeId" name="fCoachTime[]" />
 
-                                                        <label>&nbsp;@q.FAvailableTime</label>
+                                                        <label>&nbsp;@q.AvailableTime1</label>
 
                                                         <br />
                                                     }
@@ -312,9 +312,9 @@
                                                     foreach (var q in db.AvailableTimes.ToList().Skip(3).Take(3))
                                                     {
 
-                                                        <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" />
+                                                        <input type="checkbox" value="@q.AvailableTimeId" name="fCoachTime[]" />
 
-                                                        <label>&nbsp;@q.FAvailableTime</label>
+                                                        <label>&nbsp;@q.AvailableTime1</label>
 
                                                         <br />
                                                     }

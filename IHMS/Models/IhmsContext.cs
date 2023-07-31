@@ -19,6 +19,11 @@ public partial class IhmsContext : DbContext
 
     public virtual DbSet<Answer> Answers { get; set; }
 
+    public virtual DbSet<Article> Articles { get; set; }
+
+    public virtual DbSet<ArticleImage> ArticleImages { get; set; }
+
+    public virtual DbSet<AvailableTime> AvailableTimes { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -132,6 +137,42 @@ public partial class IhmsContext : DbContext
                 .HasConstraintName("FK_Answer_Questionset");
         });
 
+        modelBuilder.Entity<Article>(entity =>
+        {
+            entity.ToTable("article");
+
+            entity.Property(e => e.ArticleId).HasColumnName("article_id");
+            entity.Property(e => e.Contents)
+                .HasMaxLength(1500)
+                .HasColumnName("contents");
+            entity.Property(e => e.Time)
+                .HasColumnType("datetime")
+                .HasColumnName("time");
+            entity.Property(e => e.Title)
+                .HasMaxLength(150)
+                .HasColumnName("title");
+        });
+
+        modelBuilder.Entity<ArticleImage>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("article_image");
+
+            entity.Property(e => e.ArticleId).HasColumnName("article_id");
+            entity.Property(e => e.Image)
+                .HasMaxLength(500)
+                .HasColumnName("image");
+        });
+
+        modelBuilder.Entity<AvailableTime>(entity =>
+        {
+            entity.Property(e => e.AvailableTimeId).HasColumnName("AvailableTimeID");
+            entity.Property(e => e.AvailableTime1)
+                .HasMaxLength(50)
+                .HasColumnName("AvailableTime");
+        });
+
         modelBuilder.Entity<Cart>(entity =>
         {
             entity.ToTable("Cart");
@@ -181,6 +222,10 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.CoachTimeId).HasColumnName("CoachTimeID");
             entity.Property(e => e.AvailableTimeId).HasColumnName("AvailableTimeID");
             entity.Property(e => e.CoachId).HasColumnName("coach_id");
+
+            entity.HasOne(d => d.AvailableTime).WithMany(p => p.CoachAvailableTimes)
+                .HasForeignKey(d => d.AvailableTimeId)
+                .HasConstraintName("FK_CoachAvailableTime_AvailableTimes");
 
             entity.HasOne(d => d.Coach).WithMany(p => p.CoachAvailableTimes)
                 .HasForeignKey(d => d.CoachId)
@@ -362,7 +407,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534F80D24E6");
+            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534957EE41F");
 
             entity.ToTable("HealthInfo");
 
