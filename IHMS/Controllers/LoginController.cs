@@ -10,93 +10,76 @@ namespace IHMS.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly IhmsContext _context;
         private IWebHostEnvironment _enviro = null;
-        private IWebHostEnvironment _environment;
-        public LoginController(IhmsContext context, IWebHostEnvironment p, IWebHostEnvironment iwhe)
+        public LoginController(IhmsContext context, IWebHostEnvironment p)
         {
             _enviro = p;
-            _context = context;
-            _environment = iwhe;
+
         }
         public IActionResult Login()
         {
             return View();
-        }        
-        [HttpPost]
-        public IActionResult Login(CLoginViewModel vModel)
-        {
-            if (vModel.fAccount == null || vModel.fPassword == null)
-            {
-                return Content("empty", "text/plain", System.Text.Encoding.UTF8);
-            }
-
-            var q = _context.Members.FirstOrDefault(tm => tm.Account == vModel.fAccount);
-            if (q != null)
-            {
-                if (q.Password == utilities.getCryptPWD(vModel.fPassword, vModel.fAccount))
-                {
-                    string loginSession = JsonSerializer.Serialize(q);
-                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-                    Member loginUser = JsonSerializer.Deserialize<Member>(loginSession);
-                    int authorId = (int)loginUser.Permission;
-                    if (authorId < 5)
-                    {
-                        string admin = "admin" + loginUser.Name;
-                        return Content(admin, "text/plain", System.Text.Encoding.UTF8);
-                    }
-                    else
-                    {
-                        return Content(loginUser.Name, "text/plain", System.Text.Encoding.UTF8);
-                    }
-                }
-            }
-            return Content("false", "text/plain", System.Text.Encoding.UTF8);
         }
-        public IActionResult Logout()
+        public IActionResult MemberEdit(CKeywordViewModel vm)
         {
-            HttpContext.Session.Remove(CDictionary.SK_Logined_User);
-            HttpContext.Session.Remove(CDictionary.SK_Shopped_Items);
-            HttpContext.Session.Remove(CDictionary.SK_Third_Party_Payment);
-            return RedirectToAction("Index", "Home");
-        }
-        public IActionResult Edit()
-        {
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            string keyword = vm.txtKeyword;
+            IhmsContext db = new IhmsContext();
+            IEnumerable<Member> datas = null;
+            if (string.IsNullOrEmpty(keyword))
             {
-                var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                Member loginUser = JsonSerializer.Deserialize<Member>(memberEdit);
-                var q = _context.Members.FirstOrDefault(m => m.MemberId == loginUser.MemberId);
-                return View(q);
+                datas = from c in db.Members
+                        select c;
             }
             else
-            {
-                var q = _context.Members.FirstOrDefault(m => m.MemberId == 8);
-                return View(q);
-            }
+                datas = db.Members.Where(p => p.Name.Contains(keyword) ||
+                p.Phone.Contains(keyword) ||
+                p.Email.Contains(keyword) ||
+                p.Account.Contains(keyword));
+            return View(datas);
+
+        }
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("MemberEdit");
+            IhmsContext db = new IhmsContext();
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == id);
+            return View(cust);
         }
         [HttpPost]
-        public IActionResult Edit(CLoginViewModel vModel)
+        public ActionResult Edit(CMember x)
         {
-            var q = _context.Members.FirstOrDefault(m => m.MemberId == vModel.fMemberId);
-            if (q != null)
+            IhmsContext db = new IhmsContext();
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MemberId);
+            if (cust != null)
             {
-                if (vModel.photo != null)
+                if (x.photo != null)
                 {
-                    string pName = Guid.NewGuid().ToString() + ".jpg";
-                    vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
-                    q.AvatarImage = pName;
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";
+                    x.photo.CopyTo(new FileStream(
+                        _enviro.WebRootPath + "/images/" + photoName,
+                        FileMode.Create));
+                    cust.AvatarImage = photoName;
                 }
-                q.Account = vModel.fAccount;
-                q.Birthday = vModel.fBirthday;
-                q.ResidentialCity = vModel.fResidentialCity;
-                q.Phone = vModel.fPhone;
-                q.Email = vModel.fEmail;
-                q.Phone = vModel.fPhone;
-                _context.SaveChanges();
-                return RedirectToAction("Edit", "Member");
+                cust.Name = x.Name; //姓名
+                cust.Phone = x.Phone; //電話
+                cust.Email = x.Email; //信箱
+                cust.Account = x.Account; //帳號
+                cust.Password = x.Password; //密碼
+                cust.Birthday = x.Birthday; //生日
+                cust.Gender = x.Gender; //性別
+                cust.MaritalStatus = x.MaritalStatus; //婚姻狀態
+                cust.Nickname = x.Nickname; //暱稱
+                //cust.AvatarImage = x.AvatarImage; // 頭像
+                cust.ResidentialCity = x.ResidentialCity; //居住城市
+                cust.Permission = x.Permission; //權限
+                cust.Occupation = x.Occupation; //職業
+                cust.DiseaseDescription = x.DiseaseDescription; //疾病史
+                cust.AllergyDescription = x.AllergyDescription; //過敏反應
+                cust.LoginTime = x.LoginTime; //登入日期
+                db.SaveChanges();
             }
-            else { return RedirectToAction("Edit", "Member"); }
+            return RedirectToAction("MemberEdit");
         }
     }
 }

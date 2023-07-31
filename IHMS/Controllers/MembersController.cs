@@ -9,23 +9,13 @@ using System.Text.Json;
 namespace IHMS.Controllers
 {
     public class MembersController : Controller
-    {
-        private readonly IhmsContext _context;
+    {        
         private IWebHostEnvironment _enviro = null;
-        private IWebHostEnvironment _environment;
-        public MembersController(IhmsContext context, IWebHostEnvironment p, IWebHostEnvironment iwhe)
+        public MembersController(IhmsContext context, IWebHostEnvironment p)
         {
             _enviro = p;
-            _context = context;
-            _environment = iwhe;
-        }       
-        
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-        
+            
+        }                          
 
         public IActionResult List(CKeywordViewModel vm)
         {
@@ -143,23 +133,29 @@ namespace IHMS.Controllers
         }
         public ActionResult MemberEdit(int? id)
         {
-                return View();
+            if (id == null)
+                return RedirectToAction("List");
+            IhmsContext db = new IhmsContext();
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == id);
+            return View(cust);
         }
         [HttpPost]
         public ActionResult MemberEdit(CMember x)
         {
-            IhmsContext db = new IhmsContext();
-            Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MemberId);
-            if (cust != null)
+            if (ModelState.IsValid)
             {
-                if (x.photo != null)
+                IhmsContext db = new IhmsContext();
+                Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MemberId);
+                if (cust != null)
                 {
+                    if (x.photo != null)
+                    {
                         string photoName = Guid.NewGuid().ToString() + ".jpg";
                         x.photo.CopyTo(new FileStream(
                             _enviro.WebRootPath + "/images/" + photoName,
                             FileMode.Create));
                         cust.AvatarImage = photoName;
-                }
+                    }
                     cust.Name = x.Name; //姓名
                     cust.Phone = x.Phone; //電話
                     cust.Email = x.Email; //信箱
@@ -177,6 +173,9 @@ namespace IHMS.Controllers
                     cust.AllergyDescription = x.AllergyDescription; //過敏反應
                     cust.LoginTime = x.LoginTime; //登入日期
                     db.SaveChanges();
+                }
+                // 返回重導向到其他頁面，例如會員列表頁面
+                return RedirectToAction("List");
             }
             return View(x);
         }
