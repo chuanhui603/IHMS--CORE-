@@ -126,7 +126,7 @@
     @*篩選*@
     <div class="divSearch row">
         
-        <div class="col-lg-2">
+        @*<div class="col-lg-2">
             <select class="custom-select" id="selCity">
                 <option value="0" selected>所有城市</option>
                 <option value="2">臺北市</option>
@@ -136,8 +136,8 @@
                 <option value="4">臺南市</option>
                 <option value="12">高雄市</option>
             </select>
-        </div>
-        <div class="col-lg-3">
+        </div>*@
+     @*   <div class="col-lg-3">
             <select class="custom-select" id="selSkill">
                 <option value="0" selected>所有專長</option>
                 <option value="1">肌肥大訓練</option>
@@ -150,8 +150,8 @@
                 <option value="8">備賽指導</option>
                 <option value="9">銀髮族訓練</option>
             </select>
-        </div>
-        <div class="col-lg-1" style="padding-right:0">
+        </div>*@
+       @* <div class="col-lg-1" style="padding-right:0">
             <label class="col-form-label" style="float:right;font-weight:600">搜尋:</label>
         </div>
         <div class="col-lg-3 divKeyword">
@@ -159,7 +159,7 @@
         </div>
         <div class="col-lg-2" style="padding-right:0">
             <button class="btn btn-success" id="btnReset">清除篩選條件</button>
-        </div>
+        </div>*@
     </div>
     <div>
         <table class="table">
@@ -184,9 +184,9 @@
                     <th class="thStatus">
                         <select id="selStatus">
                             <option value="0" selected>所有履歷狀態</option>
-                            <option value="1">未審核</option>
+                            @*<option value="1">未審核</option>
                             <option value="2">審核通過</option>
-                            <option value="3">已退回</option>
+                            <option value="3">已退回</option>*@
                         </select>
                     </th>
                     <th>
@@ -249,7 +249,7 @@
                                 }
                             }
                             <td class="details">
-                                <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看履歷</button>
+                                <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看詳情</button>
                                 <button type="button" class="btn btn-success btnPass">審核通過</button>
                                 <button type="button" class="btn btn-secondary btnReturn">退回申請</button>
                             </td>
@@ -273,40 +273,40 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">教練履歷<span></span></h5>
+                <h5 class="modal-title" id="exampleModalLabel">教練詳情<span></span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <dl class="row dlResume">
-                    <dt class="col-sm-2">
+                   @* <dt class="col-sm-2">
                         照片
-                    </dt>
+                    </dt>*@
                     <dd class="col-sm-10" id="ddImg">
-                        @*<div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);" />*@
+                        <div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);" />
                     </dd>
-                    <dt class="col-sm-2">
+                    @*<dt class="col-sm-2">
                         教練編號
                     </dt>
                     <dd class="col-sm-4" id="ddCoachId">
-                    </dd>
+                    </dd>*@
                     <dt class="col-sm-2">
                         履歷狀態
                     </dt>
                     <dd class="col-sm-4" id="ddStatus">
                     </dd>
-                    <dt class="col-sm-2">
+                    @*<dt class="col-sm-2">
                         會員編號
                     </dt>
                     <dd class="col-sm-4" id="ddMemberId">
-                    </dd>
+                    </dd>*@
                     <dt class="col-sm-2">
                         公開狀態
                     </dt>
                     <dd class="col-sm-4" id="ddVisible">
                     </dd>
-                    <dt class="col-sm-2">
+                    @*<dt class="col-sm-2">
                         教練姓名
                     </dt>
                     <dd class="col-sm-4" id="ddCoachName">
@@ -321,18 +321,18 @@
                     </dt>
                     <dd class="col-sm-4" id="ddCityName">
                     </dd>
-                    <dt class="col-sm-2">
+                   @* <dt class="col-sm-2">
                         希望待遇
                     </dt>
                     <dd class="col-sm-4" id="ddFee">
-                    </dd>
+                    </dd>*@
                     <dd><hr /></dd>
                     <dt class="col-sm-2">
                         專長種類
                     </dt>
                     <dd class="col-sm-10" id="ddSkills">
                     </dd>
-                    <dt class="col-sm-2">
+                    @*<dt class="col-sm-2">
                         經歷
                     </dt>
                     <dd class="col-sm-10" id="ddExperiences">
@@ -341,12 +341,12 @@
                         相關證照
                     </dt>
                     <dd class="col-sm-10" id="ddLicenses">
-                    </dd>
-                    <dt class="col-sm-2">
+                    </dd>*@
+                    @*<dt class="col-sm-2">
                         介紹
                     </dt>
                     <dd class="col-sm-10" id="ddSlogan">
-                    </dd>
+                    </dd>*@
                 </dl>
             </div>
         </div>
@@ -361,7 +361,7 @@
         //查看履歷
         function viewResume() {
             let theCoachId = $(event.target).parents("tr").children("td:eq(0)").text();
-            $.get("@Url.Content("~/Admin/CoachManage/getCoach")", { id: theCoachId }, function (c) {
+            $.get("@Url.Content("~/Coach/getCoach")", { id: theCoachId }, function (c) {
                 let skill = "";
                 $.each(c.skills, function (idx, val) {
                     skill += val;
@@ -378,19 +378,19 @@
                     license += val;
                     license += "<br />";
                 })
-                $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.fCoachImage});" />`)
-                $("#ddCoachId").html(c.fCoachId);
+                $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.CoachImage});" />`)
+                $("#ddCoachId").html(c.CoachId);
                 $("#ddStatus").html(c.status);
-                $("#ddMemberId").html(c.fMemberId);
+                $("#ddMemberId").html(c.MemberId);
                 $("#ddVisible").html(c.visible);
-                $("#ddCoachName").html(c.fCoachName);
+                $("#ddCoachName").html(c.CoachName);
                 $("#ddApplyDate").html(c.applyDate);
                 $("#ddCityName").html(c.cityName);
-                $("#ddFee").html(c.fCoachFee);
+                $("#ddFee").html(c.CoachFee);
                 $("#ddSkills").html(skill);
                 $("#ddExperiences").html(experience);
                 $("#ddLicenses").html(license);
-                $("#ddSlogan").html(c.fSlogan);
+                $("#ddSlogan").html(c.Slogan);
             })
         }
         $(".btnViewResume").on("click", viewResume);
@@ -409,7 +409,7 @@
                 icon: 'question'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get("@Url.Content("~/Admin/CoachManage/passResume")", { id: theCoachId }, function (c) {
+                    $.get("@Url.Content("~/Coach/passResume")", { id: theCoachId }, function (c) {
                         theTr.children("td:eq(5)").text("審核通過");
                         theTr.children("td:eq(5)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorTrue");
                         theTr.children("td:eq(6)").text("公開");
@@ -435,7 +435,7 @@
                 icon: 'question'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get("@Url.Content("~/Admin/CoachManage/returnResume")", { id: theCoachId }, function (c) {
+                    $.get("@Url.Content("~/Coach/returnResume")", { id: theCoachId }, function (c) {
                         theTr.children("td:eq(5)").text("已退回");
                         theTr.children("td:eq(5)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorFalse");
                         theTr.children("td:eq(6)").text("未公開");
@@ -456,13 +456,13 @@
             else {//orderby
                 isDesc = 0;
             }
-            $.post("@Url.Content("~/Admin/CoachManage/loadCoach")", { "CityId": $("#selCity").val(), "SkillId": $("#selSkill").val(), "KeyWord": $("#inpKeyword").val(), "Sort": isDesc, "StatusNum": $("#selStatus").val() }, function (coaches) {
+            $.post("@Url.Content("~/Coach/loadCoach")", { "CityId": $("#selCity").val(), "SkillId": $("#selSkill").val(), "KeyWord": $("#inpKeyword").val(), "Sort": isDesc, "StatusNum": $("#selStatus").val() }, function (coaches) {
                 let html = "";
                 $.each(coaches, function (idx, val) {
-                    html += `<tr><td>${val.fCoachId}</td>`;
-                    html += `<td>${val.fCoachName}</td>`;
+                    html += `<tr><td>${val.CoachId}</td>`;
+                    html += `<td>${val.CoachName}</td>`;
                     html += `<td>${val.cityName}</td>`;
-                    html += `<td>${val.fCoachFee}</td>`;
+                    html += `<td>${val.CoachFee}</td>`;
                     html += `<td>${val.applyDate}</td>`;
                     if (val.status == "審核中") {
                         html += `<td class="colorWait">${val.status}</td>`;

@@ -2,9 +2,10 @@
 {
     public class CSearchCoachViewModel
     {
-        public int? MemberId { get; set; }
+        public int? CityId { get; set; } //0
+        public int? SkillId { get; set; } //0
         public string KeyWord { get; set; } //null
         public int? Sort { get; set; } //1:DESC 0:ORDERBY
-        public int? Condition{ get; set; } //0
+        public int? StatusNum { get; set; } //0
     }
 }
