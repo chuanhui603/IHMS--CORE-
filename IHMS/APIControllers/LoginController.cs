@@ -7,6 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using IHMS.DTO;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using IHMS.ViewModel;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+
 
 namespace IHMS.APIControllers
 {
@@ -15,10 +25,12 @@ namespace IHMS.APIControllers
     public class LoginController : ControllerBase
     {
         private readonly IhmsContext _context;
+        private readonly IConfiguration _configuration;
 
-        public LoginController(IhmsContext context)
+        public LoginController(IhmsContext context, IConfiguration configuration) // 加入這行
         {
             _context = context;
+            _configuration = configuration; // 加入這行
         }
 
         // GET: api/Login
@@ -150,5 +162,74 @@ namespace IHMS.APIControllers
         {
             return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
         }
+
+
+        // 在 API 中處理 Google 登入回調
+        [AllowAnonymous]
+        [HttpPost("GoogleLoginCallback")]
+        public async Task<IActionResult> GoogleLoginCallback([FromBody] GoogleLoginCallbackViewModel model)
+        {
+            // 取得 Google 的使用者信箱
+            var googleEmail = model.Email;
+
+            // 在本地資料庫中查詢該使用者是否已註冊過
+            var existingUser = await _context.Members.FirstOrDefaultAsync(m => m.Email == googleEmail);
+
+            if (existingUser != null)
+            {
+                // 如果已註冊，則進行登入
+                var token = GenerateToken(existingUser); // 產生 JWT Token，用於後續的驗證
+                return Ok(new { token });
+            }
+            else
+            {
+                // 如果未註冊，則根據 Google 的使用者資訊新增一個新的帳號並進行登入
+                var newUser = new Member
+                {
+                    Email = googleEmail,
+                    // 其他資訊可以根據需要從 Google 資訊中取得
+                    // 例如：姓名、生日、性別等等，可以透過 Google 資料填充到這裡
+                };
+
+                _context.Members.Add(newUser);
+                await _context.SaveChangesAsync();
+
+                // 導向 Members/SignIn 頁面並將 Google 資料傳遞過去
+                return RedirectToAction("SignIn", "Members", new
+                {
+                    email = newUser.Email,
+                    givenName = newUser.Name,
+                    familyName = newUser.Name,
+                    birthDate = newUser.Birthday,
+                    gender = newUser.Gender,
+                    // 其他需要傳遞的資料
+                });
+            }
+
+        }
+
+        // 產生 JWT Token 的方法
+        private string GenerateToken(Member user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+                // 其他需要加入的 Claim
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Issuer"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
     }
 }
