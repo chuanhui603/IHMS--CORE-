@@ -27,6 +27,8 @@ public partial class Plan
 
     public int? Height { get; set; }
 
+    public string? Gender { get; set; }
+
     public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
 
     public virtual Member Member { get; set; } = null!;

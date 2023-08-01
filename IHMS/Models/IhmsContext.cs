@@ -407,7 +407,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534957EE41F");
+            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534D9DD96E9");
 
             entity.ToTable("HealthInfo");
 
@@ -643,6 +643,10 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.Bmr).HasColumnName("bmr");
             entity.Property(e => e.BodyPercentage).HasColumnName("body_percentage");
+            entity.Property(e => e.Gender)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("gender");
             entity.Property(e => e.Height).HasColumnName("height");
             entity.Property(e => e.MemberId).HasColumnName("member_id");
             entity.Property(e => e.RegisterDate)
@@ -764,6 +768,7 @@ public partial class IhmsContext : DbContext
             entity.ToTable("Sport_Detail");
 
             entity.Property(e => e.SportDetailId).HasColumnName("sport_detail_id");
+            entity.Property(e => e.Calories).HasColumnName("calories");
             entity.Property(e => e.Frequency).HasColumnName("frequency");
             entity.Property(e => e.Isdone).HasColumnName("isdone");
             entity.Property(e => e.Registerdate)
