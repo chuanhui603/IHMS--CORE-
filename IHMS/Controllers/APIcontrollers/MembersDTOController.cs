@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using IHMS.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -34,26 +35,51 @@ namespace IHMS.Controllers.APIcontrollers
         }
 
         // GET: api/MembersDTO/5
-        [HttpGet("GetMemberByOrderid/{orderId}")]
-        public async Task<List<Member>> GetMemberByOrderid(int orderId)
+        [HttpGet("GetMemberByOrderid/{memberId}")]
+        public async Task<IEnumerable<OrderCoachMemberDTO>> GetMemberByOrderid(int memberId)
         {
-            List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
+            //List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
             // 使用 Include 來避免嵌套迴圈的查詢
-            List<Member> memberList = await _context.OrderDetails
-                    .Where(od => od.OrderId == orderId)
-                    .SelectMany(od => _context.Schedules
-                        .Where(schedule => schedule.ScheduleId == od.ScheduleId)
-                        .SelectMany(schedule => _context.Courses
-                            .Where(course => course.CourseId == schedule.CourseId)
-                            .SelectMany(course => _context.Coaches
-                                .Where(coach => coach.CoachId == course.CoachContactId)
-                                .SelectMany(coach => _context.Members
-                                .Where(member => member.MemberId == coach.MemberId)
-                                )
-                            )
-                        )
-                    )
-                    .ToListAsync();
+            //List<Member> memberList = await _context.OrderDetails
+            //        .Where(od => od.OrderId == orderId)
+            //        .SelectMany(od => _context.Schedules
+            //            .Where(schedule => schedule.ScheduleId == od.ScheduleId)
+            //            .SelectMany(schedule => _context.Courses
+            //                .Where(course => course.CourseId == schedule.CourseId)
+            //                .SelectMany(course => _context.Coaches
+            //                    .Where(coach => coach.CoachId == course.CoachContactId)
+            //                    .SelectMany(coach => _context.Members
+            //                    .Where(member => member.MemberId == coach.MemberId)
+            //                    )
+            //                )
+            //            )
+            //        )
+            //        .ToListAsync();
+
+            var query = (
+                from o in _context.Orders
+                join od in _context.OrderDetails on o.OrderId equals od.OrderId
+                join m in _context.Members on o.MemberId equals m.MemberId
+                join s in _context.Schedules on od.ScheduleId equals s.ScheduleId
+                join c in _context.Courses on s.CourseId equals c.CourseId
+                join co in _context.Coaches on c.CoachContactId equals co.CoachId
+                where m.MemberId == memberId
+                select new OrderCoachMemberDTO
+                {
+                    CoachName = co.CoachName,
+                    Createtime = o.Createtime,
+                    Ordernumber = o.Ordernumber,
+                    Pointstotal = o.Pointstotal,
+                    CourseName = c.CourseName,
+                    CourseTime = s.CourseTime,
+                    CourseTotal = c.CourseTotal,
+                    MemberName = m.Name,
+                    State = o.State
+                    
+                }
+            );
+
+
 
             //資料庫重複關聯問題
             //在序列化時，ReferenceHandler.Preserve 會處理對象循環引用，同時保持輸出的 JSON 的完整性，這樣就不會再產生循環引用的錯誤。請確保更新後的程式碼有正確處理循環引用的情況。
@@ -62,8 +88,8 @@ namespace IHMS.Controllers.APIcontrollers
                 ReferenceHandler = ReferenceHandler.Preserve
             };
 
-            string serializedCoaches = JsonSerializer.Serialize(memberList, options);
-            return memberList;
+           
+            return query;
         }
 
 

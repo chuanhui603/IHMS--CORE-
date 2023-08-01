@@ -103,8 +103,9 @@
                     <a asp-action="Details" asp-route-id="@item.PointrecordId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.PointrecordId">Delete</a>*@
                 </td>
-            </tr>
-        }
+                    </tr>
+                }
+                pay = pay * 500;
                 tax = pay * 0.05M;
                 sum = pay + tax;
     }

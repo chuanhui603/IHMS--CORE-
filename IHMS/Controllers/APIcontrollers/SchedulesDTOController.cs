@@ -42,6 +42,7 @@ namespace IHMS.Controllers.APIcontrollers
             {
                 CourseTime = data.CourseTime
             };
+
             //foreach (OrderDetail orderDetail in orderDetails)
             //{
             //    List<Schedule> schedules = await _context.Schedules.Where(od => od.ScheduleId == orderDetail.ScheduleId).ToListAsync();
