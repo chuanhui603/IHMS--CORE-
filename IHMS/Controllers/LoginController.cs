@@ -5,17 +5,21 @@ using prjiHealth.ViewModel;
 using HealthyLifeApp;
 using System.Text.Json;
 using Google.Apis.Auth;
+using Microsoft.EntityFrameworkCore;
 
 namespace IHMS.Controllers
 {
     public class LoginController : Controller
     {
         private IWebHostEnvironment _enviro = null;
+        private readonly IhmsContext _context;
+
         public LoginController(IhmsContext context, IWebHostEnvironment p)
         {
+            _context = context;
             _enviro = p;
+        }        
 
-        }
         public IActionResult Login()
         {
             return View();
@@ -24,7 +28,7 @@ namespace IHMS.Controllers
         {
             string keyword = vm.txtKeyword;
             IhmsContext db = new IhmsContext();
-            IEnumerable<Member> datas = null;
+            IEnumerable<Member> datas = null;            
             if (string.IsNullOrEmpty(keyword))
             {
                 datas = from c in db.Members
@@ -80,30 +84,40 @@ namespace IHMS.Controllers
         /// 驗證 Google 登入授權
         /// </summary>
         /// <returns></returns>
-        public IActionResult GoogleLogin()
+        public async Task<IActionResult> GoogleLogin()
         {
-            string? formCredential = Request.Form["credential"]; //回傳憑證
-            string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
-            string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
+            string? formCredential = Request.Form["credential"];
+            string? formToken = Request.Form["g_csrf_token"];
+            string? cookiesToken = Request.Cookies["g_csrf_token"];
 
-            // 驗證 Google Token
-            GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+            GoogleJsonWebSignature.Payload? payload = await VerifyGoogleToken(formCredential, formToken, cookiesToken);
+
             if (payload == null)
             {
-                // 驗證失敗
-                ViewData["Msg"] = "驗證 Google 授權失敗";
+                ViewData["Msg"] = "验证 Google 授权失败";
             }
             else
             {
-                //驗證成功，取使用者資訊內容
-                ViewData["Msg"] = "驗證 Google 授權成功" + "<br>";
-                ViewData["Msg"] += "Email:" + payload.Email + "<br>";
-                ViewData["Msg"] += "Name:" + payload.Name + "<br>";
-                ViewData["Msg"] += "Picture:" + payload.Picture;
+                var member = await _context.Members.FirstOrDefaultAsync(m => m.Email == payload.Email);
+
+                if (member != null)
+                {
+                    ViewData["MemberInfo"] = member;
+                    return View("MemberDashboard"); // 如果有註冊
+                }
+                else
+                {
+                    //用ViewModel試看看
+                    ViewData["GoogleEmail"] = payload.Email;
+                    Console.WriteLine(payload.Email);
+                    return RedirectToAction("SignIn", "Members");// 如果沒有註冊，則進入註冊頁面
+                }
             }
 
             return View();
         }
+
+
 
         /// <summary>
         /// 驗證 Google Token
@@ -161,5 +175,6 @@ namespace IHMS.Controllers
             }
             return payload;
         }
-    }
+
+    }    
 }

@@ -119,18 +119,19 @@ namespace IHMS.Controllers
         [HttpPost]
         public ActionResult SignIn(Member t)
         {
-            IhmsContext db = new IhmsContext();               
+            IhmsContext db = new IhmsContext();
 
             if (string.IsNullOrEmpty(t.AvatarImage))
             {
                 t.AvatarImage = "1.jpg";
-            }
+            }            
 
             db.Members.Add(t);
-            db.SaveChanges();           
+            db.SaveChanges();
 
             return Redirect("http://localhost:5174/");
         }
+
         public ActionResult MemberEdit(int? id)
         {
             if (id == null)

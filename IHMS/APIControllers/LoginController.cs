@@ -33,6 +33,7 @@ namespace IHMS.APIControllers
             _configuration = configuration; // 加入這行
         }
 
+
         // GET: api/Login
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
