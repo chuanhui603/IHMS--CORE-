@@ -516,11 +516,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .HasColumnName("title");
-
-            entity.HasOne(d => d.Member).WithMany(p => p.MessageBoards)
-                .HasForeignKey(d => d.MemberId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_message board_Members");
         });
 
         modelBuilder.Entity<MessageBoardDetail>(entity =>

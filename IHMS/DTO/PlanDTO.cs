@@ -14,6 +14,8 @@ namespace IHMS.DTO
         public int Weight { get; set; }
         public string? Times { get; set; }
         public int? Height { get; set; }
+
+        public string? Gender { get; set; }
         public DateTime RegisterDate { get; set; }
         public double BodyPercentage { get; set; }
     }
