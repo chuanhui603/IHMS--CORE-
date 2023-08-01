@@ -39,7 +39,7 @@ namespace IHMS.Controllers
 
         }
         public ActionResult Edit(int? id)
-        {
+        {            
             if (id == null)
                 return RedirectToAction("MemberEdit");
             IhmsContext db = new IhmsContext();
@@ -74,7 +74,7 @@ namespace IHMS.Controllers
                
                 db.SaveChanges();
             }
-            return RedirectToAction("MemberEdit");
+            return RedirectToAction("Edit");
         }
     }
 }

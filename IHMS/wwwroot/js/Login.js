@@ -9,7 +9,7 @@
 async function login(event) {
     event.preventDefault();
     const username = document.getElementById('Account').value;
-    const password = document.getElementById('Password').value;     
+    const password = document.getElementById('Password').value;
 
     // 使用 AJAX 發送登入請求
     const baseAddress = `https://localhost:7127/api/Members/Login`;
@@ -19,20 +19,29 @@ async function login(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ Account: username, Password: password})
+            body: JSON.stringify({ Account: username, Password: password })
         });
 
         if (res.ok) {
-            const member = await res.json();   
+            const member = await res.json();
 
             // 登入成功
+
+            const memberId = member.memberId;
+            
+            localStorage.setItem('currentMemberId', memberId);
+           
+            editMember(memberId);            
             
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
+      
             // 將會員資訊存入 localStorage
-            localStorage.setItem('currentMember', JSON.stringify(member));            
+            localStorage.setItem('currentMember', JSON.stringify(member));
 
-            location.href = "https://localhost:7127";            
-           
+            location.href = `https://localhost:7127/Login/Edit/${memberId}`;
+
+            /*location.href = `http://localhost:5174/`;*/
+            
         } else {
             // 登入失敗
             alert('帳號或密碼不正確，請重新登入！');
@@ -41,10 +50,52 @@ async function login(event) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
     }
-    window.addEventListener('load', function () {
-        checkLoginStatus();
+}
+
+function editMember(memberId) {
+    // 使用 AJAX 将 id 发送给后端的 Edit 方法
+    $.ajax({
+        type: 'GET',
+        url: '/Login/Edit',
+        data: { id: memberId },
+        success: function (result) {
+            // 处理返回结果
+        },
+        error: function () {
+            // 处理错误
+        }        
     });
-}//登入用這個
+
+
+}
+
+window.addEventListener('load', function () {
+    checkLoginStatus();
+});
+
+function editMember(id) {
+        // 使用Ajax将id发送给后端的Edit方法
+        // 例如使用jQuery的Ajax：
+    $.ajax({
+        type: 'GET',
+        url: '/Member/Edit',
+        data: { id: id },
+        success: function (result) {
+                // 处理返回结果
+        },
+        error: function () {
+                // 处理错误
+        }
+   });
+}
+
+
+
+
+
+
+
+
 
 async function MemberEdit(event) {
     event.preventDefault(); // 取消表單預設提交行為
