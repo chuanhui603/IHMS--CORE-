@@ -48,6 +48,8 @@ namespace IHMS.Controllers.APIcontrollers
             ).Sum();
 
 
+
+
             var currentp = _context.PointRecords
                    .Where(pr => pr.MemberId == MemberId)
                    .Sum(pr => pr.Count) * 500;
