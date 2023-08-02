@@ -13,7 +13,7 @@ public partial class Course
 
     public string? CourseName { get; set; }
 
-    public int? CourseTotal { get; set; }
+    public int CourseTotal { get; set; }
 
     public int? StatusNumber { get; set; }
 
