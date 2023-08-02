@@ -205,7 +205,7 @@ namespace IHMS.APIControllers
         //取得dietdetail資料
         [Route("~/api/[controller]/dietdetail/list/{dietid:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetDietDetailList(int dietid)
+        public async Task<ActionResult<IEnumerable<DietDetailDTO>>> GetDietDetailList(int dietid)
         {
             if (_context.DietDetails == null)
             {
@@ -219,6 +219,29 @@ namespace IHMS.APIControllers
                Registerdate =d.Registerdate,
                Type = d.Type,               
             });
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(res);
+            }
+
+        }
+
+        //api/plans/diet/sum/{dietid:int}
+        //取得dietdetail資料
+        [Route("~/api/[controller]/diet/sum/{dietid:int}")]
+        [HttpGet]
+        public async Task<ActionResult<int>> GetDietSum(int dietid)
+        {
+            if (_context.DietDetails == null)
+            {
+                return NotFound();
+            }
+            var res = _context.DietDetails.Where(p => p.DietId == dietid).Sum(dd => dd.Calories);
 
             if (res == null)
             {
