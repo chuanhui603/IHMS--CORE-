@@ -33,50 +33,53 @@ namespace IHMS.Controllers
             string connectionString = _configuration.GetConnectionString("IHMSConnection");
             model.time = DateTime.Now;
 
-                model.time = DateTime.Now;
+            model.time = DateTime.Now;
 
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var parameters = new
+                {
+                    Title = model.title,
+                    Content = model.contents,
+                    CreatedDate = model.time,
+                    Image = string.Empty // 先將圖片欄位設為空，稍後會更新為實際的檔案名稱
+                };
+
+                // Insert the announcement into the database
+                var sql = @"INSERT INTO Announcement (title, contents, time) VALUES (@Title, @Content, @CreatedDate)";
+                connection.Execute(sql, parameters);
+            }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(_environment.WebRootPath, "AnnouncementImage");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    imageFile.CopyTo(stream);
+                }
+
+                // 更新公告的圖片欄位為實際的檔案名稱
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    var parameters = new
+                    var updateQuery = "UPDATE Announcement SET image = @Image WHERE title = @Title";
+                    var updateParameters = new
                     {
-                        Title = model.title,
-                        Content = model.contents,
-                        CreatedDate = model.time,
-                        Image = string.Empty // 先將圖片欄位設為空，稍後會更新為實際的檔案名稱
+                        Image = uniqueFileName,
+                        Title = model.title
                     };
-
+                    connection.Execute(updateQuery, updateParameters);
                 }
+            }
 
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    string uploadsFolder = Path.Combine(_environment.WebRootPath, "AnnouncementImage");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            TempData["ShowPopup"] = true;
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        imageFile.CopyTo(stream);
-                    }
+            return RedirectToAction("Index", "Announcement");
 
-                    // 更新公告的圖片欄位為實際的檔案名稱
-                    using (var connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
-                        var updateQuery = "UPDATE Announcement SET image = @Image WHERE title = @Title";
-                        var updateParameters = new
-                        {
-                            Image = uniqueFileName,
-                            Title = model.title
-                        };
-                        connection.Execute(updateQuery, updateParameters);
-                    }
-                }
-
-                TempData["ShowPopup"] = true;
-
-                return RedirectToAction("Index", "Announcement");
-            
 
         }
 
@@ -91,7 +94,7 @@ namespace IHMS.Controllers
                 var query = "SELECT * FROM Announcement ORDER BY time DESC";
                 pastAnnouncements = connection.Query<AnnouncementView>(query);
             }
-              
+
             return View("PastAnnouncements", pastAnnouncements);
         }
         [HttpPost]
