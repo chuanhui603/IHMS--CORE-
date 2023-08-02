@@ -52,15 +52,15 @@
                 <th>
                     @Html.DisplayNameFor(model => model.State)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Reason)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.Createtime)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Updatetime)
-                </th>
+                </th>*@
 
                 <th></th>
             </tr>
@@ -95,18 +95,18 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.State)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Reason)
-                        </td>
+                        </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.Createtime)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Updatetime)
-                        </td>
+                        </td>*@
 
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn btn-danger btn-sm">修改</a> |
+                            @*<a asp-action="Edit" asp-route-id="@item.OrderId" class="btn btn-danger btn-sm">修改</a> |*@
                             <a asp-action="Details" asp-route-id="@item.OrderId" class="btn btn-info btn-sm">明細</a>
                         </td>
                     </tr>

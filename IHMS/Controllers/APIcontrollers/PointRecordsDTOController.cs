@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using IHMS.ViewModel.DTO;
+using IHMS.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -33,14 +34,29 @@ namespace IHMS.Controllers.APIcontrollers
         // GET: api/PointRecordsDTO/1
         //顯示某會員的某筆資料
         //取點數資料
-        [HttpGet("{id}")]
-        public async Task<int> GetPointRecord(int id)
-        {          
-         
-            var total = _context.PointRecords.Select(s => s.Count).ToList().Sum()*500;
-            var cost = _context.Orders.Select(s => s.Pointstotal).Sum();
-            
-            return total-cost;
+        [HttpGet("{MemberId}")]
+        public async Task<int> GetPointRecord(int MemberId)
+        {
+            var coursecost = (
+                from o in _context.Orders
+                join od in _context.OrderDetails on o.OrderId equals od.OrderId
+                join m in _context.Members on o.MemberId equals m.MemberId
+                join s in _context.Schedules on od.ScheduleId equals s.ScheduleId
+                join c in _context.Courses on s.CourseId equals c.CourseId
+                where o.MemberId == MemberId
+                select c.CourseTotal                
+            ).Sum();
+
+
+            var currentp = _context.PointRecords
+                   .Where(pr => pr.MemberId == MemberId)
+                   .Sum(pr => pr.Count) * 500;
+            //var total = _context.PointRecords.Select(s => s.Count).ToList().Sum()*500;
+            //var cost = _context.Courses.Select(s => s.CourseTotal).Sum();
+
+            return currentp - coursecost;
+  
+
         }
 
         // PUT: api/PointRecordsDTO/5
