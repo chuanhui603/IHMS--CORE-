@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace IHMS.Models;
 
@@ -26,4 +27,7 @@ public partial class Course
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 
     public virtual ICollection<Score> Scores { get; set; } = new List<Score>();
+   
 }
+
+

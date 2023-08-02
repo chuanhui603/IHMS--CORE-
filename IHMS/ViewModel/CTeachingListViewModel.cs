@@ -51,7 +51,7 @@ namespace IHMS.ViewModel
         //    set { Course.FCoachContact.FMember.FPhone = value; }
         //}
         [DisplayName("堂數")]
-        public int? CourseTotal
+        public int CourseTotal
         {
             get { return Course.CourseTotal; }
             set { Course.CourseTotal = value; }

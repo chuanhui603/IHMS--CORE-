@@ -313,7 +313,7 @@
                         <ul>
                             <li><a href="~/CoachFront/CreateResume"><i class="fa-solid fa-pen"></i>履歷管理</a></li>
                             
-                            <li class="liThis"><a href="~/Coach/TeachingList" class="aLimit"><i class="fa-solid fa-dumbbell"></i>教課列表</a></li>
+                            <li class="liThis"><a href="~/CoachFront/TeachingList" class="aLimit"><i class="fa-solid fa-dumbbell"></i>教課列表</a></li>
                         </ul>
                     </div>
                     <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
@@ -497,13 +497,13 @@
                 $("tbody tr").show();
             }
             if (filter.val() == 55) {
-                $.getJSON("@Url.Content("~/Coach/GetCourseInProcess")", { "id": "55" },
+                $.getJSON("@Url.Content("~/CoachFront/GetCourseInProcess")", { "id": "55" },
                     function (data) {
                         $.each(data, function (index, course) {
                             $(`#tr_${course}`).show();
                         });
                     })
-                $.getJSON("@Url.Content("~/Coach/GetCourseDone")", { "id": "56" },
+                $.getJSON("@Url.Content("~/CoachFront/GetCourseDone")", { "id": "56" },
                     function (data) {
                         $.each(data, function (index, course) {
                             $(`#tr_${course}`).hide();
@@ -511,13 +511,13 @@
                     })
             }
             if (filter.val() == 56) {
-                $.getJSON("@Url.Content("~/Coach/GetCourseInProcess")", { "id": "55" },
+                $.getJSON("@Url.Content("~/CoachFront/GetCourseInProcess")", { "id": "55" },
                     function (data) {
                         $.each(data, function (index, course) {
                             $(`#tr_${course}`).hide();
                         });
                     })
-                $.getJSON("@Url.Content("~/Coach/GetCourseDone")", { "id": "56" },
+                $.getJSON("@Url.Content("~/CoachFront/GetCourseDone")", { "id": "56" },
                     function (data) {
                         $.each(data, function (index, course) {
                             $(`#tr_${course}`).show();
@@ -659,7 +659,7 @@
 
         //顯示當月排課
         function GetReservations() {
-            $.getJSON("@Url.Content("~/Coach/GetAllReservation")", function (data) {
+            $.getJSON("@Url.Content("~/CoachFront/GetAllReservation")", function (data) {
                 $.each(data, function (index, record) {
                     if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
                         let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
@@ -671,7 +671,7 @@
 
             }).done(() => {
                 //取得所有MemberId，不同Member設定不同顏色
-                $.getJSON("@Url.Content("~/Coach/GetReservationMemId")", function (data) {
+                $.getJSON("@Url.Content("~/CoachFront/GetReservationMemId")", function (data) {
                     let classCount = 1;
                     for (let i = 0; i < data.length; i++) {
                         $(`.r${data[i]}`).addClass(`color${classCount}`);
