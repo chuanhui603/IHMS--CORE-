@@ -1,8 +1,7 @@
 ﻿using IHMS.Models;
-using IHMS.ViewModel;
 using System.ComponentModel;
 
-namespace IHMS.Views
+namespace IHMS.ViewModel
 {
 
     public class CTeachingListViewModel
@@ -43,7 +42,7 @@ namespace IHMS.Views
         //[DisplayName("學員")]
         //public string MemberName
         //{
-        //    get { return Course.CoachContact.MemberName; }
+        //    get { return Course.CoachContact.Member; }
         //    set { Course.CoachContact.FMember.FMemberName = value; }
         //}
         //public string MemberPhone
