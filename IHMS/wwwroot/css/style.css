@@ -7,6 +7,47 @@
   --font-style: "Font Awesome 5 Free";
 }
 
+
+.blackbg {
+    background-color: #252525;
+}
+
+
+.white-shadow {
+    box-shadow: 0 0.5rem 1rem rgba(2400, 240, 240, 100) !important
+}
+
+.goldcolor {
+    color: #F5D15D
+}
+
+.darkcolor {
+    color: var(--dark);
+}
+
+.lightcolor {
+    color: #F4F4F4;
+}
+
+.graycolor {
+    color: #b9b9b9;
+}
+
+.img-shadow {
+    -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.7));
+    filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.7))
+}
+
+.backimg {
+    background: url(../img/bg-icon.png) center center repeat;
+}
+
+.container-Shadow {
+    box-shadow: 12px 12px 7px rgba(0, 0, 0, 0.7)
+}
+
+
+
 .btnlogout:hover{
     cursor:pointer
 }
