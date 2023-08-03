@@ -258,6 +258,7 @@
         .selTime1, .selTime2 {
             display: inline !important;
             width: 48%;
+           
         }
 
         .table td, .table th {
@@ -267,7 +268,7 @@
         }
 
         .period1, .period2, .period3, .period4, .period5, .period6, .period {
-            background-color: darkgray;
+            background-color: dimgray;
         }
 
         .available {
@@ -341,7 +342,7 @@
                             
                             <li style="list-style:none" class="li">
                                 <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                <span>@Model.CityName</span>
+                                <span>高雄市</span>
                             </li>
                             <li style="list-style:none" class="li">
                                 <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長： </b>
@@ -367,12 +368,11 @@
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
                             
                             <li>
-                                <a href="#" id="addContact" onclick="openModal()" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">
+                                <a href="#" id="addContact" onclick="openModal(),getAvailableTime()" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">
                                     <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId"></i>
                                     <b data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">&nbsp;&nbsp;我想預約</b>
                                 </a>
-                               @* <button type="button" class="btn btn-primary">我想預約</button>
-                                <input type="button" value="我想預約" onclick="openModal()">*@
+                            
                             </li>
                         </ul>
                     </div>
@@ -387,10 +387,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="false">經歷及相關證照</a>
                         </li>
-                        <li class="nav-item liSort">
-                            <a class="nav-link rate" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="true">會員評價 <span id="spRate"></span></a>
-                        </li>
-                        <li><div class="bar"></div></li>
+                        
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
@@ -433,7 +430,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">聯繫教練<small>-以下為教練目前的周課表</small></h5>
+                <h5 class="modal-title" id="exampleModalLabel">預約教練<small>-以下為教練目前的周課表</small></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -623,13 +620,15 @@
                     </div>
                     <small>*送出聯繫後，需經教練確認，才會進行課程安排唷！</small>
                     <div style="justify-content: end; display: flex; ">
-                        <button type="button" class="btn btn-success" id="btnSendContact"><i class="fa fa-paper-plane" aria-hidden="true"></i>確認預約</button>
+                        <a href="http://localhost:5174/BuyPoint" class="btn btn-success" id="btnSendContact">
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>確認預約
+                        </a>
                     </div>
                     <br />
                     <table>
                         <tr>
-                            <td class="period" style="width:2vw"></td>
-                            <td>未開放</td>
+                           @* <td class="period" style="width:2vw"></td>
+                            <td>未開放</td>*@
                         </tr>
                         <tr>
                             <td class="available" style="width:2vw"></td>
@@ -667,80 +666,38 @@
        
                
 
-               //推薦教練
-               $(document).ready(function () {
-                   $.getJSON("@Url.Content("~/Student/GetRecCoach")", { "id": "@Model.CoachId" },
-                       function (data) {
-                           $(".divCoaches").empty();
-                           $.each(data, function (index, item) {
-                               $(".divCoaches").append(`<a href="/Student/ViewCoachDetails/${item.CoachId}" id=a${index} class="aRec"></a>`);
-                               $(`#a${index}`).append(`<div class="row divRec" id=rec${index}></div>`);
-                               $(`#rec${index}`).append(`<div class="col-5" id=d1${index}></div>`).append(`<div class="col-7 divRecCoach" id=d2${index}></div>`)
-                                   .append(`<div class="divRecList" id=d3${index}></div>`);
-                               $(`#d1${index}`).append(`<img id=img${index} class="coach_img">`);
-                               $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.CoachImage}`);
-                               $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.CoachName}</b></h4></div>`).append(`<div><span class="spRec">${item.Slogan}</span></div>`);
-                               $(`#d3${index}`).append(`<ul class="ulRec" id=ul${index}>`);
-                               $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=l1${index}></li>`).append(`<li style="list-style:none" class="li" id=l2${index}></li>`);
-                               $(`#l1${index}`).append(`<img class="icon location"/><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;${item.cityName}</span>`);
-                               $(".location").attr("src", "@Url.Content("~/img/Coach/icon/location.png")");
-                               $(`#l2${index}`).append(`<img class="icon skill" /><span id=skill${index} class="recSkill"><b>&nbsp;&nbsp;&nbsp;專長： </b>&nbsp;&nbsp;</span>`)
-                               $(".skill").attr("src", "@Url.Content("~/img/Coach/icon/skill.png")");
+               
 
-                               //取得專長項目
-                               $.getJSON("@Url.Content("~/Student/GetSkillName")", { "id": `${item.CoachId}` },
-                                   function (skills) {
-                                       let s = "";
-                                       $.each(skills, function (index, skill) {
-                                           s += skill;
-                                           s += "、";
-                                       })
-                                       s = s.substr(0, s.length - 1);
-                                       $(`#skill${index}`).append(`${s}`);
-                                   }
-                               )
-                           })
-                           })
-               })
-
-
-               $("#modalContact").find(".nice-select").remove();
+        
 
                //預約時間表
         function getAvailableTime() {
-            $.get("@Url.Content("~/Student/getAvailableTimeId")", { id: @Model.CoachId}, function (response) {
-                if (response.success) {
-                    console.log("Available Time IDs:", response.data);
-                    $.each(response.data, function (idx, val) {
-                        $(`.period${val}`).addClass("available");
-                        $(`.period${val}`).on("click", function () {
-                            let tdid = $(event.target).attr("id");
-                            let week = tdid.substr(2, 1);
-                            let time = tdid.substr(3, 2);
-                            $(".selTime1").val(week);
-                            $(".selTime2").val(time);
-                        });
-                        $(`.period${val}`).removeClass(`period${val}`);
-                    });
-                } else {
-                    console.log("AJAX request failed!");
-                }
-            });
-
+            $.get("@Url.Content("~/Student/getAvailableTimeId")", { id: @Model.CoachId}, function (ids) {
+                $.each(ids, function (idx, val) {
+                    $(`.period${val}`).addClass("available");
+                    $(`.period${val}`).on("click", function () {
+                        let tdid = $(event.target).attr("id");
+                        let week = tdid.substr(2, 1);
+                        let time = tdid.substr(3, 2);
+                        $(".selTime1").val(week);
+                        $(".selTime2").val(time);
+                    })
+                    $(`.period${val}`).removeClass(`period${val}`);
+                })
+            })
             $.get("@Url.Content("~/Student/getAvailableTimeNum")", { id: @Model.CoachId}, function (nums) {
                 $.each(nums, function (idx, val) {
                     $(`#td${val}`).addClass("unavailable").removeClass("available");
                     $(`#td${val}`).text("額滿");
                     $(`#td${val}`).off("click");
-                });
-            });
+                })
+            })
         }
-
         getAvailableTime();
 
                //送出通知
                $("#btnSendContact").click(function () {
-                   $.get("@Url.Content("~/Student/createContact")", { FCoachId:@Model.CoachId, FAvailableTimeNum: `${$(".selTime1").val()}${$(".selTime2").val()}` }, function () {
+                   $.get("@Url.Content("~/Student/createOrder")", { FCoachId:@Model.CoachId, FAvailableTimeNum: `${$(".selTime1").val()}${$(".selTime2").val()}` }, function () {
                        SwalGreen.fire({
                            title: `已通知教練`,
                            showDenyButton: false,

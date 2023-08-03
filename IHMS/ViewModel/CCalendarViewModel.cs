@@ -24,7 +24,11 @@ namespace IHMS.ViewModel
             }
             return list;
         }
-        
+        public int ScheduleId
+        {
+            get { return Schedule.ScheduleId; }
+        }
+
         public int? CourseId
         {
             get { return Schedule.CourseId; }
@@ -41,35 +45,35 @@ namespace IHMS.ViewModel
         }
         //public string MemberName
         //{
-        //    get { return Schedule.Course.CoachContact.MemberId. MemberName; }
-        //    set { Schedule.Course.CoachContact.Member.FMemberName = value; }
+        //    get { return Schedule.Course.CoachContact.Member.Name; }
+        //    set { Schedule.Course.CoachContact.Member.Name = value; }
         //}
-        //public int CoachId
-        //{
-        //    get { return (int)Schedule.Course.CoachContact.CoachId; }
-        //    set { Schedule.Course.CoachContact.Coach.CoachId = value; }
-        //}
-        //public string CoachName
-        //{
-        //    get { return Schedule.FCourse.FCoachContact.FCoach.FCoachName; }
-        //    set { Schedule.FCourse.FCoachContact.FCoach.FCoachName = value; }
-        //}
-        //public string CourseDate
-        //{
-        //    get { return Schedule.FCourseTime.Substring(0, 8); }
-        //}
-        //public string CourseTime
-        //{
-        //    get { return Schedule.FCourseTime.Substring(8, 4); }
-        //}
-        //public int? FStatusNumber
-        //{
-        //    get { return Schedule.FStatusNumber; }
-        //    set { Schedule.FStatusNumber = value; }
-        //}
-        //public string Status
-        //{
-        //    get { return Schedule.FStatusNumber == 60 ? "未完成" : "已完成"; }
-        //}
+        public int CoachId
+        {
+            get { return (int)Schedule.Course.CoachContact.CoachId; }
+            set { Schedule.Course.CoachContact.Coach.CoachId = value; }
+        }
+        public string CoachName
+        {
+            get { return Schedule.Course.CoachContact.Coach.CoachName; }
+            set { Schedule.Course.CoachContact.Coach.CoachName = value; }
+        }
+        public string CourseDate
+        {
+            get { return Schedule.CourseTime.Substring(0, 8); }
+        }
+        public string CourseTime1
+        {
+            get { return Schedule.CourseTime.Substring(8, 4); }
+        }
+        public int? StatusNumber
+        {
+            get { return Schedule.StatusNumber; }
+            set { Schedule.StatusNumber = value; }
+        }
+        public string Status
+        {
+            get { return Schedule.StatusNumber == 60 ? "未完成" : "已完成"; }
+        }
     }
 }

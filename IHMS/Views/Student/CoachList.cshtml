@@ -375,20 +375,7 @@
                                 <b class="bTopic">篩選條件</b>
                             </div>
                             <div class="filterCard">
-                                <div class="keyTopic">
-                                    <h6><b>地區</b></h6>
-                                </div>
-                                <div>
-                                    <select class="custom-select" id="selCity" name="FCityId">
-                                        <option value="0" selected disabled>請選擇地區</option>
-                                        @{
-                                            foreach (var c in db.Cities.Where(c => c.Coaches.Any()).OrderBy(c => c.CityOrder).ToList())
-                                            {
-                                                <option value="@c.CityId" id="@c.CityId">@c.CityName</option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
+                                
                             </div>
                             <div class="filterCard">
                                 <div class="keyTopic">
@@ -437,7 +424,6 @@
                             <div class="divSubmit">
                                 <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
-                            <button class="btn btn-light" id="btnDemo" style="margin-left:10px">Demo</button>
                         </div>
                     </form>
                     <div class="divLink col-lg-5">
@@ -446,7 +432,6 @@
                     </div>
                 </div>
                 <div id="divSearchResult">
-                    <span id="spResultCount">共&nbsp;&nbsp;<b></b>&nbsp;&nbsp;位教練</span>
                     <span id="spSearch" hidden>/&nbsp;&nbsp;篩選條件：</span>
                     <span id="spFilter"></span>
                 </div>
@@ -466,19 +451,10 @@
                                             <h3 class="col-8"><b>@coach.CoachName</b></h3>
                                             <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/@coach.CoachId">教練檔案</a></div>
                                         </li>
-                                        <li style="list-style:none" class="li liAvgRate">
-                                            <span id="avg_@coach.CoachId"></span>&nbsp;&nbsp;&nbsp;
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1_@coach.CoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star2_@coach.CoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star3_@coach.CoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4_@coach.CoachId" />
-                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5_@coach.CoachId" />&nbsp;&nbsp;&nbsp;
-                                            <span id="rateCount">(@coach.RateCount)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <span id="courseCount">@coach.CourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
-                                        </li>
+                                       
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                            <span>@coach.CityName</span>
+                                            <span>高雄市</span>
                                         </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/skill.png" class="imgIcon" />

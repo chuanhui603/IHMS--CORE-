@@ -140,5 +140,9 @@ namespace IHMS.Controllers
                 .Select(r => r.Course.CoachContact.CoachId).Distinct().ToList();
             return Json(coachIdList);
         }
+        public IActionResult ViewCourseCalendar()   //課程行事曆
+        {
+            return View();
+        }
     }
 }

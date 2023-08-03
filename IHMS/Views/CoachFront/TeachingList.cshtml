@@ -285,7 +285,7 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/banner/banner_coach.png">
+<section class="breadcrumb-section set-bg" data-setbg="~/img/banner/banner_coach.png">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -328,7 +328,7 @@
                                 No.
                             </th>
                             <th>
-                               
+                                會員姓名
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.CourseName)
@@ -353,12 +353,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
+                        @{
+                            int count = 0;
+                            foreach (var item in Model)
+                            {
+                                count++;
+                                <tr id="tr_@item.CourseId">
+                                    <td>
+                                        @count
+                                    </td>
+                                    <td>
+                                        Silvia Lin
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CourseName)
+                                    </td>
+                                    <td>
+                                        @db.AvailableTimes.FirstOrDefault(at => at.AvailableTimeNum == item.AvailableTimeNum).AvailableTime1
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CourseTotal)
+                                    </td>
+                                    @{
+                                        int total = (int)item.CourseTotal;
+                                        int done = db.Schedules.Where(r => r.CourseId == item.CourseId && r.StatusNumber == 61).Count();
+                                        int remain = total - done;
+                                        <td id="remain_@item.CourseId">
+                                            @remain
+                                        </td>
+                                    }
+                                    <td id="status_@item.CourseId" class="tdStatus">
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                  
+                                </tr>
+                            }
+                        }
                     </tbody>
                 </table>
                 <div class="divLink reveal_b2">
                     <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span>&nbsp;&nbsp;想一覽所有課程？</span></div>
-                    <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><span data-toggle="modal" data-target="#addModal_cal">&nbsp;&nbsp;查看<b>課程行事曆</b></span></div>
+                    <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><span data-toggle="modal" data-target="#addModal_cal" href="https: //localhost:7127/Student/ViewCourseCalendar">&nbsp;&nbsp;查看<b>課程行事曆</b></span></div>
                 </div>
             </div>
         </div>
@@ -399,7 +434,64 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
+                        
+                                @{
+                                    int rCount = 0;
+                                    foreach (var r in item.Reservations.Where(r => r.CourseId == item.CourseId))
+                                    {
+                                        rCount++;
+                                    <tr>
+                                        <td>
+                                                @rCount
+                                        </td>
+                                        <td>
+                                                @{
+                                                    string Year = r.CourseDate.Substring(0, 4);
+                                                    string Mon = r.CourseDate.Substring(4, 2);
+                                                    string Date = r.CourseDate.Substring(6, 2);
+                                                <input type="date" id="date_@r.ScheduleId" value="@Year-@Mon-@Date" disabled />
+                                                }
+                                        </td>
+                                        <td>
+                                                @{
+                                                        <select id="sel_@r.ScheduleId" class="selTime custom-select" disabled>
+                                                    <option value="9">09:00</option>
+                                                    <option value="10">10:00</option>
+                                                    <option value="11">11:00</option>
+                                                    <option value="12">12:00</option>
+                                                    <option value="13">13:00</option>
+                                                    <option value="14">14:00</option>
+                                                    <option value="15">15:00</option>
+                                                    <option value="16">16:00</option>
+                                                    <option value="17">17:00</option>
+                                                    <option value="18">18:00</option>
+                                                    <option value="19">19:00</option>
+                                                    <option value="20">20:00</option>
+                                                    <option value="21">21:00</option>
+                                                </select>
+                                                }
+                                        </td>
+                                                <td id="status_@r.ScheduleId" class="tdStatus">
+                                                @r.Status
+                                        </td>
+                                        <td class="tdBtns">
+                                            <button class="btn btn-success btnEdit" id="edit_@r.ScheduleId">
+                                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;變更時間
+                                            </button>
+                                            <button class="btn btn-success btnEdit" id="submit_@r.ScheduleId" style="display:none">
+                                                <i class="fa-solid fa-check"></i>&nbsp;&nbsp;完成變更
+                                            </button>
+                                                    <button class="btn btn-success btnDone" id="cancel_@r.ScheduleId" style="display:none">
+                                                <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;取消
+                                            </button>
+                                                    <button class="btn btn-success btnDone" id="done_@r.ScheduleId">
+                                                <i class="fa-solid fa-calendar-check"></i>&nbsp;&nbsp;完成
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                        
                                     </tbody>
                                 </table>
                             </div>
@@ -414,8 +506,8 @@
     }
 }
 
-<!--Modal-Calendar-->
-<div class="modal fade" id="addModal_cal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto">
+  
+ <div class="modal fade" id="addModal_cal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -664,7 +756,7 @@
                     if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
                         let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
                         let time = record.courseTime.substr(0, 2) + ":" + record.courseTime.substr(2, 2);
-                        $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.memberId} r${record.fCourseId}" data-toggle='modal' data-target=".modal_${record.fCourseId}"><b>${record.memberName}</b>-${time}</div>`);
+                        $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.memberId} r${record.CourseId}" data-toggle='modal' data-target=".modal_${record.CourseId}"><b>${record.Name}</b>-${time}</div>`);
                     }
                 })
 
