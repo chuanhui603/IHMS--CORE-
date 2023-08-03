@@ -14,7 +14,7 @@ public partial class PointRecord
     [Display(Name = "會員ID")]
     public int MemberId { get; set; }
 
-    [Display(Name = "銀行亂碼")]
+    [Display(Name = "銀行碼")]
     public int BankNumber { get; set; }
 
     [Display(Name = "下單時間")]
