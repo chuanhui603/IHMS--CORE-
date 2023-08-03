@@ -11,6 +11,7 @@ namespace IHMS.ViewModel
     {
         public Coach Coach;
         public Member Member;
+        public City City;
         public CCoachViewModel()
         {
             Coach = new Coach();
@@ -53,11 +54,11 @@ namespace IHMS.ViewModel
             get { return Coach.CityId; }
             set { Coach.CityId = value; }
         }
-        public string CityName
-        {
-            get { return Coach.City.CityName; }
-            set { Coach.City.CityName = value; }
-        }
+        //public string CityName
+        //{
+        //    get { return Coach.City.CityName; }
+        //    set { Coach.City.CityName = value; }
+        //}
         public string CoachImage
         {
             get { return Coach.CoachImage; }
