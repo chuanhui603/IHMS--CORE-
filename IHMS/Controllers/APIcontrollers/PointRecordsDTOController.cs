@@ -22,22 +22,20 @@ namespace IHMS.Controllers.APIcontrollers
             _context = context;
         }
 
-        // GET: api/PointRecordsDTO
+        // GET: api/PointRecordsDTO/1
         //顯示某會員全部的資料
-        [HttpGet]
-        public  IEnumerable<PointRecord> GetPointRecords(int memberid)
+        [HttpGet("{MemberId}")]
+        public  IEnumerable<PointRecord> GetPointRecords(int MemberId)
         {
-          
 
-
-            return  _context.PointRecords;
+            return _context.PointRecords.Where(pr => pr.MemberId == MemberId);
         }
 
         // GET: api/PointRecordsDTO/1
         //顯示某會員的某筆資料
         //取點數資料
-        [HttpGet("{MemberId}")]
-        public async Task<int> GetPointsum(int MemberId)
+        [HttpGet("sum/{Memberid}")]
+        public async Task<int> GetPointRecord(int MemberId)
         {
             var coursecost = (
                 from o in _context.Orders
@@ -48,9 +46,6 @@ namespace IHMS.Controllers.APIcontrollers
                 where o.MemberId == MemberId
                 select c.CourseTotal                
             ).Sum();
-
-
-
 
             var currentp = _context.PointRecords
                    .Where(pr => pr.MemberId == MemberId)
@@ -107,7 +102,7 @@ namespace IHMS.Controllers.APIcontrollers
             Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == pointRecordRequest.MemberId);
 
             Random random = new Random(Guid.NewGuid().GetHashCode());            
-            int bankNumber = random.Next(10000000, 99999999);
+            int bankNumber = random.Next(1000, 9999);
 
 
             PointRecord  Pointre = new PointRecord

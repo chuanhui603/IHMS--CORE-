@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Collections;
+using Microsoft.AspNetCore.Hosting;
+using IHMS.Controllers;
+using System.IO;
 
 namespace IHMS.Controllers
 {
@@ -17,14 +19,41 @@ namespace IHMS.Controllers
     {
         private IhmsContext db;
         private readonly IhmsContext _context;
-
-
         private IWebHostEnvironment _environment;
         public CoachFrontController(IhmsContext context, IWebHostEnvironment environment)
         {
             db = context;
             _context = context;
             _environment = environment;
+        }
+        //取得教練所有排課
+        public IActionResult GetAllReservation()
+        {
+            int userId = 11;
+
+            var coachId = _context.Coaches.FirstOrDefault(c => c.MemberId == userId).CoachId;
+            var schedule = _context.Schedules
+                .Include(r => r.Course).ThenInclude(c => c.CoachContact).ThenInclude(c => c.Member)
+                .Where(r => r.Course.CoachContact.CoachId == coachId).OrderBy(r => r.CourseTime).ToList();
+
+            var reservationList = CCalendarViewModel.ScheduleList(schedule);
+            return Json(reservationList);
+        }
+        //取得所有有排課的MemberId
+        public IActionResult GetScheduleMemId()
+        {
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
+            }
+            var coachId = _context.Coaches.FirstOrDefault(c => c.MemberId == userId).CoachId;
+            var memIdList = _context.Schedules
+                .Include(r => r.Course).ThenInclude(c => c.CoachContact).ThenInclude(c => c.Member)
+                .Where(r => r.Course.CoachContact.CoachId == coachId)
+                .Select(r => r.Course.CoachContact.MemberId).Distinct().ToList();
+            return Json(memIdList);
         }
         //教練列表
         public IActionResult CoachList(CKeywordViewModel v)
@@ -295,13 +324,13 @@ namespace IHMS.Controllers
         public IActionResult TeachingList()
         {
             int userId = 11;
-            
+
             var coach = _context.Coaches.Where(c => c.StatusNumber == 2).FirstOrDefault(c => c.MemberId == userId);
             if (coach == null)
                 return RedirectToAction("CreateResume");
 
             var data = _context.Courses
-                .Include(c => c.CoachContact)
+                .Include(c => c.CoachContact).ThenInclude(cc => cc.Member)
                 .Include(c => c.Schedules)
                 .Where(c => c.CoachContact.CoachId == coach.CoachId).ToList();
             return View(CTeachingListViewModel.CourseList(data));
@@ -322,37 +351,10 @@ namespace IHMS.Controllers
                 thisCourse.StatusNumber = 56;
             }
             _context.SaveChanges();
+
             return Content("Success", "text/plain");
         }
-        //更改時間
-        public IActionResult EditReservation(int id, string date, string time)
-        {
-            //取得該教練排課
-            int userId = 11;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                userId = (JsonSerializer.Deserialize<Member>(json)).MemberId;
-            }
-            var coachId = _context.Coaches.FirstOrDefault(c => c.MemberId == userId).CoachId;
-            var reservations = _context.Schedules.Include(r => r.Course).ThenInclude(c => c.CoachContact)
-                .Where(r => r.Course.CoachContact.CoachId == coachId);
-
-            //比對教練該時段是否已額滿
-            var occupied = reservations.Where(r => r.CourseTime.Substring(0, 8) == date.Replace("-", ""))
-                .Select(r => Convert.ToInt32(r.CourseTime.Substring(8, 2))).ToList();
-            if (occupied.Contains(Convert.ToInt32(time)))
-                return Content("Fail", "text/plain");
-            else
-            {
-                var reservation = _context.Schedules.FirstOrDefault(r => r.ScheduleId == id);
-                string newDate = date.Replace("-", "");
-                string newTime = time.Length == 1 ? "0" + time : time;
-                reservation.CourseTime = newDate + newTime + "00";
-                _context.SaveChanges();
-                return Content("Success", "text/plain");
-            }
-        }
+       
         //取得進行中課程
         public IActionResult GetCourseInProcess(int id)
         {

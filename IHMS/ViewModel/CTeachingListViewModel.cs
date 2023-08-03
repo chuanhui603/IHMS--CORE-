@@ -1,5 +1,10 @@
 ﻿using IHMS.Models;
 using System.ComponentModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace IHMS.ViewModel
 {
@@ -7,6 +12,7 @@ namespace IHMS.ViewModel
     public class CTeachingListViewModel
     {
         public Course Course;
+        
         public CTeachingListViewModel()
         {
             Course = new Course();
@@ -18,6 +24,7 @@ namespace IHMS.ViewModel
         static public List<CTeachingListViewModel> CourseList(List<Course> courseList)
         {
             List<CTeachingListViewModel> list = new List<CTeachingListViewModel>();
+           
             foreach (var c in courseList)
             {
                 CTeachingListViewModel vModel = new CTeachingListViewModel(c);
@@ -25,6 +32,7 @@ namespace IHMS.ViewModel
             }
             return list;
         }
+       
         public int CourseId
         {
             get { return Course.CourseId; }
@@ -39,16 +47,11 @@ namespace IHMS.ViewModel
             get { return Course.CoachContact.MemberId; }
             set { Course.CoachContact.MemberId = (int)value; }
         }
-        //[DisplayName("學員")]
-        //public string MemberName
-        //{
-        //    get { return Course.CoachContact.Member; }
-        //    set { Course.CoachContact.FMember.FMemberName = value; }
-        //}
+       
         //public string MemberPhone
         //{
-        //    get { return Course.FCoachContact.FMember.FPhone; }
-        //    set { Course.FCoachContact.FMember.FPhone = value; }
+        //    get { return Course.CoachContact.Member.Phone; }
+        //    set { Course.CoachContact.Member.Phone = value; }
         //}
         [DisplayName("堂數")]
         public int CourseTotal

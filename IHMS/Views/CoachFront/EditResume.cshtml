@@ -7,6 +7,12 @@
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- 引入 SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+
+    <!-- 引入 SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+
     <style>
         .frmResume {
             width: 100%;
@@ -228,7 +234,6 @@
                             <li><a href="~/CoachFront/TeachingList" class="aLimit"><i class="fa-solid fa-dumbbell"></i>教課列表</a></li>
                         </ul>
                     </div>
-                    <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
@@ -391,7 +396,7 @@
                                 </div>
                             </div>
                             <div class="form-group divSubmit">
-                                <input type="button" value="Demo" id="btnDemo" class="btn btn-light" />
+  
                                 <input type="button" value="設為非公開" id="btnHide" class="btn btn-success" />
                                 <input type="button" value="設為公開" id="btnDisplay" class="btn btn-success" />&nbsp;&nbsp;
                                 <input type="submit" value="送出修改" id="btnSubmit" class="btn btn-success" />

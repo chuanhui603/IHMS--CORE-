@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace IHMS.Models;
 
@@ -7,6 +8,7 @@ public partial class Member
 {
     public int MemberId { get; set; }
 
+    [Display(Name = "會員名字")]
     public string Name { get; set; } = null!;
 
     public string Email { get; set; } = null!;

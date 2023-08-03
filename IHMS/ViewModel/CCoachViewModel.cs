@@ -10,7 +10,7 @@ namespace IHMS.ViewModel
     public class CCoachViewModel
     {
         public Coach Coach;
-        public Member Member;
+
         public CCoachViewModel()
         {
             Coach = new Coach();

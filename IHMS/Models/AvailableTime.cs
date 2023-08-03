@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IHMS.Models;
-
-public partial class AvailableTime
+namespace IHMS.Models
 {
-    public int AvailableTimeId { get; set; }
 
-    public string? AvailableTime1 { get; set; }
+    public partial class AvailableTime
+    {
+        public int AvailableTimeId { get; set; }
 
-    public int? AvailableTimeNum { get; set; }
+        public string? AvailableTime1 { get; set; }
 
-    public virtual ICollection<CoachAvailableTime> CoachAvailableTimes { get; set; } = new List<CoachAvailableTime>();
+        public int? AvailableTimeNum { get; set; }
+
+        public virtual ICollection<CoachAvailableTime> CoachAvailableTimes { get; set; } = new List<CoachAvailableTime>();
+    }
 }

@@ -1,0 +1,387 @@
+﻿@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .divDate {
+            width: 70%;
+            margin: 30px auto;
+            padding: 0px 100px;
+            display: flex;
+        }
+
+            .divDate button {
+                width: 30px;
+                margin: 0px 10px;
+                background-color: whitesmoke;
+                border: 1px solid white;
+                border-radius: 50px;
+            }
+
+                .divDate button:hover {
+                    border: 1px solid #7FAD39;
+                }
+
+        #inputMon {
+            display: inline;
+            width: 300px;
+        }
+
+        #tableCal {
+            width: 100%;
+            border: 1px solid #BFBFBF;
+        }
+
+        thead {
+            background-color: #404040;
+            color: white;
+            font-family: Consolas;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        tbody {
+            font-size: 18px;
+            text-align: center;
+            color: #7fad39;
+        }
+
+            tbody tr {
+                height: 120px;
+            }
+
+                tbody tr td {
+                    vertical-align: top;
+                    transition: .2s;
+                }
+
+        th, td, .orig {
+            border: 1px solid #BFBFBF;
+            width: 120px;
+        }
+
+        .false {
+            background-color: #F3F3F3;
+        }
+
+        .true {
+            background-color: white;
+        }
+
+        .today {
+            background-color: #EFF5E6;
+        }
+
+        .color1 {
+            background-color: #005F73;
+        }
+
+        .color2 {
+            background-color: #0A9396;
+        }
+
+        .color3 {
+            background-color: #94D2BD;
+        }
+
+        .color4 {
+            background-color: #B5A882;
+        }
+
+        .color5 {
+            background-color: #EE9B00;
+        }
+
+        .color6 {
+            background-color: #CA6702;
+        }
+
+        .color7 {
+            background-color: #007A24;
+        }
+
+        .color8 {
+            background-color: #6CA25A;
+        }
+
+        .color9 {
+            background-color: #870005;
+        }
+
+        .color10 {
+            background-color: #003039;
+        }
+
+        .divRecord {
+            display: inline-block;
+            margin: 0px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 300;
+            color: white;
+        }
+
+            .divRecord:hover {
+                border: 1.5px solid white;
+            }
+
+        /*會員專區導覽列*/
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
+
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                border: 1px solid #4F6C24;
+                color: #4F6C24;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            margin-bottom: 1vh;
+        }
+
+        .sidebar__item {
+            border: 1px solid lightgray;
+            box-shadow: 2px 2px 5px lightgray;
+            padding: 20px;
+            margin-right: 30px;
+            margin-bottom: 20px;
+        }
+
+            .sidebar__item h5 {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #4F6C24;
+                color: white;
+            }
+
+            .sidebar__item li:hover {
+                transition: .2s;
+                background-color: #EFF5E6;
+            }
+
+            .sidebar__item i {
+                margin-right: 5px;
+            }
+
+        .liThis {
+            background-color: #EFEDED;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/banner/banner_mem.png" id="bannerTop">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">課程行事曆</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Student/CoachList">Home</a>
+                        <span>Training</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div>
+                    <div class="divDate reveal_t1">
+                        <button id="btnPre"><i class="fa-solid fa-caret-left"></i></button>
+                        <input type="month" id="inputMon" />
+                        <button id="btnNext"><i class="fa-solid fa-caret-right"></i></button>
+                    </div>
+                    <div class="result reveal_b1">
+                        <div class="divCal">
+                            <div>
+                                <table id="tableCal">
+                                    <thead>
+                                        <tr>
+                                            <th>Sun</th>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        let fullDate = new Date();  //取得今天日期
+        let Year = fullDate.getFullYear();
+        let Month = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+        let date = fullDate.getDate();
+        let totalDate = (new Date(Year, Month, 0)).getDate();   //取得該月總天數
+        let weekDay, firstDay;
+        $("#inputMon").val(`${Year}-${Month}`);
+        CreateCalendar();
+        GetReservations()
+
+        //年月改變時重新載入月曆
+        $("#inputMon").change(() => {
+            Year = $("#inputMon").val().substr(0, 4);
+            Month = $("#inputMon").val().substr(5, 2);
+            totalDate = (new Date(Year, Month, 0)).getDate();
+            CreateCalendar();
+            GetReservations()
+        })
+
+        //click下個月
+        $("#btnNext").click(() => {
+            if (Month == 12) {
+                Year++;
+                Month = "01";
+            }
+            else {
+                let m = parseInt($("#inputMon").val().substr(5, 2));
+                let newMon = m + 1 >= 10 ? m + 1 : "0" + (m + 1)
+                Month = newMon;
+            }
+            $("#inputMon").val(`${Year}-${Month}`);
+            CreateCalendar();
+            GetReservations()
+        })
+        //click上個月
+        $("#btnPre").click(() => {
+            if (Month == 1) {
+                Year--;
+                Month = "12";
+            }
+            else {
+                let m = parseInt($("#inputMon").val().substr(5, 2));
+                let newMon = m - 1 >= 10 ? m - 1 : "0" + (m - 1);
+                Month = newMon;
+            }
+            $("#inputMon").val(`${Year}-${Month}`);
+            CreateCalendar();
+            GetReservations()
+        })
+
+        //建立月曆
+        function CreateCalendar() {
+            let recent = document.querySelector("#tbody");
+            if (recent)
+                recent.remove();    //移除舊的月曆
+
+            //新增tbody、第一行
+            var tbody = document.createElement("tbody");
+            tbody.setAttribute("id", "tbody");
+            var fragtable = document.createDocumentFragment();
+            var row = document.createElement("tr");
+            var count = 0;
+
+            //新增第一行空格
+            firstDay = (new Date(Year, Month - 1, 1)).getDay(); //取得該月份第一天星期幾
+            for (let i = 1; i <= firstDay; i++) {
+                let td = document.createElement("td");
+                td.className = "false";
+                row.appendChild(td);
+                count += 1;
+            }
+
+            //新增日期
+            for (let i = 1; i <= totalDate; i++) {
+                if (count >= 7) { //已大於7天則新增至下一週
+                    fragtable.appendChild(row);
+                    row = document.createElement("tr");
+                    var td = document.createElement("td");
+                    td.setAttribute("id", `${Year + Month + i}`);
+                    td.className = "true";
+                    let text = document.createTextNode(i);
+                    td.appendChild(text);
+                    row.appendChild(td);
+                    count = 1; //以新的一行計算
+                }
+                else {
+                    var td = document.createElement("td");
+                    td.setAttribute("id", `${Year + Month + i}`);
+                    td.className = "true";
+                    let text = document.createTextNode(i);
+                    td.appendChild(text);
+                    row.appendChild(td);
+                    count += 1;
+                }
+            }
+
+            //新增最後一行空格
+            let d = new Date(Year, Month - 1, totalDate);
+            let lastDay = d.getDay();
+            for (i = 1; i <= 6 - lastDay; i++) {
+                let td = document.createElement("td");
+                td.className = "false";
+                row.appendChild(td);
+            }
+            fragtable.appendChild(row);
+            tbody.appendChild(fragtable);
+            document.querySelector("#tableCal").appendChild(tbody);
+
+            //當天日期的邊框變色
+            let thisYear = fullDate.getFullYear();
+            let thisMon = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+            if (thisYear == Year && thisMon == Month)
+                $(`#${date}`).addClass("today");
+        }
+
+        //顯示當月排課
+        function GetReservations() {
+            $.getJSON("@Url.Content("~/Student/GetAllReservation")", function (data) {
+                console.log(data);
+                $.each(data, function (index, record) {
+                    if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
+                        let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
+                        let time = record.courseTime.substr(0, 2) + ":" + record.courseTime.substr(2, 2);
+                        $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.coachId}"><b>${record.coachName}</b>-${time}</div>`);
+                    }
+                })
+            }).done(() => {
+                //取得所有MemberId，不同Member設定不同顏色
+                $.getJSON("@Url.Content("~/Student/GetReservationCoachId")", function (data) {
+                    let classCount = 1;
+                    for (let i = 0; i < data.length; i++) {
+                        $(`.r${data[i]}`).addClass(`color${classCount}`);
+                        classCount++;
+                        if (classCount == 11) {
+                            classCount = 1;
+                        }
+                    }
+                })
+            })
+        }
+    </script>
+}
