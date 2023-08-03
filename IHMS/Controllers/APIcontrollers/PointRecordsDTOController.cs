@@ -102,7 +102,7 @@ namespace IHMS.Controllers.APIcontrollers
             Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == pointRecordRequest.MemberId);
 
             Random random = new Random(Guid.NewGuid().GetHashCode());            
-            int bankNumber = random.Next(10000000, 99999999);
+            int bankNumber = random.Next(1000, 9999);
 
 
             PointRecord  Pointre = new PointRecord
