@@ -116,7 +116,8 @@ namespace IHMS.APIControllers
                 Registerdate = p.Registerdate,
                 Time = p.Time,
                 Timelong = p.Timelong,
-                Type = p.Type
+                Type = p.Type,
+                Calories = p.Calories,
             });
 
             if (res == null)
@@ -129,6 +130,29 @@ namespace IHMS.APIControllers
             }
 
         }
+
+
+        [Route("~/api/[controller]/sportdetail/sum/{sportid:int}")]
+        [HttpGet]
+        public async Task<ActionResult<int>> GetSportDetailSum(int sportid)
+        {
+            if (_context.SportDetails == null)
+            {
+                return NotFound();
+            }
+            var sum = _context.SportDetails.Where(s => s.SportId == sportid).Sum(sd => sd.Calories);
+
+            if (sum == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(sum);
+            }
+
+        }
+
 
 
 
@@ -467,7 +491,7 @@ namespace IHMS.APIControllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("~/api/[controller]/sportdetail/complete/{detailid:int}")]
         [HttpPut]
-        public async Task<IActionResult> PutSportDetail(int detailid)
+        public async Task<IActionResult> PutSportChangeTrue(int detailid)
         {
           
             //處理文字
@@ -516,6 +540,8 @@ namespace IHMS.APIControllers
                 Time = sportDTO.Time,
                 Timelong = sportDTO.Timelong,
                 Isdone = sportDTO.Isdone,
+                Calories = sportDTO.Calories,
+                Sets = sportDTO.Sets,
             };
             _context.Entry(sport).State = EntityState.Modified;
             try
@@ -596,6 +622,8 @@ namespace IHMS.APIControllers
                 Timelong = dto.Timelong,
                 Type = dto.Type,
                 Sets = dto.Sets,
+                Calories = dto.Calories,
+                
             };
             _context.SportDetails.Add(sport);
             await _context.SaveChangesAsync();
