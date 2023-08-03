@@ -239,7 +239,7 @@ namespace IHMS.Controllers
         [HttpPost]  //送出修改
         public IActionResult EditResume(Coach c, IFormFile File, int[] CoachSkill, int[] CoachTime, string[] Experience, string[] License)
         {
-            int userId = 11;
+            int userId = 1;
 
             Coach coach = _context.Coaches.FirstOrDefault(c => c.MemberId == userId);
             if (coach != null)
@@ -257,8 +257,8 @@ namespace IHMS.Controllers
 
                 //新增Skills
                 var currentSkills = _context.CoachSkills.Where(cs => cs.CoachId == coach.CoachId).ToList();
-                foreach (var skill in currentSkills)
-                    _context.CoachSkills.Remove(skill);
+                //foreach (var skill in currentSkills)
+                //    _context.CoachSkills.Remove(skill);
                 foreach (int skillId in CoachSkill)
                 {
                     CoachSkill newSkill = new CoachSkill
@@ -271,8 +271,8 @@ namespace IHMS.Controllers
 
                 //新增AvailableTime
                 var currentTime = _context.CoachAvailableTimes.Where(at => at.CoachId == coach.CoachId).ToList();
-                foreach (var time in currentTime)
-                    _context.CoachAvailableTimes.Remove(time);
+                //foreach (var time in currentTime)
+                //    _context.CoachAvailableTimes.Remove(time);
                 foreach (int timeId in CoachTime)
                 {
                     CoachAvailableTime newTime = new CoachAvailableTime
@@ -285,8 +285,8 @@ namespace IHMS.Controllers
 
                 //新增Experience
                 var currentExp = _context.CoachExperiences.Where(e => e.CoachId == coach.CoachId).ToList();
-                foreach (var exp in currentExp)
-                    _context.CoachExperiences.Remove(exp);
+                //foreach (var exp in currentExp)
+                //    _context.CoachExperiences.Remove(exp);
                 foreach (string Exp in Experience)
                 {
                     if (Exp != null)
@@ -302,8 +302,8 @@ namespace IHMS.Controllers
 
                 //新增License
                 var currentLic = _context.CoachLicenses.Where(e => e.CoachId == coach.CoachId).ToList();
-                foreach (var lic in currentLic)
-                    _context.CoachLicenses.Remove(lic);
+                //foreach (var lic in currentLic)
+                //    _context.CoachLicenses.Remove(lic);
                 foreach (string Lic in License)
                 {
                     if (Lic != null)
