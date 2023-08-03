@@ -25,9 +25,11 @@ namespace IHMS.Controllers.APIcontrollers
         // GET: api/PointRecordsDTO
         //顯示某會員全部的資料
         [HttpGet]
-        public  IEnumerable<PointRecord> GetPointRecords()
+        public  IEnumerable<PointRecord> GetPointRecords(int memberid)
         {
           
+
+
             return  _context.PointRecords;
         }
 
@@ -35,7 +37,7 @@ namespace IHMS.Controllers.APIcontrollers
         //顯示某會員的某筆資料
         //取點數資料
         [HttpGet("{MemberId}")]
-        public async Task<int> GetPointRecord(int MemberId)
+        public async Task<int> GetPointsum(int MemberId)
         {
             var coursecost = (
                 from o in _context.Orders
