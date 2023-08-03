@@ -7,11 +7,13 @@ namespace IHMS.ViewModel
     internal class CCoachResumeViewModel
     {
         private IhmsContext db;
-        
+        public Coach Coach;
+        public Member Member;
         public CCoachResumeViewModel(IhmsContext context)
         {
             db = context;
         }
+        
         public int CoachId { get; set; }
         public string CoachName { get; set; }
         public int? MemberId { get; set; }

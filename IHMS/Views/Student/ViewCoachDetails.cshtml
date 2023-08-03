@@ -8,6 +8,7 @@
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         /*左邊上半部*/
         .back {
@@ -370,6 +371,8 @@
                                     <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId"></i>
                                     <b data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">&nbsp;&nbsp;我想預約</b>
                                 </a>
+                               @* <button type="button" class="btn btn-primary">我想預約</button>
+                                <input type="button" value="我想預約" onclick="openModal()">*@
                             </li>
                         </ul>
                     </div>
@@ -419,31 +422,14 @@
             </div>
            
 
-            <div class="col-lg-4">
-                <div class="sidebar">
-                    <div class="sidebar__item">
-                        <div class="divRecContent">
-                            <div class="divRecTopic reveal_t1">
-                                <span>在<b>&nbsp;@Model.CityName，&nbsp;</b><br></span>
-                                <span class="spTopic2">擁有相同專長的教練 —</span>
-                            </div>
-                            <div class="recBar reveal_r1"></div>
-                            <div class="divCoaches"></div>
-                            <a id="gotop">
-                                <i class="fa fa-angle-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            
     
 </section>
 
 
 @*彈出視窗:我想預約*@
 <div class="modal fade" id="modalContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="false">
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -637,7 +623,7 @@
                     </div>
                     <small>*送出聯繫後，需經教練確認，才會進行課程安排唷！</small>
                     <div style="justify-content: end; display: flex; ">
-                        <button type="button" class="btn btn-success" id="btnSendContact"><i class="fa fa-paper-plane" aria-hidden="true"></i>聯繫教練</button>
+                        <button type="button" class="btn btn-success" id="btnSendContact"><i class="fa fa-paper-plane" aria-hidden="true"></i>確認預約</button>
                     </div>
                     <br />
                     <table>
@@ -675,6 +661,9 @@
                    }
                });
 
+        function openModal() {
+            $('#myModal').modal('show');
+        }
        
                
 
@@ -718,29 +707,36 @@
                $("#modalContact").find(".nice-select").remove();
 
                //預約時間表
-               function getAvailableTime() {
-                    $.get("@Url.Content("~/Student/getAvailableTimeId")", { id:@Model.CoachId}, function (ids) {
-                        $.each(ids, function (idx, val) {
-                            $(`.period${val}`).addClass("available");
-                            $(`.period${val}`).on("click", function () {
-                                let tdid = $(event.target).attr("id");
-                                let week = tdid.substr(2, 1);
-                                let time = tdid.substr(3, 2);
-                                $(".selTime1").val(week);
-                                $(".selTime2").val(time);
-                            })
-                            $(`.period${val}`).removeClass(`period${val}`);
-                        })
-                    })
-                   $.get("@Url.Content("~/Student/getAvailableTimeNum")", { id:@Model.CoachId}, function (nums) {
-                       $.each(nums, function (idx, val) {
-                           $(`#td${val}`).addClass("unavailable").removeClass("available");
-                           $(`#td${val}`).text("額滿");
-                           $(`#td${val}`).off("click");
-                       })
-                   })
-               }
-               getAvailableTime();
+        function getAvailableTime() {
+            $.get("@Url.Content("~/Student/getAvailableTimeId")", { id: @Model.CoachId}, function (response) {
+                if (response.success) {
+                    console.log("Available Time IDs:", response.data);
+                    $.each(response.data, function (idx, val) {
+                        $(`.period${val}`).addClass("available");
+                        $(`.period${val}`).on("click", function () {
+                            let tdid = $(event.target).attr("id");
+                            let week = tdid.substr(2, 1);
+                            let time = tdid.substr(3, 2);
+                            $(".selTime1").val(week);
+                            $(".selTime2").val(time);
+                        });
+                        $(`.period${val}`).removeClass(`period${val}`);
+                    });
+                } else {
+                    console.log("AJAX request failed!");
+                }
+            });
+
+            $.get("@Url.Content("~/Student/getAvailableTimeNum")", { id: @Model.CoachId}, function (nums) {
+                $.each(nums, function (idx, val) {
+                    $(`#td${val}`).addClass("unavailable").removeClass("available");
+                    $(`#td${val}`).text("額滿");
+                    $(`#td${val}`).off("click");
+                });
+            });
+        }
+
+        getAvailableTime();
 
                //送出通知
                $("#btnSendContact").click(function () {

@@ -112,19 +112,33 @@ namespace IHMS.Controllers
         public IActionResult getAvailableTimeId(int? id)
         {
             var ids = db.CoachAvailableTimes.Where(ca => ca.CoachId == id).Select(ca => ca.AvailableTimeId).Distinct();
-            return Json(ids);
+            return Json(new { success = true, data = ids });
         }
+        
         //教練預約時間表-已額滿
         public IActionResult getAvailableTimeNum(int? id)
         {
-            var nums = db.Courses.Where(c => c.CoachContact.CoachId == id && c.StatusNumber == 55).Select(c => c.AvailableTimeNum).Distinct();
+
+            var nums = db.Courses.Where(c => c.CoachContact.CoachId == 1 && c.StatusNumber == 55).Select(c => c.AvailableTimeNum).Distinct();
             return Json(nums);
         }
         //取得推薦教練專長
         public IActionResult GetSkillName(int id)
         {
-            var data = _context.CoachSkills.Where(cs => cs.CoachId == id).Include(cs => cs.Skill).Select(cs => cs.Skill.SkillName).ToArray();
+            int userId = 1;
+            var data = _context.CoachSkills.Where(cs => cs.CoachId == 1).Include(cs => cs.Skill).Select(cs => cs.Skill.SkillName).ToArray();
             return Json(data);
+        }
+        //取得所有有上課的CoachId
+        public IActionResult GetReservationCoachId()
+        {
+            int userId = 1;
+            
+            var coachIdList = _context.Schedules
+                .Include(r => r.Course).ThenInclude(c => c.CoachContact).ThenInclude(c => c.Coach)
+                .Where(r => r.Course.CoachContact.MemberId == userId)
+                .Select(r => r.Course.CoachContact.CoachId).Distinct().ToList();
+            return Json(coachIdList);
         }
     }
 }
