@@ -367,7 +367,7 @@
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
                             
                             <li>
-                                <a href="#" id="addContact" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">
+                                <a href="#" id="addContact" onclick="openModal()" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">
                                     <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId"></i>
                                     <b data-nexthref="~/Student/ViewCoachDetails/@Model.CoachId">&nbsp;&nbsp;我想預約</b>
                                 </a>
@@ -662,7 +662,7 @@
                });
 
         function openModal() {
-            $('#myModal').modal('show');
+            $('#modalContact').modal('show');
         }
        
                
