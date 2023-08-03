@@ -22,19 +22,19 @@ namespace IHMS.Controllers.APIcontrollers
             _context = context;
         }
 
-        // GET: api/PointRecordsDTO
+        // GET: api/PointRecordsDTO/1
         //顯示某會員全部的資料
-        [HttpGet]
-        public  IEnumerable<PointRecord> GetPointRecords()
+        [HttpGet("{MemberId}")]
+        public  IEnumerable<PointRecord> GetPointRecords(int MemberId)
         {
-          
-            return  _context.PointRecords;
+
+            return _context.PointRecords.Where(pr => pr.MemberId == MemberId);
         }
 
         // GET: api/PointRecordsDTO/1
         //顯示某會員的某筆資料
         //取點數資料
-        [HttpGet("{MemberId}")]
+        [HttpGet("sum/{Memberid}")]
         public async Task<int> GetPointRecord(int MemberId)
         {
             var coursecost = (
@@ -46,9 +46,6 @@ namespace IHMS.Controllers.APIcontrollers
                 where o.MemberId == MemberId
                 select c.CourseTotal                
             ).Sum();
-
-
-
 
             var currentp = _context.PointRecords
                    .Where(pr => pr.MemberId == MemberId)
