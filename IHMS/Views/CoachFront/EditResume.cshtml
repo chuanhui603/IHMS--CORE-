@@ -422,6 +422,7 @@
 
 @section Scripts{
     @{
+        <script src="../wwwroot/js/sweetalert2.js"></script>
         //勾選現有Skill
         foreach (var c in Model.Coach.CoachSkills)
         {
@@ -467,7 +468,7 @@
 
                 $(".aLimit").click((evt) => {
                     evt.preventDefault();
-                    SwalGreen.fire({
+                    Swal.fire({
                         title: '您尚無教練權限。',
                         text: '您的履歷正在審核中，審核通過後方可使用教練專區功能。',
                         icon: 'warning',
@@ -487,7 +488,7 @@
                 $("#btnSubmit").val("送出");
                 $(".aLimit").click((evt) => {
                     evt.preventDefault();
-                    SwalGreen.fire({
+                    Swal.fire({
                         title: '您尚無教練權限。',
                         text: '請先成為教練後，方可使用教練專區功能。',
                         icon: 'warning',
@@ -498,7 +499,7 @@
             </script>
         }
     }
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
     <script>
         //GoTop btn
         $('#gotop').click(function () {
@@ -624,7 +625,7 @@
             evt.preventDefault();
             if ($("#inName").val() == "" || $("#selCity").val() == null || $(".divSkill :checked").length <= 0 || $(".divTime :checked").length <= 0
                 || $(".divFee input").val() == "" || $("#textDes").val() == "" || $("#textSlogan").val() == "") {
-                SwalGreen.fire({
+                Swal.fire({
                     title: '請填寫完整資料',
                     icon: 'warning',
                     confirmButtonText: '確定',
@@ -632,7 +633,7 @@
                 })
             }
             else if ($(".text-danger").text() != "") {
-                SwalGreen.fire({
+                Swal.fire({
                     title: '填寫之資料不符合規定',
                     icon: 'warning',
                     confirmButtonText: '確定',
@@ -641,7 +642,7 @@
             }
             else {
                 //Ajax submit
-                SwalGreen.fire({
+                Swal.fire({
                     title: '確認修改履歷？',
                     icon: 'question',
                     confirmButtonText: '確定',
@@ -660,7 +661,7 @@
                             processData: false,
                         }).done(function (response) {
                             if (response == "Success") {
-                                SwalGreen.fire({
+                                Swal.fire({
                                     icon: 'success',
                                     title: '修改成功'
                                 })
@@ -673,7 +674,7 @@
 
         //設為未公開/公開(更改Visible)
         $("#btnHide").click(() => {
-            SwalGreen.fire({
+            Swal.fire({
                 title: '確認將履歷設為非公開？',
                 text: '提醒您，一旦將履歷設為非公開，使用者將無法查看您的資料及發送通知。',
                 icon: 'question',
@@ -687,7 +688,7 @@
                         function (response) {
                             console.log(response)
                             if (response == "False") {
-                                SwalGreen.fire({
+                                Swal.fire({
                                     icon: 'success',
                                     title: '已將履歷設為非公開'
                                 }).then((result) => {
@@ -703,7 +704,7 @@
         })
 
         $("#btnDisplay").click(() => {
-            SwalGreen.fire({
+            Swal.fire({
                 title: '確認將履歷設為公開？',
                 icon: 'question',
                 confirmButtonText: '確定',
@@ -716,7 +717,7 @@
                         function (response) {
                             console.log(response)
                             if (response == "True") {
-                                SwalGreen.fire({
+                                Swal.fire({
                                     icon: 'success',
                                     title: '已將履歷設為公開'
                                 }).then((result) => {
