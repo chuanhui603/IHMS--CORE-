@@ -34,28 +34,27 @@
 <hr />
 <body>
     <div class="container-fluid">
-        <div class="row">           
+        <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-12">
-                
             </div>
             <div class="col-lg-3 col-md-4 col-sm-12">
-                
             </div>
 
             <div class="col-lg-6 col-md-8 col-sm-12">
-                <div class="row">                
-                   
+                <div class="row">
+
                     <!-- 右側欄位，修改欄位表單 -->
                     <div class="col-lg-9 col-md-7">
-                        <form asp-action="Edit" enctype="multipart/form-data">
+
+                        <form asp-action="MemberEdit" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" name="MemberId" id="MemberId" />  @*id="你要抓的標籤" 能用的標籤在Login.js的LoadlocalStorage()*@
+                            <input type="hidden" asp-for="MemberId" id="MemberId" />  @*id="你要抓的標籤" 能用的標籤在Login.js的LoadlocalStorage()*@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-4 reveal_b1">
                                         <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
-                                            <div class="form-group row justify-content-center">                                                
-                                                <img src="~/images/1.jpg" alt="" class="rounded-circle img-responsive border border-ligt" />
+                                            <div class="form-group row justify-content-center">
+                                                <img src="" alt="" class="rounded-circle img-responsive border border-ligt" />
                                             </div>
                                         </div>
                                         <div class="form-group  justify-content-center">
@@ -67,61 +66,61 @@
                                             </div>
                                         </div>
                                     </div>
-                                <div class="col-8 reveal_b2">                            
-                            <div class="form-group">
-                                <label asp-for="Account" class="control-label"></label>
-                                <input asp-for="Account" class="form-control" id="Account" />
-                                <span asp-validation-for="Account" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Email" class="control-label"></label>
-                                <input asp-for="Email" class="form-control" id="Email" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Name" class="control-label"></label>
-                                <input asp-for="Name" class="form-control" id="Name" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Birthday" class="control-label"></label>
-                                <input asp-for="Birthday" class="form-control" id="Birthday" type="date" />
-                                <span asp-validation-for="Birthday" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Phone" class="control-label"></label>
-                                <input asp-for="Phone" class="form-control" id="Phone" />
-                                <span asp-validation-for="Phone" class="text-danger"></span>
-                            </div>                            
-                            <div class="form-group">
-                                <label asp-for="ResidentialCity" class="control-label"></label>
-                                <input asp-for="ResidentialCity" class="form-control" id="ResidentialCity" />
-                                <span asp-validation-for="ResidentialCity" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="DiseaseDescription" class="control-label"></label>
-                                <input asp-for="DiseaseDescription" class="form-control" id="DiseaseDescription" />
-                                <span asp-validation-for="DiseaseDescription" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="AllergyDescription" class="control-label"></label>
-                                <input asp-for="AllergyDescription" class="form-control" id="Allergydescription" />
-                                <span asp-validation-for="AllergyDescription" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                            <a href="http://localhost:5174/" class="btn btn-success">會員資料修改</a>
-                                        </div>                                      
+                                    <div class="col-8 reveal_b2">
+                                        <div class="form-group">
+                                            <label asp-for="Account" class="control-label"></label>
+                                            <input asp-for="Account" class="form-control" id="Account" />
+                                            <span asp-validation-for="Account" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="control-label"></label>
+                                            <input asp-for="Email" class="form-control" id="Email" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Name" class="control-label"></label>
+                                            <input asp-for="Name" class="form-control" id="Name" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Birthday" class="control-label"></label>
+                                            <input asp-for="Birthday" class="form-control" id="Birthday" type="date" />
+                                            <span asp-validation-for="Birthday" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Phone" class="control-label"></label>
+                                            <input asp-for="Phone" class="form-control" id="Phone" />
+                                            <span asp-validation-for="Phone" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="ResidentialCity" class="control-label"></label>
+                                            <input asp-for="ResidentialCity" class="form-control" id="ResidentialCity" />
+                                            <span asp-validation-for="ResidentialCity" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="DiseaseDescription" class="control-label"></label>
+                                            <input asp-for="DiseaseDescription" class="form-control" id="DiseaseDescription" />
+                                            <span asp-validation-for="DiseaseDescription" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="AllergyDescription" class="control-label"></label>
+                                            <input asp-for="AllergyDescription" class="form-control" id="Allergydescription" />
+                                            <span asp-validation-for="AllergyDescription" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <a href="" class="btn btn-success">會員資料修改</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
-            </div>          
-                           
+            </div>
+
         </div>
-    </div>   
+    </div>
 
     <!-- Bootstrap JavaScript Libraries -->
 
@@ -142,7 +141,7 @@
 </script>
 
 @section Scripts {
-    
+
     @{
 
 

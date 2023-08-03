@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IHMS.Models;
 using IHMS.ViewModel;
+using prjiHealth.ViewModel;
+using HealthyLifeApp;
+using System.Text.Json;
 
 
 namespace IHMS.Controllers
 {
     public class MembersController : Controller
-    {
+    {        
         private IWebHostEnvironment _enviro = null;
-        public MembersController(IWebHostEnvironment p)
+        public MembersController(IhmsContext context, IWebHostEnvironment p)
         {
             _enviro = p;
-        }
+            
+        }                          
 
         public IActionResult List(CKeywordViewModel vm)
         {
@@ -61,7 +65,7 @@ namespace IHMS.Controllers
                 cust.Birthday = x.Birthday; //生日
                 cust.Gender = x.Gender; //性別
                 cust.MaritalStatus = x.MaritalStatus; //婚姻狀態
-                cust.Name = x.Nickname; //暱稱
+                cust.Nickname = x.Nickname; //暱稱
                 //cust.AvatarImage = x.AvatarImage; // 頭像
                 cust.ResidentialCity = x.ResidentialCity; //居住城市
                 cust.Permission = x.Permission; //權限
@@ -115,24 +119,31 @@ namespace IHMS.Controllers
         [HttpPost]
         public ActionResult SignIn(Member t)
         {
-            IhmsContext db = new IhmsContext();               
+            IhmsContext db = new IhmsContext();
 
             if (string.IsNullOrEmpty(t.AvatarImage))
             {
                 t.AvatarImage = "1.jpg";
-            }
+            }            
 
             db.Members.Add(t);
-            db.SaveChanges();           
+            db.SaveChanges();
 
             return Redirect("http://localhost:5174/");
         }
-            public ActionResult MemberEdit(int? id)
-            {
-                return View();
-            }
-            [HttpPost]
-            public ActionResult MemberEdit(CMember x)
+
+        public ActionResult MemberEdit(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("List");
+            IhmsContext db = new IhmsContext();
+            Member cust = db.Members.FirstOrDefault(p => p.MemberId == id);
+            return View(cust);
+        }
+        [HttpPost]
+        public ActionResult MemberEdit(CMember x)
+        {
+            if (ModelState.IsValid)
             {
                 IhmsContext db = new IhmsContext();
                 Member cust = db.Members.FirstOrDefault(p => p.MemberId == x.MemberId);
@@ -154,7 +165,7 @@ namespace IHMS.Controllers
                     cust.Birthday = x.Birthday; //生日
                     cust.Gender = x.Gender; //性別
                     cust.MaritalStatus = x.MaritalStatus; //婚姻狀態
-                    cust.Name = x.Nickname; //暱稱
+                    cust.Nickname = x.Nickname; //暱稱
                     //cust.AvatarImage = x.AvatarImage; // 頭像
                     cust.ResidentialCity = x.ResidentialCity; //居住城市
                     cust.Permission = x.Permission; //權限
@@ -164,8 +175,11 @@ namespace IHMS.Controllers
                     cust.LoginTime = x.LoginTime; //登入日期
                     db.SaveChanges();
                 }
-                return View(x);
+                // 返回重導向到其他頁面，例如會員列表頁面
+                return RedirectToAction("List");
             }
+            return View(x);
+        }
 
     }
 }

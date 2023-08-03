@@ -9,7 +9,7 @@
 async function login(event) {
     event.preventDefault();
     const username = document.getElementById('Account').value;
-    const password = document.getElementById('Password').value;     
+    const password = document.getElementById('Password').value;
 
     // 使用 AJAX 發送登入請求
     const baseAddress = `https://localhost:7127/api/Members/Login`;
@@ -19,20 +19,29 @@ async function login(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ Account: username, Password: password})
+            body: JSON.stringify({ Account: username, Password: password })
         });
 
         if (res.ok) {
-            const member = await res.json();   
+            const member = await res.json();
 
             // 登入成功
+
+            const memberId = member.memberId;
+            
+            localStorage.setItem('currentMemberId', memberId);
+           
+            editMember(memberId);            
             
             alert(`歡迎來到IHMS健康管理平台，${member.name}！`);
+      
             // 將會員資訊存入 localStorage
             localStorage.setItem('currentMember', JSON.stringify(member));
 
-            location.href = "https://localhost:7127";            
-           
+            location.href = `https://localhost:7127/Login/Edit/${memberId}`;
+
+            /*location.href = `http://localhost:5174/`;*/
+            
         } else {
             // 登入失敗
             alert('帳號或密碼不正確，請重新登入！');
@@ -41,11 +50,122 @@ async function login(event) {
         alert('發生錯誤，請稍後再試！');
         console.error(error);
     }
+}
 
-    window.addEventListener('load', function () {
-        checkLoginStatus();
+function editMember(memberId) {
+    // 使用 AJAX 将 id 发送给后端的 Edit 方法
+    $.ajax({
+        type: 'GET',
+        url: '/Login/Edit',
+        data: { id: memberId },
+        success: function (result) {
+            // 处理返回结果
+        },
+        error: function () {
+            // 处理错误
+        }        
     });
-}//登入用這個
+
+
+}
+
+window.addEventListener('load', function () {
+    checkLoginStatus();
+});
+
+function editMember(id) {
+        // 使用Ajax将id发送给后端的Edit方法
+        // 例如使用jQuery的Ajax：
+    $.ajax({
+        type: 'GET',
+        url: '/Member/Edit',
+        data: { id: id },
+        success: function (result) {
+                // 处理返回结果
+        },
+        error: function () {
+                // 处理错误
+        }
+   });
+}
+
+
+
+
+
+
+
+
+
+async function MemberEdit(event) {
+    event.preventDefault(); // 取消表單預設提交行為
+
+    // 取得要修改的會員資料（假設您有個表單並且收集了要修改的資料）
+    const formData = new FormData(event.target);
+    const memberId = formData.get("MemberId"); // 假設MemberId是您要修改的會員的ID    
+    const newAccount = formData.get("Account");
+    const newEmail = formData.get("Email");
+    const newName = formData.get("Name");
+    const newPassword = formData.get("Password");    
+    const newPhone = formData.get("Phone");
+    const newBirthday = formData.get("Birthday");
+    const newResidentialCity = formData.get("ResidentialCity");
+    const newDiseaseDescription = formData.get("DiseaseDescription");
+    const newAllergyDescription = formData.get("AllergyDescription");
+    // 建立要提交的資料
+
+    const data = {
+        memberId: memberId,
+        account: newAccount,        
+        email: newEmail,        
+        name: newName,
+        password: newPassword,
+        phone: newPhone,
+        birthday: newBirthday,
+        residentialcity: newResidentialCity,
+        diseasedescription: newDiseaseDescription,
+        allergydescription: newAllergyDescription,        
+
+    };       
+
+    try {
+        const response = await fetch(`/api/[controller]/MemberEdit/${memberId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data), // 將資料轉換為JSON格式
+        });
+
+        const result = await response.json();
+        // 根據伺服器回傳的結果處理相應的行為
+        console.log(result); // 在這裡您可以根據回傳的訊息來顯示成功或失敗的訊息，或是重新載入會員資料等等
+    } catch (error) {
+        console.error("發生錯誤:", error);
+    }
+}
+
+
+// 在Login.js檔案中新增以下程式碼
+function MemberEdit() {
+    var memberId = $("#MemberId").val(); // 獲取會員ID
+    // 使用AJAX或其他方式向後端發送請求獲取會員資料
+    $.ajax({
+        url: "/Members/MemberEdit", // 替換成後端處理資料的API路徑
+        method: "GET",
+        data: { id: memberId }, // 將會員ID作為請求參數
+        success: function (data) {
+            // 將從後端獲取的會員資料填充到表單中
+            $("#Account").val(data.Account);
+            $("#Email").val(data.Email);
+            $("#Name").val(data.Name);
+            // 其他欄位類似...
+        },
+        error: function (error) {
+            console.log("載入會員資料失敗", error);
+        }
+    });
+}
 
 
 //從localStorage讀出資料放進會員修改頁面的欄位中
@@ -87,7 +207,7 @@ function LoadlocalStorage() {
             document.getElementById("Occupation").value = savedMember.occupation;
             document.getElementById("Diseasedescription").value = savedMember.diseaseDescription;
             document.getElementById("Allergydescription").value = savedMember.allergyDescription;
-            document.getElementById("Logintime").value = savedMember.loginTime;            
+            document.getElementById("Logintime").value = savedMember.loginTime;         
 
 
 
@@ -173,7 +293,8 @@ function LoginPermission(userData) {
         alert(`歡迎來到IHMS健康管理平台，${userData.name}老師！`);
         console.log('您是老師，可以進行特定操作！');
     } else if (permissionLevel === 3000) {
-        // 會員可以做的事情
+        // 會員可以做的事情        
+        window.location.href = 'https://localhost:7127/Login/Edit/1';
         alert(`歡迎來到IHMS健康管理平台，${userData.name}會員！`);
         console.log('您是會員，可以進行一般操作！');
     } else {
