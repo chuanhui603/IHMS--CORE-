@@ -19,6 +19,8 @@
 
         public DateTime Registerdate { get; set; }
 
+        public int? Calories { get; set; }
+
         public bool? Isdone { get; set; }
 
         public int? Sets { get; set; }
