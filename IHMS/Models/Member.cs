@@ -47,8 +47,6 @@ public partial class Member
 
     public virtual HealthInfo? HealthInfo { get; set; }
 
-    public virtual ICollection<MessageBoard> MessageBoards { get; set; } = new List<MessageBoard>();
-
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

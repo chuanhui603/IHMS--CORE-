@@ -15,6 +15,6 @@
 
         public string? Img { get; set; }
 
-        public string Registerdate { get; set; }
+        public DateTime? Registerdate { get; set; }
     }
 }

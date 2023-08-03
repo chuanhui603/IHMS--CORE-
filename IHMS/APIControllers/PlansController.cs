@@ -57,7 +57,7 @@ namespace IHMS.APIControllers
                 Type = p.Type,
                 MemberId = p.MemberId,
                 Weight = p.Weight,
-
+                Gender =p.Gender,
 
             }).FirstOrDefault();
 
@@ -186,7 +186,9 @@ namespace IHMS.APIControllers
                 Registerdate = p.Registerdate,
                 Time = p.Time,
                 Timelong = p.Timelong,
-                Type = p.Type
+                Type = p.Type,
+                
+                
             }).FirstOrDefault();
 
             if (res == null)
@@ -199,26 +201,23 @@ namespace IHMS.APIControllers
             }
 
         }
-
-
-        // GET: api/Plans/diet/{dietid}/dietDetail
-        [Route("~/api/[controller]/diet/{dietid:int}/dietDetail")]
+        //api/plans/dietdetail/list/{dietid:int}
+        //取得dietdetail資料
+        [Route("~/api/[controller]/dietdetail/list/{dietid:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DietDetailDTO>>> GetDietDetail(int dietid)
+        public async Task<ActionResult<IEnumerable<DietDetailDTO>>> GetDietDetailList(int dietid)
         {
-            if (_context.Diets == null && _context.DietDetails == null)
+            if (_context.DietDetails == null)
             {
                 return NotFound();
             }
-            var res = _context.DietDetails.Where(dt => dt.DietId == dietid).OrderByDescending(p => p.Registerdate).Select(dt => new DietDetailDTO
+            var res = _context.DietDetails.Where(p => p.DietId == dietid).Select(d => new DietDetailDTO
             {
-
-                DietDetailId = dt.DietDetailId,
-                Decription = dt.Decription,
-                Dname = dt.Dname,
-                Registerdate = dt.Registerdate.ToString(),
-                Type = dt.Type,
-                Calories = dt.Calories,
+               DietDetailId = d.DietDetailId,
+               Dname = d.Dname,
+               Calories = d.Calories,
+               Registerdate =d.Registerdate,
+               Type = d.Type,               
             });
 
             if (res == null)
@@ -227,7 +226,30 @@ namespace IHMS.APIControllers
             }
             else
             {
-                return await res.ToListAsync();
+                return Ok(res);
+            }
+
+        }
+
+        //api/plans/diet/sum/{dietid:int}
+        //取得dietdetail資料
+        [Route("~/api/[controller]/diet/sum/{dietid:int}")]
+        [HttpGet]
+        public async Task<ActionResult<int>> GetDietSum(int dietid)
+        {
+            if (_context.DietDetails == null)
+            {
+                return NotFound();
+            }
+            var res = _context.DietDetails.Where(p => p.DietId == dietid).Sum(dd => dd.Calories);
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(res);
             }
 
         }
@@ -310,6 +332,7 @@ namespace IHMS.APIControllers
                 Tdee = plan.Tdee,
                 Times = plan.Times,
                 Weight = plan.Weight,
+                Gender = plan.Gender,
 
             }).FirstOrDefault();
             _context.Entry(res).State = EntityState.Modified;
@@ -543,6 +566,7 @@ namespace IHMS.APIControllers
                 Tdee = dto.Tdee,
                 Type = dto.Type,
                 Times = dto.Times,
+                Gender = dto.Gender,
             };
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
