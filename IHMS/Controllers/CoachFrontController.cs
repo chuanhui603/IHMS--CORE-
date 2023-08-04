@@ -221,7 +221,7 @@ namespace IHMS.Controllers
         //修改履歷
         public IActionResult EditResume()
         {
-            int userId = 11;
+            int userId = 1;
 
             Coach data = _context.Coaches
                 .Include(c => c.CoachSkills)
