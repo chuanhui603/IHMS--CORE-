@@ -16,7 +16,7 @@
 
         public string? CourseName { get; set; }
 
-        public int? CourseTotal { get; set; }
+        public int? CoachFee { get; set; }
 
         public string? CoachName { get; set; }
 
