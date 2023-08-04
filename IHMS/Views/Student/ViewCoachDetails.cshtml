@@ -620,7 +620,7 @@
                     </div>
                     <small>*送出聯繫後，需經教練確認，才會進行課程安排唷！</small>
                     <div style="justify-content: end; display: flex; ">
-                        <a href="http://localhost:5174/BuyPoint" class="btn btn-success" id="btnSendContact">
+                        <a onclick="caochReserve()" class="btn btn-success">
                             <i class="fa fa-paper-plane" aria-hidden="true"></i>確認預約
                         </a>
                     </div>
@@ -663,9 +663,32 @@
         function openModal() {
             $('#modalContact').modal('show');
         }
-       
-               
 
+        const caochReserve = async () => {         
+            const point = await loadPointRecord()
+            if (point < @Model.CoachFee) {
+                alert('餘額不足')
+                window.location.href = "http://localhost:5174/BuyPoint";
+            }
+            else{
+                const formData = new FormData()
+                formData.append('coachid', @Model.CoachId )
+                formData.append('MemberId', 6)
+                const API_URL = `https://localhost:7127/api/OrdersDTO/reserve`
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData,
+                }).catch(err => {
+                    console.log(err);
+                })              
+            }        
+        }
+
+
+        const loadPointRecord = async () => {          
+                const res = await fetch(`https://localhost:7127/api/PointRecordsDTO/sum/6`)
+                return await res.json()                          
+        };
                
 
         

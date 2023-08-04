@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IHMS.Models;
 using IHMS.ViewModel.DTO;
+using IHMS.DTO;
 
 namespace IHMS.Controllers.APIcontrollers
 {
@@ -26,7 +27,7 @@ namespace IHMS.Controllers.APIcontrollers
         [HttpGet]
         public IEnumerable<Order> GetOrders()
         {
-         
+
             return _context.Orders;
         }
 
@@ -37,14 +38,14 @@ namespace IHMS.Controllers.APIcontrollers
         //物件再回傳給order
         [HttpGet("{orderId}")]
         //Task執行續搭配async
-        public async Task<List<Coach>>  GetOrder(int orderId)
+        public async Task<List<Coach>> GetOrder(int orderId)
         {
             List<Coach> coachesList = new List<Coach>();
             //使用訂單ID和訂單詳細資料ID查詢相關的訂單詳細資料
 
             List<OrderDetail> orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
-            foreach(OrderDetail orderDetail in orderDetails)
-            {                
+            foreach (OrderDetail orderDetail in orderDetails)
+            {
                 List<Schedule> schedules = await _context.Schedules.Where(od => od.ScheduleId == orderDetail.ScheduleId).ToListAsync();
                 foreach (Schedule schedule in schedules)
                 {
@@ -52,13 +53,13 @@ namespace IHMS.Controllers.APIcontrollers
                     foreach (Course course in courses)
                     {
                         List<Coach> coaches = await _context.Coaches.Where(od => od.CoachId == course.CoachContactId).ToListAsync();
-                        foreach(Coach coach in coaches)
+                        foreach (Coach coach in coaches)
                         {
                             coachesList.AddRange(coaches);
                         }
                     }
-                }             
-                              
+                }
+
             }
             return coachesList;
 
@@ -128,8 +129,8 @@ namespace IHMS.Controllers.APIcontrollers
         [HttpPost]
         public async Task<string> PostOrder(OrderRequest orderRequest, IhmsContext _context)
         {
-            if( _context.Orders == null || _context.Members == null)
-            { 
+            if (_context.Orders == null || _context.Members == null)
+            {
                 return "新增失敗";
             }
 
@@ -159,13 +160,51 @@ namespace IHMS.Controllers.APIcontrollers
                 Pointstotal = orderRequest.Pointstotal,
                 State = "購買成功",
                 Reason = "",
-                Member= targeMebmer,
+                Member = targeMebmer,
             };
             _context.Orders.Add(Ord);
             await _context.SaveChangesAsync();
 
             return "新增訂單成功";
         }
+
+        [HttpPost("reserve")]
+    public async Task<string> PostOrder([FromForm] ReserveDTO data)
+        {
+            if (_context.Orders == null || _context.Members == null)
+            {
+                return "新增失敗";
+            }
+
+            var pointstotal = (int)_context.Coaches.Where(c => c.CoachId == data.coachid).FirstOrDefault().CoachFee;
+            // 解析日期部分和數字部分
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
+            int lastNumber = 0;
+            
+
+            // 產生新的數字部分
+            int newNumber = lastNumber + 1;
+
+            // 將日期和數字組合成新的訂單編號
+            string newOrderNumber = currentDate + newNumber.ToString("D4");
+
+            //Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == orderRequest.MemberId);
+
+
+            Order Ord = new Order
+            {
+                Ordernumber = newOrderNumber,
+                Pointstotal = pointstotal,
+                State = "購買成功",
+                MemberId = (int)data.MemberId,
+            };
+
+            _context.Orders.Add(Ord);
+            await _context.SaveChangesAsync();
+            return "新增訂單成功";
+        }
+
+
 
         // DELETE: api/OrdersDTO/5
         [HttpDelete("{id}")]
