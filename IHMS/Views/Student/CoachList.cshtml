@@ -550,10 +550,7 @@
         })
 
         多重篩選觸發事件、顯示搜尋結果
-        $("#selCity").change(() => {
-            ShowFilter();
-            GetCoach();
-        })
+        
         $("input[name='fGender[]'], input[name='fCoachSkill[]'], input[name='fCoachTime[]']").click(() => {
             if ($("input[name='fCoachSkill[]']:checked").length < 9) {
                 $("#spAllSkill").prop("hidden", false);

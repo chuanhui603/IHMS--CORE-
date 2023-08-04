@@ -169,7 +169,7 @@ namespace IHMS.Controllers.APIcontrollers
         }
 
         [HttpPost("reserve")]
-    public async Task<string> PostOrder([FromForm] ReserveDTO data)
+    public async Task<string> PostOrder([FromForm] ReserveDTO data, DateTime dateTime, OrderDetail orderDetail)
         {
             if (_context.Orders == null || _context.Members == null)
             {
@@ -190,6 +190,8 @@ namespace IHMS.Controllers.APIcontrollers
 
             //Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == orderRequest.MemberId);
 
+            Order targeOrder = _context.Orders.FirstOrDefault(o => o.OrderId == orderDetail.OrderId);
+            Schedule targeSchedule = _context.Schedules.FirstOrDefault(s => s.ScheduleId == orderDetail.ScheduleId);
 
             Order Ord = new Order
             {
@@ -197,9 +199,24 @@ namespace IHMS.Controllers.APIcontrollers
                 Pointstotal = pointstotal,
                 State = "購買成功",
                 MemberId = (int)data.MemberId,
+                Createtime = DateTime.Now,
             };
 
+            Schedule sch = new Schedule
+            {
+                CourseId = 7,
+                CourseTime = currentDate,
+                StatusNumber = 60,
+            };
+
+            OrderDetail od = new OrderDetail
+            {
+                Schedule = targeSchedule,
+                Order = targeOrder
+            };
             _context.Orders.Add(Ord);
+            _context.Schedules.Add(sch);
+            _context.OrderDetails.Add(od);
             await _context.SaveChangesAsync();
             return "新增訂單成功";
         }
