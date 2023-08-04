@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <form id="form" name="form" method="POST" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
+    <form id="form" name="form" method="POST" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" hidden>
         <!--step2 : 收到後端的值印出來-->
         @foreach (var key in @Model.Keys.ToList())
         {
@@ -21,5 +21,9 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
     <!-- 自己的 -->
     <script src="../../assets/js/ecpay.js"></script>
+    <script>
+        document.getElementById("checkoutBtn").click();
+    </script>
+
 </body>
 </html>

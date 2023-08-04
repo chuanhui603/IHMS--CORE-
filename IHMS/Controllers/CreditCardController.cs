@@ -2,19 +2,33 @@
 using System.Text;
 using System.Web;
 using System.Security.Cryptography;
-
+using IHMS.Models;
 
 namespace IHMS.Controllers
 {
     public class CreditCardController : Controller
     {
+        private readonly IhmsContext _db;
+
+        public CreditCardController(IhmsContext db)
+        {
+            _db = db;
+        }
+
         // step1 : 網頁導入傳值到前端
         public ActionResult Index()
         {
             // 產生一個長度為 20 的隨機字串作為訂單編號
-            var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+            string orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+            int pointcountid = _db.PointRecords.Max(pr => pr.PointrecordId);
+            int pointcount = (_db.PointRecords.FirstOrDefault(pr => pr.PointrecordId == pointcountid).Count) * 500;
+
+
+
+
+
             // 需填入你的網址，這裡假設使用 localhost:44325
-            var website = $"https://localhost:44325/";
+            string website = $"https://localhost:7127";
 
             // 建立綠界付款所需的參數字典
             var order = new Dictionary<string, string>
@@ -22,7 +36,7 @@ namespace IHMS.Controllers
                 // 綠界需要的參數
                 { "MerchantTradeNo",  orderId}, // 訂單編號
                 { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, // 訂單成立時間
-                { "TotalAmount",  "100"}, // 訂單金額
+                { "TotalAmount",  $"{pointcount}"}, // 訂單金額
                 { "TradeDesc",  "無"}, // 交易描述
                 { "ItemName",  "測試商品"}, // 商品名稱
                 { "ExpireDate",  "3"}, // 訂單有效期限
@@ -31,9 +45,9 @@ namespace IHMS.Controllers
                 { "CustomField3",  ""}, // 自訂欄位3
                 { "CustomField4",  ""}, // 自訂欄位4
                 { "ReturnURL",  $"{website}/api/Ecpay/AddPayInfo"}, // 付款完成後返回網址
-                { "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"}, // 訂單處理結果網址
-                { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"}, // 付款資訊回傳網址
-                { "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"}, // 客戶端返回網址
+                { "OrderResultURL","https://ihms.club/"}, // 訂單處理結果網址
+                { "PaymentInfoURL","http://localhost:5174"}, // 付款資訊回傳網址
+                { "ClientRedirectURL","https://ihms.club/"}, // 客戶端返回網址
                 { "MerchantID",  "2000132"}, // 商店代號
                 { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"}, // 忽略的付款方式
                 { "PaymentType",  "aio"}, // 付款方式
