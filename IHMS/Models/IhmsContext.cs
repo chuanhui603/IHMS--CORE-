@@ -411,7 +411,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534D9DD96E9");
+            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B853481A36874");
 
             entity.ToTable("HealthInfo");
 
