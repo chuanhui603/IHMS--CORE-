@@ -5,14 +5,6 @@ namespace IHMS.Models;
 
 public partial class Coach
 {
-    public Coach()
-    {
-        CoachAvailableTimes = new HashSet<CoachAvailableTime>();
-        CoachContacts = new HashSet<CoachContact>();
-        CoachExperiences = new HashSet<CoachExperience>();
-        CoachLicenses = new HashSet<CoachLicense>();
-        CoachSkills = new HashSet<CoachSkill>();
-    }
     public int CoachId { get; set; }
 
     public string? CoachName { get; set; }
@@ -37,8 +29,7 @@ public partial class Coach
 
     public string? Slogan { get; set; }
 
-    public virtual City City { get; set; }
-    public virtual Member Member { get; set; }
+    public virtual City? City { get; set; }
 
     public virtual ICollection<CoachAvailableTime> CoachAvailableTimes { get; set; } = new List<CoachAvailableTime>();
 
@@ -52,5 +43,5 @@ public partial class Coach
 
     public virtual ICollection<CoachSkill> CoachSkills { get; set; } = new List<CoachSkill>();
 
-    
+    public virtual Member? Member { get; set; }
 }
