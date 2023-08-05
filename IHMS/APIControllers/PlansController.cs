@@ -105,7 +105,7 @@ namespace IHMS.APIControllers
             {
                 return NotFound();
             }
-            var res = _context.SportDetails.OrderByDescending(p => p.Registerdate).Where(p => p.SportId == sportid).Select(p => new SportDetailDTO
+            var res = _context.SportDetails.OrderBy(p => p.Registerdate).Where(p => p.SportId == sportid).Select(p => new SportDetailDTO
             {
                 SportDetailId = p.SportDetailId,
                 SportId = p.SportId,
@@ -165,7 +165,7 @@ namespace IHMS.APIControllers
             {
                 return NotFound();
             }
-            var res = _context.SportDetails.OrderByDescending(p => p.Registerdate).Where(p => p.SportId == sportid && p.Sname.Contains($"{search}")).Select(p => new SportDetailDTO
+            var res = _context.SportDetails.OrderBy(p => p.Registerdate).Where(p => p.SportId == sportid && p.Sname.Contains($"{search}")).Select(p => new SportDetailDTO
             {
                Sname = p.Sname,
                SportDetailId = p.SportDetailId,
@@ -177,6 +177,7 @@ namespace IHMS.APIControllers
                Timelong = p.Timelong,
                Type = p.Type,
                Sets = p.Sets,
+               Calories =p.Calories,
             });
 
             if (res == null)
@@ -211,6 +212,7 @@ namespace IHMS.APIControllers
                 Time = p.Time,
                 Timelong = p.Timelong,
                 Type = p.Type,
+                Calories =p.Calories,
                 
                 
             }).FirstOrDefault();
@@ -241,7 +243,8 @@ namespace IHMS.APIControllers
                Dname = d.Dname,
                Calories = d.Calories,
                Registerdate =d.Registerdate,
-               Type = d.Type,               
+               Type = d.Type,    
+               Decription = d.Decription,
             });
 
             if (res == null)
@@ -297,7 +300,9 @@ namespace IHMS.APIControllers
                 Frequency = p.Frequency,
                 Registerdate = p.Registerdate,
                 Type = p.Type,
-                Isdone = p.Isdone
+                Isdone = p.Isdone,
+                Calories = p.Calories,
+                Sets = p.Sets,
             });
             if (res == null)
             {
@@ -357,7 +362,7 @@ namespace IHMS.APIControllers
                 Times = plan.Times,
                 Weight = plan.Weight,
                 Gender = plan.Gender,
-
+                
             }).FirstOrDefault();
             _context.Entry(res).State = EntityState.Modified;
 
@@ -400,8 +405,8 @@ namespace IHMS.APIControllers
                 Type = dietDTO.Type,
                 Decription = dietDTO.Decription,
                 Calories = dietDTO.Calories,
-                Registerdate = Convert.ToDateTime(dietDTO.Registerdate)
-
+                Registerdate = Convert.ToDateTime(dietDTO.Registerdate),
+                
             };
 
             _context.Entry(diet).State = EntityState.Modified;
