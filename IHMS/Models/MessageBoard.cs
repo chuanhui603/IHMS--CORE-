@@ -16,4 +16,6 @@ public partial class MessageBoard
     public int MemberId { get; set; }
 
     public DateTime Time { get; set; }
+
+    public virtual Member Member { get; set; } = null!;
 }

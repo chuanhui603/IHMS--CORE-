@@ -242,6 +242,10 @@ public partial class IhmsContext : DbContext
             entity.HasOne(d => d.Coach).WithMany(p => p.CoachContacts)
                 .HasForeignKey(d => d.CoachId)
                 .HasConstraintName("FK_CoachContacts_Coach");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.CoachContacts)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_CoachContacts_Members");
         });
 
         modelBuilder.Entity<CoachExperience>(entity =>
@@ -316,7 +320,7 @@ public partial class IhmsContext : DbContext
 
             entity.HasOne(d => d.CoachContact).WithMany(p => p.Courses)
                 .HasForeignKey(d => d.CoachContactId)
-                .HasConstraintName("FK_Course_CoachContacts");
+                .HasConstraintName("FK_Course_CoachContacts1");
         });
 
         modelBuilder.Entity<CustomerService>(entity =>
@@ -407,7 +411,7 @@ public partial class IhmsContext : DbContext
 
         modelBuilder.Entity<HealthInfo>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B8534D9DD96E9");
+            entity.HasKey(e => e.MemberId).HasName("PK__HealthIn__B29B853481A36874");
 
             entity.ToTable("HealthInfo");
 
@@ -516,6 +520,11 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .HasColumnName("title");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.MessageBoards)
+                .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_message board_Members");
         });
 
         modelBuilder.Entity<MessageBoardDetail>(entity =>
@@ -638,10 +647,10 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.Bmr).HasColumnName("bmr");
             entity.Property(e => e.BodyPercentage).HasColumnName("body_percentage");
-            //entity.Property(e => e.Gender)
-            //    .HasMaxLength(15)
-            //    .IsUnicode(false)
-            //    .HasColumnName("gender");
+            entity.Property(e => e.Gender)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("gender");
             entity.Property(e => e.Height).HasColumnName("height");
             entity.Property(e => e.MemberId).HasColumnName("member_id");
             entity.Property(e => e.RegisterDate)
@@ -708,7 +717,7 @@ public partial class IhmsContext : DbContext
 
             entity.HasOne(d => d.Course).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.CourseId)
-                .HasConstraintName("FK_Schedule_Course");
+                .HasConstraintName("FK_Schedule_Course1");
         });
 
         modelBuilder.Entity<Score>(entity =>
@@ -722,11 +731,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.ScoredDate)
                 .HasColumnType("datetime")
                 .HasColumnName("scored_date");
-
-            entity.HasOne(d => d.Course).WithMany(p => p.Scores)
-                .HasForeignKey(d => d.CourseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Score_Course");
 
             entity.HasOne(d => d.Member).WithMany(p => p.Scores)
                 .HasForeignKey(d => d.MemberId)
@@ -763,7 +767,7 @@ public partial class IhmsContext : DbContext
             entity.ToTable("Sport_Detail");
 
             entity.Property(e => e.SportDetailId).HasColumnName("sport_detail_id");
-            //entity.Property(e => e.Calories).HasColumnName("calories");
+            entity.Property(e => e.Calories).HasColumnName("calories");
             entity.Property(e => e.Frequency).HasColumnName("frequency");
             entity.Property(e => e.Isdone).HasColumnName("isdone");
             entity.Property(e => e.Registerdate)
