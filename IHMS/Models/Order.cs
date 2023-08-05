@@ -23,9 +23,9 @@ public partial class Order
     public string? Reason { get; set; }
 
     [Display(Name = "下單時間")]
-    public DateTime? Createtime { get; set; }
+    public DateTime Createtime { get; set; }
 
-    public DateTime? Updatetime { get; set; }
+    public DateTime Updatetime { get; set; }
 
     public virtual Member Member { get; set; } = null!;
 

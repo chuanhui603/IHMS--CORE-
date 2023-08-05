@@ -25,7 +25,7 @@ namespace IHMS.Controllers
             string keyword = vm.txtKeyword;
             var ihms0702Context = _db.Orders.Include(o => o.Member);
 
-            int pageSize = 5;
+            int pageSize = 10;
             int pageNumber = page ?? 1;
 
 

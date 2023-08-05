@@ -72,7 +72,7 @@ namespace IHMS.Controllers.APIcontrollers
                     Pointstotal = o.Pointstotal,
                     CourseName = c.CourseName,
                     CourseTime = s.CourseTime,
-                    CourseTotal = c.CourseTotal,
+                    CoachFee = co.CoachFee,
                     MemberName = m.Name,
                     State = o.State
                     

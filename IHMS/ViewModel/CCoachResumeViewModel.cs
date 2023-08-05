@@ -15,17 +15,17 @@ namespace IHMS.ViewModel
         }
         
         public int CoachId { get; set; }
-        public string CoachName { get; set; }
+        public string? CoachName { get; set; }
         public int? MemberId { get; set; }
         public int? CityId { get; set; }
-        public string CoachImage { get; set; }
+        public string? CoachImage { get; set; }
         public int? CoachFee { get; set; }
-        public string CoachDescription { get; set; }
-        public string ApplyDate { get; set; }
+        public string? CoachDescription { get; set; }
+        public string? ApplyDate { get; set; }
         public int? StatusNumber { get; set; }
         public bool? Visible { get; set; }
         public int? CourseCount { get; set; }
-        public string Slogan { get; set; }
+        public string? Slogan { get; set; }
         public string CityName
         {
             get

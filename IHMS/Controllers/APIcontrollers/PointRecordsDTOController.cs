@@ -37,15 +37,7 @@ namespace IHMS.Controllers.APIcontrollers
         [HttpGet("sum/{Memberid}")]
         public async Task<int> GetPointRecord(int MemberId)
         {
-            var coursecost = (
-                from o in _context.Orders
-                join od in _context.OrderDetails on o.OrderId equals od.OrderId
-                join m in _context.Members on o.MemberId equals m.MemberId
-                join s in _context.Schedules on od.ScheduleId equals s.ScheduleId
-                join c in _context.Courses on s.CourseId equals c.CourseId
-                where o.MemberId == MemberId
-                select c.CourseTotal                
-            ).Sum();
+            var coursecost = _context.Orders.Where(o => o.MemberId == MemberId).Sum(o => o.Pointstotal);
 
             var currentp = _context.PointRecords
                    .Where(pr => pr.MemberId == MemberId)

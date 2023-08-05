@@ -281,33 +281,33 @@
             </div>
             <div class="modal-body">
                 <dl class="row dlResume">
-                   @* <dt class="col-sm-2">
+                    <dt class="col-sm-2">
                         照片
-                    </dt>*@
-                   @* <dd class="col-sm-10" id="ddImg">
-                        <div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);" />
-                    </dd>*@
-                    @*<dt class="col-sm-2">
+                    </dt>
+                   <dd class="col-sm-10" id="ddImg">
+                        <div class="ddImg" style="background-image: url('~/img/coach/coachImage/Alisa.jpg');" />
+                    </dd>
+                    <dt class="col-sm-2">
                         教練編號
                     </dt>
                     <dd class="col-sm-4" id="ddCoachId">
-                    </dd>*@
+                    </dd>
                     <dt class="col-sm-2">
                         履歷狀態
                     </dt>
                     <dd class="col-sm-4" id="ddStatus">
                     </dd>
-                    @*<dt class="col-sm-2">
+                    <dt class="col-sm-2">
                         會員編號
                     </dt>
                     <dd class="col-sm-4" id="ddMemberId">
-                    </dd>*@
+                    </dd>
                     <dt class="col-sm-2">
                         公開狀態
                     </dt>
                     <dd class="col-sm-4" id="ddVisible">
                     </dd>
-                    @*<dt class="col-sm-2">
+                    <dt class="col-sm-2">
                         教練姓名
                     </dt>
                     <dd class="col-sm-4" id="ddCoachName">
@@ -322,18 +322,18 @@
                     </dt>
                     <dd class="col-sm-4" id="ddCityName">
                     </dd>
-                   @* <dt class="col-sm-2">
+                    <dt class="col-sm-2">
                         希望待遇
                     </dt>
                     <dd class="col-sm-4" id="ddFee">
-                    </dd>*@
+                    </dd>
                     <dd><hr /></dd>
                     <dt class="col-sm-2">
                         專長種類
                     </dt>
                     <dd class="col-sm-10" id="ddSkills">
                     </dd>
-                    @*<dt class="col-sm-2">
+                    <dt class="col-sm-2">
                         經歷
                     </dt>
                     <dd class="col-sm-10" id="ddExperiences">
@@ -342,12 +342,12 @@
                         相關證照
                     </dt>
                     <dd class="col-sm-10" id="ddLicenses">
-                    </dd>*@
-                    @*<dt class="col-sm-2">
+                    </dd>
+                    <dt class="col-sm-2">
                         介紹
                     </dt>
                     <dd class="col-sm-10" id="ddSlogan">
-                    </dd>*@
+                    </dd>
                 </dl>
             </div>
         </div>
@@ -358,11 +358,13 @@
 
 @section Scripts{
     <script>
-
+        
         //查看履歷
         function viewResume() {
             let theCoachId = $(event.target).parents("tr").children("td:eq(0)").text();
+
             $.get("@Url.Content("~/Coach/getCoach")", { id: theCoachId }, function (c) {
+                console.log(c)
                 let skill = "";
                 $.each(c.skills, function (idx, val) {
                     skill += val;
@@ -379,23 +381,24 @@
                     license += val;
                     license += "<br />";
                 })
-                $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/${c.CoachImage});" />`)
-                $("#ddCoachId").html(c.CoachId);
+                $("#ddImg").html(`<img class="ddImg" src="https://localhost:7127/img/coach/coachImage/${c.coachImage}"/>`)
+                $("#ddCoachId").html(c.coachId );
                 $("#ddStatus").html(c.status);
-                $("#ddMemberId").html(c.MemberId);
+                $("#ddMemberId").html(c.memberId);
                 $("#ddVisible").html(c.visible);
-                $("#ddCoachName").html(c.CoachName);
+                $("#ddCoachName").html(c.coachName);
                 $("#ddApplyDate").html(c.applyDate);
                 $("#ddCityName").html(c.cityName);
-                $("#ddFee").html(c.CoachFee);
+                $("#ddFee").html(c.coachFee);
                 $("#ddSkills").html(skill);
                 $("#ddExperiences").html(experience);
                 $("#ddLicenses").html(license);
-                $("#ddSlogan").html(c.Slogan);
+                $("#ddSlogan").html(c.slogan);
             })
         }
+        
         $(".btnViewResume").on("click", viewResume);
-
+     
         //審核通過
         function passResume() {
             const theTr = $(event.target).parents("tr");
