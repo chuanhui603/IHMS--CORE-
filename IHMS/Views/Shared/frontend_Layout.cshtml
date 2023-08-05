@@ -154,7 +154,7 @@
                           @*  <a href="https://localhost:7127/Login/Login" class="ms-3 p-1 text-body">登入</a>*@
                             <span class="ms-3 p-1 btnlogout" onclick="logout()" style="color:#B9B9B9">登出</span>
                             <!--登入前隱藏 登入後展示 -->
-                            <div class="ms-3 p-1" style="color:#B9B9B9">點數: <span class="goldcolor">$0</span></div>
+                            <div class="ms-3 p-1" style="color:#B9B9B9">點數: <span id="memberPoint" class="goldcolor">$0</span></div>
                         </div>
                     </div>
                 </nav>
@@ -210,6 +210,14 @@
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="~/js/sb-admin-2.min.js"></script>
+    <script>
+        const doFirst = async () => {
+            const res = await fetch(`https://localhost:7127/api/PointRecordsDTO/sum/6`)
+            const datas = await res.json()
+            document.querySelector('#memberPoint').innerHTML = datas
+                    };
+        window.addEventListener('load', doFirst);
+    </script>
     @RenderSection("Scripts", required: false)
 
 </body>

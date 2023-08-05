@@ -105,7 +105,7 @@ namespace IHMS.APIControllers
             {
                 return NotFound();
             }
-            var res = _context.SportDetails.OrderBy(p => p.Registerdate).Where(p => p.SportId == sportid).Select(p => new SportDetailDTO
+            var res = _context.SportDetails.OrderBy(p => p.Isdone).OrderBy(p=>p.Registerdate).Where(p => p.SportId == sportid).Select(p => new SportDetailDTO
             {
                 SportDetailId = p.SportDetailId,
                 SportId = p.SportId,
