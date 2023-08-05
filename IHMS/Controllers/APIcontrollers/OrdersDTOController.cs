@@ -207,7 +207,7 @@ namespace IHMS.Controllers.APIcontrollers
             var CourseID = _context.Courses.Where(cc => cc.CoachContactId == CoachContactIdID).FirstOrDefault().CourseId;
             Schedule sch = new Schedule
             {
-                CourseId = 7,
+                CourseId = CourseID,
                 CourseTime = nowdate,
                 StatusNumber = 60,
             };
