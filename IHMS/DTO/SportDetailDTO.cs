@@ -9,7 +9,8 @@
 
         public string Sname { get; set; } = null!;
 
-        public int? Timelong { get; set; }
+        public int? Min { get; set; }
+        public int? Hour { get; set; }
 
         public int? Frequency { get; set; }
 

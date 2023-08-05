@@ -19,7 +19,7 @@ public partial class SportDetail
 
     public string? Time { get; set; }
 
-    public int? Timelong { get; set; }
+    public int? Min { get; set; }
 
     public bool? Isdone { get; set; }
 
@@ -28,6 +28,8 @@ public partial class SportDetail
     public DateTime? Sportdate { get; set; }
 
     public int? Calories { get; set; }
+
+    public int? Hour { get; set; }
 
     public virtual Sport Sport { get; set; } = null!;
 }

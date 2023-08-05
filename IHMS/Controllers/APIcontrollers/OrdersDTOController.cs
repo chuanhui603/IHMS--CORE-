@@ -169,7 +169,7 @@ namespace IHMS.Controllers.APIcontrollers
         }
 
         [HttpPost("reserve")]
-    public async Task<string> PostOrder([FromForm] ReserveDTO data, DateTime dateTime, OrderDetail orderDetail)
+    public async Task<string> PostOrder([FromForm] ReserveDTO data)
         {
             if (_context.Orders == null || _context.Members == null)
             {
@@ -179,8 +179,7 @@ namespace IHMS.Controllers.APIcontrollers
             var pointstotal = (int)_context.Coaches.Where(c => c.CoachId == data.coachid).FirstOrDefault().CoachFee;
             // 解析日期部分和數字部分
             string currentDate = DateTime.Now.ToString("yyyyMMdd");
-            int lastNumber = 0;
-            
+            int lastNumber = 0;         
 
             // 產生新的數字部分
             int newNumber = lastNumber + 1;
@@ -188,11 +187,10 @@ namespace IHMS.Controllers.APIcontrollers
             // 將日期和數字組合成新的訂單編號
             string newOrderNumber = currentDate + newNumber.ToString("D4");
 
-            //Member targeMebmer = _context.Members.FirstOrDefault(m => m.MemberId == orderRequest.MemberId);
+            //schedule日期
+            string nowdate = DateTime.Now.ToString("yyyyMMddhhmm");
 
-            Order targeOrder = _context.Orders.FirstOrDefault(o => o.OrderId == orderDetail.OrderId);
-            Schedule targeSchedule = _context.Schedules.FirstOrDefault(s => s.ScheduleId == orderDetail.ScheduleId);
-
+            //儲存order
             Order Ord = new Order
             {
                 Ordernumber = newOrderNumber,
@@ -201,23 +199,33 @@ namespace IHMS.Controllers.APIcontrollers
                 MemberId = (int)data.MemberId,
                 Createtime = DateTime.Now,
             };
+            _context.Orders.Add(Ord);
+            await _context.SaveChangesAsync();
 
+            //儲存schedule
+            var CoachContactIdID = _context.CoachContacts.Where(cc=>cc.CoachId ==data.coachid).FirstOrDefault().CoachContactId;
+            var CourseID = _context.Courses.Where(cc => cc.CoachContactId == CoachContactIdID).FirstOrDefault().CourseId;
             Schedule sch = new Schedule
             {
                 CourseId = 7,
-                CourseTime = currentDate,
+                CourseTime = nowdate,
                 StatusNumber = 60,
             };
+            _context.Schedules.Add(sch);
+            await _context.SaveChangesAsync();
 
+            var newOrederID = _context.Orders.OrderByDescending(o => o.OrderId).FirstOrDefault().OrderId;
+            var newScheduleID = _context.Schedules.OrderByDescending(o => o.ScheduleId).FirstOrDefault().ScheduleId;
+            //儲存orderdetail
             OrderDetail od = new OrderDetail
             {
-                Schedule = targeSchedule,
-                Order = targeOrder
+                OrderId = newOrederID,
+                ScheduleId = newScheduleID,
             };
-            _context.Orders.Add(Ord);
-            _context.Schedules.Add(sch);
             _context.OrderDetails.Add(od);
             await _context.SaveChangesAsync();
+
+
             return "新增訂單成功";
         }
 

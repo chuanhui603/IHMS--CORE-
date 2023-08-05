@@ -769,7 +769,9 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.SportDetailId).HasColumnName("sport_detail_id");
             entity.Property(e => e.Calories).HasColumnName("calories");
             entity.Property(e => e.Frequency).HasColumnName("frequency");
+            entity.Property(e => e.Hour).HasColumnName("hour");
             entity.Property(e => e.Isdone).HasColumnName("isdone");
+            entity.Property(e => e.Min).HasColumnName("min");
             entity.Property(e => e.Registerdate)
                 .HasColumnType("datetime")
                 .HasColumnName("registerdate");
@@ -784,7 +786,6 @@ public partial class IhmsContext : DbContext
             entity.Property(e => e.Time)
                 .HasMaxLength(10)
                 .HasColumnName("time");
-            entity.Property(e => e.Timelong).HasColumnName("timelong");
             entity.Property(e => e.Type)
                 .HasMaxLength(20)
                 .HasColumnName("type");
