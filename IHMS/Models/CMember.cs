@@ -118,6 +118,7 @@ namespace IHMS.Models
         {
             get { return _member.LoginTime; }
             set { _member.LoginTime = value; }
-        }        
+        }
+        public string ErrMsg { get; set; }
     }
 }

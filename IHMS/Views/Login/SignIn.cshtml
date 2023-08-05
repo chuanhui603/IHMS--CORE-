@@ -5,7 +5,7 @@
     Layout = "frontend_Layout";
 }
 <!DOCTYPE html>
-<html lang="en">
+@*<html lang="en">*@
 
 <head>
     <title>Login Page</title>
@@ -32,6 +32,15 @@
             position: relative;
             padding-right: 50px; /* 給 X 圖標留出空間 */
         }
+
+        .custom-error-message {
+            position: absolute;
+            bottom: -1.5rem; /* 調整底部間距 */
+            left: 0;
+            font-size: 0.875rem; /* 調整字體大小 */
+        }
+
+
     </style>
 </head>
 
@@ -48,38 +57,51 @@
                                     <a href="http://localhost:5174/" class="close-icon">&times;</a>
                                     <h2 class="fw-bold mb-2 text-uppercase">IHMS</h2>
                                     <p class="text-white-50 mb-5">建立您的IHMS帳戶!</p>
-                                    
-                                    <form asp-action="SignIn" >
+
+                                    @if (TempData["ErrMsg"] != null)
+                                    {
+                                        <div class="alert alert-danger">
+                                            @TempData["ErrMsg"]
+                                        </div>
+                                    }
+
+                                    <form asp-action="SignIn" id="signInForm" onsubmit="return validateForm()">
                                         <div asp-validation-summary="ModelOnly" class="form-outline form-white mb-4"></div>
 
                                         <div class="form-group">
                                             <label asp-for="Name" class="form-label"></label>
-                                            <input asp-for="Name" class="form-control form-control-lg" placeholder="請輸入您的帳號" required />
-                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                            <input asp-for="Name" class="form-control form-control-lg" placeholder="請輸入您的姓名" value="@TempData["GoogleName"]" />
+                                            <span asp-validation-for="Name" class="text-danger custom-error-message"></span>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="Email" class="form-label"></label>
-                                            <input asp-for="Email" class="form-control form-control-lg" placeholder="請輸入您的信箱" required value="@ViewData["GoogleEmail"]" />
-                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                            <input asp-for="Email" class="form-control form-control-lg" placeholder="請輸入您的信箱" value="@TempData["GoogleEmail"]" />
+                                            <span asp-validation-for="Email" class="text-danger custom-error-message"></span>
                                         </div>
-                                        <p>预填充的邮箱地址：@ViewData["GoogleEmail"]</p>
+                                        
                                         <div class="form-group">
                                             <label asp-for="Account" class="form-label"></label>
-                                            <input asp-for="Account" class="form-control form-control-lg" placeholder="請輸入您的帳號" required />
-                                            <span asp-validation-for="Account" class="text-danger"></span>
+                                            <input asp-for="Account" class="form-control form-control-lg" placeholder="請輸入您的帳號"  />
+                                            <span asp-validation-for="Account" class="text-danger custom-error-message"></span>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="Password" class="form-label"></label>
-                                            <input asp-for="Password" class="form-control form-control-lg" placeholder="請輸入您的密碼" required />
-                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                            <input asp-for="Password" class="form-control form-control-lg" placeholder="請輸入您的密碼"  />
+                                            <span asp-validation-for="Password" class="text-danger custom-error-message"></span>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="ConfirmPassword" class="form-label">確認密碼</label>
+                                            <input type="password" id="ConfirmPassword" class="form-control form-control-lg" placeholder="請再次輸入您的密碼" />
+                                            <span id="confirmPasswordError" class="text-danger custom-error-message"></span>
+                                        </div>
+                                        
 
                                         </br>
                                         <button class="btn btn-outline-light btn-lg px-5" type="submit" value="SignIn">註冊</button>
 
                                         <div class="d-flex justify-content-center text-center mt-4 pt-1">
                                             <button type="button" class="btn btn-outline-light btn-lg px-3" onclick="註冊Demo()">Demo註冊</button>
-                                            
+
                                         </div>
                                     </form>
 
@@ -99,9 +121,54 @@
     <script src="~/js/Login.js"></script>
     <script src="~/js/GoogleLogin.js"></script>
 </body>
+<script>
+    function validateForm() {
+        var name = document.getElementById("Name").value;
+        var email = document.getElementById("Email").value;
+        var account = document.getElementById("Account").value;
+        var password = document.getElementById("Password").value;
+        var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+        if (name === "") {
+            alert("請輸入姓名");
+            return false;
+        }
+
+        if (email === "") {
+            alert("請輸入信箱");
+            return false;
+        }
+
+        if (account === "") {
+            alert("請輸入帳號");
+            return false;
+        }
+
+        if (password === "") {
+            alert("請輸入密碼");
+            return false;
+        }
+
+        if (confirmPassword === "") {
+            alert("請再次輸入確認密碼");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            //document.getElementById("confirmPasswordError").textContent = "兩次輸入的密碼不一致";
+            alert("兩次輸入的密碼不一致");
+            return false;
+        }
+
+        return true; // 表單驗證通過
+    }
+</script>
+
+
+
 
 <div>
-  @*  <a asp-action="List">取消</a>*@
+    @*  <a asp-action="List">取消</a>*@
 </div>
 
 @section Scripts {

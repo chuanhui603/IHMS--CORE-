@@ -52,6 +52,31 @@ async function login(event) {
     }
 }
 
+// 假設您在前端使用 jQuery
+$(document).ready(function () {
+    $('#googleLoginButton').click(function () {
+        $.ajax({
+            url: '/Login/GoogleLogin', // 請替換成實際的控制器路徑
+            type: 'POST',
+            data: { /* 傳遞所需的資料 */ },
+            success: function (data) {
+                if (data.success) {
+                    // 如果成功，將使用者資料存入 localStorage
+                    localStorage.setItem('memberInfo', JSON.stringify(data.memberInfo));
+                    // 之後可以在需要的地方從 localStorage 讀取使用者資料
+                    window.location.href = '/MemberDashboard'; // 轉到會員資訊頁面
+                } else {
+                    // 處理失敗的情況
+                    alert('Google 授權失敗');
+                }
+            },
+            error: function () {
+                alert('發生錯誤');
+            }
+        });
+    });
+});
+
 function editMember(memberId) {
     // 使用 AJAX 将 id 发送给后端的 Edit 方法
     $.ajax({
@@ -73,6 +98,7 @@ window.addEventListener('load', function () {
     checkLoginStatus();
 });
 
+
 function editMember(id) {
         // 使用Ajax将id发送给后端的Edit方法
         // 例如使用jQuery的Ajax：
@@ -88,13 +114,6 @@ function editMember(id) {
         }
    });
 }
-
-
-
-
-
-
-
 
 
 async function MemberEdit(event) {

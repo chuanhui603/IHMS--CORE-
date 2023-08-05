@@ -6,6 +6,12 @@ using HealthyLifeApp;
 using System.Text.Json;
 using Google.Apis.Auth;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
+using System.Data;
+using System.Text;
+using static IHMS.Models.Member;
+using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace IHMS.Controllers
 {
@@ -13,12 +19,83 @@ namespace IHMS.Controllers
     {
         private IWebHostEnvironment _enviro = null;
         private readonly IhmsContext _context;
-
         public LoginController(IhmsContext context, IWebHostEnvironment p)
         {
             _context = context;
             _enviro = p;
-        }        
+        }
+
+        // GET: 註冊頁面
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        /// 執行註冊
+        /// </summary>
+        /// <param name="inModel"></param>
+        /// <returns></returns>
+        public ActionResult SignIn(int? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SignIn(Member inModel)
+        {
+            DoRegisterOut outModel = new DoRegisterOut();
+            IhmsContext db = new IhmsContext();
+
+            if (string.IsNullOrEmpty(inModel.Account) || string.IsNullOrEmpty(inModel.Password) || string.IsNullOrEmpty(inModel.Name) || string.IsNullOrEmpty(inModel.Email))
+            {
+                TempData["ErrMsg"] = "請輸入資料";
+            }
+            else
+            {
+                
+                try
+                {
+                    // 檢查帳號是否存在
+                    Member cust = db.Members.FirstOrDefault(p => p.Account == inModel.Account || p.Email == inModel.Email);
+
+                    if (cust != null)
+                    {
+                        if (cust.Account == inModel.Account)
+                        {                            
+                            TempData["ErrMsg"] = "此登入帳號已存在";
+                        }
+                        else if (cust.Email == inModel.Email)
+                        {
+                            TempData["ErrMsg"] = "此登入帳號已存在";                                                      
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(inModel.AvatarImage))
+                        {
+                            inModel.AvatarImage = "1.jpg";
+                        }
+
+                        db.Members.Add(inModel);
+                        db.SaveChanges();
+
+                        return Redirect("http://localhost:5174/");
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    outModel.ErrMsg = "發生了一個錯誤，請稍後再試或聯繫支援。錯誤訊息：" + ex.Message;
+                    // 可以在此處記錄例外詳細資訊到日誌或其他地方
+                }
+
+            }
+            return RedirectToAction("SignIn", "Login");
+
+
+        }
+
+        // GET: 登入頁面    
 
         public IActionResult Login()
         {
@@ -94,7 +171,7 @@ namespace IHMS.Controllers
 
             if (payload == null)
             {
-                ViewData["Msg"] = "验证 Google 授权失败";
+                ViewData["Msg"] = "驗證 Google 授權失敗";
             }
             else
             {
@@ -102,30 +179,31 @@ namespace IHMS.Controllers
 
                 if (member != null)
                 {
-                    ViewData["MemberInfo"] = member;
-                    return View("MemberDashboard"); // 如果有註冊
+                    // 將用戶信息轉為 JSON 格式
+                    var memberInfoJson = JsonConvert.SerializeObject(member);
+
+                    // 使用 JavaScript 保存 localStorage 並轉跳
+                    string redirectScript = $@"
+                <script>
+                    var memberInfo = {memberInfoJson};
+                    localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
+                    window.location.href = 'http://localhost:5174/';
+                </script>";
+
+                    return Content(redirectScript, "text/html");
                 }
                 else
                 {
-                    //用ViewModel試看看
-                    ViewData["GoogleEmail"] = payload.Email;
-                    Console.WriteLine(payload.Email);
-                    return RedirectToAction("SignIn", "Members");// 如果沒有註冊，則進入註冊頁面
+                    TempData["GoogleName"] = payload.Name;
+                    TempData["GoogleEmail"] = payload.Email;
+                    return RedirectToAction("SignIn", "Login");// 如果沒有註冊，則進入註冊頁面
                 }
             }
 
             return View();
         }
-
-
-
-        /// <summary>
-        /// 驗證 Google Token
-        /// </summary>
-        /// <param name="formCredential"></param>
-        /// <param name="formToken"></param>
-        /// <param name="cookiesToken"></param>
-        /// <returns></returns>
+   
+        /// 驗證 Google Token       
         public async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
         {
             // 檢查空值
