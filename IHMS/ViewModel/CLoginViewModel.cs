@@ -11,28 +11,120 @@ namespace prjiHealth.ViewModel
 {
     public class CLoginViewModel
     {
-        private Member _tmember;
-        public CLoginViewModel() { _tmember = new Member(); }
-        public Member Member { get { return _tmember; } set { _tmember = value; } }
-        public int fMemberId { get { return _tmember.MemberId; } set { _tmember.MemberId = value; } }
-        public string fAccount { get { return _tmember.Account; } set { _tmember.Account = value; } }
-        [DataType(DataType.Password)]
-        public string fPassword { get { return _tmember.Password; } set { _tmember.Password = value; } }
-        public string fEmail { get { return _tmember.Email; } set { _tmember.Email = value; } }
-        public string fPhone { get { return _tmember.Phone; } set { _tmember.Phone = value; } }
-        [DisplayName("姓名")]
-        public string fName { get { return _tmember.Name; } set { _tmember.Name = value; } }
-        public DateTime? fBirthday { get { return _tmember.Birthday; } set { _tmember.Birthday = value; } }
-        public string fNickname { get { return _tmember.Nickname; } set { _tmember.Nickname = value; } }
-        public string fResidentialCity { get { return _tmember.ResidentialCity; } set { _tmember.ResidentialCity = value; } }
-        public int? FPermission { get { return _tmember.Permission; } set { _tmember.Permission = value; } }
-        public bool? FMaritalStatus { get { return _tmember.MaritalStatus; } set { _tmember.MaritalStatus = value; } }
-        public bool? FGender { get { return _tmember.Gender; } set { _tmember.Gender = value; } }
-        public string fDiseaseDescription { get { return _tmember.DiseaseDescription; } set { _tmember.DiseaseDescription = value; } }
-        public string fAllergyDescription { get { return _tmember.AllergyDescription; } set { _tmember.AllergyDescription = value; } }
+        public Member _member;        
+        public CLoginViewModel()
+        {
+            if (_member == null)
+                _member = new Member();
+        }
+        public Member member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
 
+        public int MemberId
+        {
+            get { return _member.MemberId; }
+            set { _member.MemberId = value; }
+        }
 
+        public string? Name
+        {
+            get { return _member.Name; }
+            set { _member.Name = value; }
+        }
+
+        public string? Email
+        {
+            get { return _member.Email; }
+            set { _member.Email = value; }
+        }
+
+        public string? Phone
+        {
+            get { return _member.Phone; }
+            set { _member.Phone = value; }
+        }
+
+        public string? Account
+        {
+            get { return _member.Account; }
+            set { _member.Account = value; }
+        }
+
+        public string? Password
+        {
+            get { return _member.Password; }
+            set { _member.Password = value; }
+        }
+
+        public DateTime? Birthday
+        {
+            get { return _member.Birthday; }
+            set { _member.Birthday = value; }
+        }
+
+        public bool? Gender
+        {
+            get { return _member.Gender; }
+            set { _member.Gender = value; }
+        }
+
+        public bool? MaritalStatus
+        {
+            get { return _member.MaritalStatus; }
+            set { _member.MaritalStatus = value; }
+        }
+
+        public string? Nickname
+        {
+            get { return _member.Nickname; }
+            set { _member.Nickname = value; }
+        }
+
+        public string? AvatarImage
+        {
+            get { return _member.AvatarImage; }
+            set { _member.AvatarImage = value; }
+        }
         public IFormFile photo { get; set; }
+
+        public string? ResidentialCity
+        {
+            get { return _member.ResidentialCity; }
+            set { _member.ResidentialCity = value; }
+        }
+
+        public int? Permission
+        {
+            get { return _member.Permission; }
+            set { _member.Permission = value; }
+        }
+
+        public string? Occupation
+        {
+            get { return _member.Occupation; }
+            set { _member.Occupation = value; }
+        }
+
+        public string? DiseaseDescription
+        {
+            get { return _member.DiseaseDescription; }
+            set { _member.DiseaseDescription = value; }
+        }
+
+        public string? AllergyDescription
+        {
+            get { return _member.AllergyDescription; }
+            set { _member.AllergyDescription = value; }
+        }
+
+        public DateTime? LoginTime
+        {
+            get { return _member.LoginTime; }
+            set { _member.LoginTime = value; }
+        }       
 
         public int fAuthorityId { get; set; }
         [Display(Name = "Remember Me")]

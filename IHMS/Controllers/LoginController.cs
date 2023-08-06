@@ -12,6 +12,14 @@ using System.Text;
 using static IHMS.Models.Member;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
+using System.Net.Mail;
+using System.Net;
+using System.Security.Cryptography;
+using System.Web;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using Humanizer.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 namespace IHMS.Controllers
 {
@@ -19,10 +27,12 @@ namespace IHMS.Controllers
     {
         private IWebHostEnvironment _enviro = null;
         private readonly IhmsContext _context;
-        public LoginController(IhmsContext context, IWebHostEnvironment p)
+        private readonly IConfiguration _configuration;
+        public LoginController(IhmsContext context, IWebHostEnvironment p , IConfiguration configuration)
         {
             _context = context;
             _enviro = p;
+            _configuration = configuration;
         }
 
         // GET: 註冊頁面
@@ -66,7 +76,7 @@ namespace IHMS.Controllers
                         }
                         else if (cust.Email == inModel.Email)
                         {
-                            TempData["ErrMsg"] = "此登入帳號已存在";                                                      
+                            TempData["ErrMsg"] = "此電子信箱已使用";                                                      
                         }
                     }
                     else
@@ -101,6 +111,13 @@ namespace IHMS.Controllers
         {
             return View();
         }
+
+        // GET: 忘記密碼頁面
+        public ActionResult ForgetPwd()
+        {
+            return View();
+        }        
+
         public IActionResult MemberEdit(CKeywordViewModel vm)
         {
             string keyword = vm.txtKeyword;
@@ -119,6 +136,7 @@ namespace IHMS.Controllers
             return View(datas);
 
         }
+        //會員修改
         public ActionResult Edit(int? id)
         {            
             if (id == null)
@@ -154,13 +172,13 @@ namespace IHMS.Controllers
                 cust.AllergyDescription = x.AllergyDescription; //過敏反應
                
                 db.SaveChanges();
-            }
+                
+            }   
             return RedirectToAction("Edit");
         }
-        /// <summary>
-        /// 驗證 Google 登入授權
-        /// </summary>
-        /// <returns></returns>
+      
+
+        // 驗證 Google 登入授權        
         public async Task<IActionResult> GoogleLogin()
         {
             string? formCredential = Request.Form["credential"];
@@ -179,18 +197,18 @@ namespace IHMS.Controllers
 
                 if (member != null)
                 {
-                    // 將用戶信息轉為 JSON 格式
-                    var memberInfoJson = JsonConvert.SerializeObject(member);
+                    var response = new
+                    {
+                        MemberId = member.MemberId,
+                        Name = member.Name,
+                        Email = member.Email                        
+                    };
 
-                    // 使用 JavaScript 保存 localStorage 並轉跳
-                    string redirectScript = $@"
-                <script>
-                    var memberInfo = {memberInfoJson};
-                    localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
-                    window.location.href = 'http://localhost:5174/';
-                </script>";
+                    
+                    //Google登入會直接跳到會員修改
+                    return RedirectToAction("Edit", "Login", new { id = member.MemberId });
 
-                    return Content(redirectScript, "text/html");
+
                 }
                 else
                 {

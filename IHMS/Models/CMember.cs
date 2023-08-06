@@ -120,5 +120,7 @@ namespace IHMS.Models
             set { _member.LoginTime = value; }
         }
         public string ErrMsg { get; set; }
+        public string firstPassword { get; set; }
+        public string confirmPassword { get; set; }
     }
 }

@@ -98,16 +98,17 @@
                     <div class="sidebar__item">
                         <h5>會員專區</h5>
                         <ul>
-                            <li class="liThis"><a href="~/member/edit" class="row"><i class="fa-solid fa-user-pen col-2"></i>個人資料</a></li>
-                            <li><a href="~/Diary/DiaryMain" class="row"><i class="fa-solid fa-utensils col-2"></i>飲食日誌</a></li>
-                            <li><a href="~/Member/OrderList" class="row"><i class="fa-solid fa-cart-shopping col-2"></i>訂單查詢</a></li>
-                            <li><a href="~/Student/CandidateList" class="row"><i class="fa-solid fa-heart col-2"></i>候選教練</a></li>
-                            <li><a href="~/Student/CourseList" class="row"><i class="fa-solid fa-dumbbell col-2"></i>課程列表</a></li>
-                            <li><a href="~/Student/ViewCourseCalendar" class="row"><i class="fa-solid fa-calendar-day col-2"></i>課程行事曆</a></li>
-                            <li><a href="~/Problem/CheckReply" class="row"><i class="fa-solid fa-comments col-2"></i>客服記錄</a></li>
+                            <li class="liThis"><a href="~/Login/edit/@Model.MemberId" class="row"><i class="fa-solid fa-user-pen col-2"></i>個人資料</a></li>
+                            @* href填寫路徑之後加上@Model.MemberId*@
+                            <li><a href="#" class="row"><i class="fa-solid fa-utensils col-2"></i>飲食日誌</a></li>
+                            <li><a href="#" class="row"><i class="fa-solid fa-cart-shopping col-2"></i>訂單查詢</a></li> 
+                            <li><a href="#" class="row"><i class="fa-solid fa-heart col-2"></i>候選教練</a></li>
+                            <li><a href="#" class="row"><i class="fa-solid fa-dumbbell col-2"></i>課程列表</a></li>
+                            <li><a href="#" class="row"><i class="fa-solid fa-calendar-day col-2"></i>課程行事曆</a></li>
+                            <li><a href="#" class="row"><i class="fa-solid fa-comments col-2"></i>客服記錄</a></li>
                         </ul>
                     </div>
-                    <a href="~/Coach/CreateResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                    <a href="#" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
@@ -116,7 +117,7 @@
                 <i class="fa fa-key"></i> 重設密碼
                 </button>
                 </div>*@
-                <form asp-action="Edit" asp-controller="Login" enctype="multipart/form-data">
+                <form asp-action="Edit" asp-controller="Login" onsubmit="return validateForm()" enctype="multipart/form-data">
                     <div class="container">
                         <div class="row">
                             <div class="col-4 reveal_b1">
@@ -144,7 +145,16 @@
                                     <div class="col-md-7">
                                         <input asp-for="Account" class="form-control" readonly />
                                     </div>
-                                    <span asp-validation-for="Account" class="text-danger"></span>
+                                    <span asp-validation-for="Account" class="text-danger custom-error-message"></span>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-3">
+                                        <label asp-for="Email" class="control-label"></label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="Email" class="form-control" readonly />
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger custom-error-message"></span>
                                 </div>
                                 <div class="form-group row justify-content-center">
                                     <div class="col-md-3">
@@ -153,7 +163,7 @@
                                     <div class="col-md-7">
                                         <input asp-for="Name" class="form-control" />
                                     </div>
-                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <span asp-validation-for="Name" class="text-danger custom-error-message"></span>
                                 </div>
                                 <div class="form-group row justify-content-center">
                                     <div class="col-md-3">
@@ -182,27 +192,52 @@
                                     </div>
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
+
                                 <div class="form-group row justify-content-center">
                                     <div class="col-md-3">
-                                        <label asp-for="Email" class="control-label"></label>
+                                        <label asp-for="DiseaseDescription" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="Email" class="form-control" />
+                                        <input asp-for="DiseaseDescription" class="form-control" />
                                     </div>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                    <span asp-validation-for="DiseaseDescription" class="text-danger"></span>
                                 </div>
                                 <div class="form-group row justify-content-center">
                                     <div class="col-md-3">
-                                        <label asp-for="Password" class="control-label"></label>
+                                        <label asp-for="AllergyDescription" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="Password" class="form-control" />
+                                        <input asp-for="AllergyDescription" class="form-control" />
                                     </div>
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>                                
+                                    <span asp-validation-for="AllergyDescription" class="text-danger"></span>
+                                </div>
+                                                            
+
+                                <div class="collapse" id="resetPasswordForm">
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-3">
+                                            <label asp-for="Password" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <input asp-for="Password" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="Password" class="text-danger custom-error-message"></span>
+                                    </div>
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-3">
+                                            <label for="ConfirmPassword" class="form-label">確認密碼</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <input asp-for="Password" id="ConfirmPassword" class="form-control" />
+                                        </div>
+                                        <span id="confirmPasswordError" class="text-danger custom-error-message"></span>
+                                    </div>
+                                </div>
+
+                                
                                 <div class="text-center" style="justify-content: center; display: flex; margin-top:20px;">
                                     @*<div class="col-md-6">*@
-                                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                                    <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#resetPasswordForm" aria-expanded="false" aria-controls="resetPasswordForm">
                                         <i class="fa fa-key"></i> 重設密碼
                                     </button>
                                     <input type="submit" value="會員資料修改" class=" btn btn-success" />
@@ -218,9 +253,51 @@
     </div>
 </section>
 <script src="~/js/Login.js"></script>
+
 <script>
-    login(event)
-    MemberEdit()
+    function validateForm() {
+        var name = document.getElementById("Name").value;
+        var email = document.getElementById("Email").value;
+        var account = document.getElementById("Account").value;
+        var password = document.getElementById("Password").value;
+        var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+        if (name === "") {
+            alert("請輸入姓名");
+            return false;
+        }
+
+        if (email === "") {
+            alert("請輸入信箱");
+            return false;
+        }
+
+        if (account === "") {
+            alert("請輸入帳號");
+            return false;
+        }
+
+        if (password === "") {
+            alert("請輸入密碼");
+            return false;
+        }
+
+        if (confirmPassword === "") {
+            alert("請再次輸入確認密碼");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            //document.getElementById("confirmPasswordError").textContent = "兩次輸入的密碼不一致";
+            alert("兩次輸入的密碼不一致");
+            return false;
+        }
+
+        return true; // 表單驗證通過
+    }
+</script>
+<script>
+    login(event)  
 </script>
 @section Scripts{
     <script>
@@ -231,7 +308,9 @@
         document.querySelector('#imgLoad').addEventListener("change", function () {
             document.getElementById('imgShow').src = window.URL.createObjectURL(this.files[0]);
         });
-    </script>
+
+        
+    </script>    
 }
 
 

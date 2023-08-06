@@ -169,7 +169,7 @@ public partial class Member
     // 寄送驗證碼
     public class SendMailTokenIn
     {
-        public string Account { get; set; }
+        public string Email { get; set; }
     }
 
 
