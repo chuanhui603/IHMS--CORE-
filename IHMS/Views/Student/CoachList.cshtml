@@ -375,7 +375,20 @@
                                 <b class="bTopic">篩選條件</b>
                             </div>
                             <div class="filterCard">
-                                
+                                <div class="keyTopic">
+                                    <h6><b>地區</b></h6>
+                                </div>
+                                <div>
+                                    <select class="custom-select" id="selCity" name="FCityId">
+                                        <option value="0" selected disabled>請選擇地區</option>
+                                        @{
+                                            foreach (var c in db.Cities.Where(c => c.Coaches.Any()).OrderBy(c => c.CityOrder).ToList())
+                                            {
+                                                <option value="@c.CityId" id="@c.CityId">@c.CityName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
                             </div>
                             <div class="filterCard">
                                 <div class="keyTopic">
@@ -432,7 +445,7 @@
                     </div>
                 </div>
                 <div id="divSearchResult">
-                    <span id="spSearch" hidden>/&nbsp;&nbsp;篩選條件：</span>
+                    <span id="spSearch" hidden>&nbsp;&nbsp;篩選條件：</span>
                     <span id="spFilter"></span>
                 </div>
                 <div class="divCoachList">
@@ -454,7 +467,7 @@
                                        
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                            <span>高雄市</span>
+                                            <span>@coach.CityName</span>
                                         </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/skill.png" class="imgIcon" />
@@ -493,6 +506,7 @@
 @section Scripts{
     
     <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/lib/animate/animate.css"></script>
     <script>
         //Demo
         $("#btnDemo").click((evt) => {
@@ -533,12 +547,12 @@
         }
         GetPage();
 
-        //顯示教練數量
-        $(document).ready(() => {
-           $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
-        })
+        ////顯示教練數量
+        //$(document).ready(() => {
+        //   $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
+        //})
 
-        if未輸入關鍵字
+        //if未輸入關鍵字
         $("#btnSearch").click((evt) => {
             if ($("#ipKeyword").val() == "") {
                 evt.preventDefault();
@@ -546,31 +560,24 @@
                     icon: 'warning',
                     title: '請輸入關鍵字'
                 })
+               
             }
         })
 
-        多重篩選觸發事件、顯示搜尋結果
-        
-        $("input[name='fGender[]'], input[name='fCoachSkill[]'], input[name='fCoachTime[]']").click(() => {
+        //多重篩選觸發事件、顯示搜尋結果
+
+        $("input[name='fGender[]'], input[name='fCoachSkill[]']").on('click', function () {
             if ($("input[name='fCoachSkill[]']:checked").length < 9) {
                 $("#spAllSkill").prop("hidden", false);
                 $("#spCancelSkill").prop("hidden", true);
-            }
-            else {
+            } else {
                 $("#spAllSkill").prop("hidden", true);
                 $("#spCancelSkill").prop("hidden", false);
             }
-            if ($("input[name='fCoachTime[]']:checked").length < 6) {
-                $("#spAllTime").prop("hidden", false);
-                $("#spCancelTime").prop("hidden", true);
-            }
-            else {
-                $("#spAllTime").prop("hidden", true);
-                $("#spCancelTime").prop("hidden", false);
-            }
             ShowFilter();
             GetCoach();
-        })
+        });
+
         function ShowFilter() {
             $("#spSearch").prop("hidden", false);
             $("#spFilter").empty();
@@ -583,102 +590,86 @@
             $("input[name='fCoachSkill[]']:checked").each(function () {
                 $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
             })
-            $("input[name='fCoachTime[]']:checked").each(function () {
-                $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
-            })
+            
         }
 
         //全選
-        //$("#spAllSkill").click(() => {
-        //    $("input[name='fCoachSkill[]']").prop("checked", true);
-        //    $("#spAllSkill").prop("hidden", true);
-        //    $("#spCancelSkill").prop("hidden", false);
-        //    ShowFilter();
-        //    GetCoach();
-        //})
-        //$("#spAllTime").click(() => {
-        //    $("input[name='fCoachTime[]']").prop("checked", true);
-        //    $("#spAllTime").prop("hidden", true);
-        //    $("#spCancelTime").prop("hidden", false);
-        //    ShowFilter();
-        //    GetCoach();
-        //})
+        $("#spAllSkill").click(() => {
+            $("input[name='fCoachSkill[]']").prop("checked", true);
+            $("#spAllSkill").prop("hidden", true);
+            $("#spCancelSkill").prop("hidden", false);
+            ShowFilter();
+            GetCoach();
+        })
+        $("#spAllTime").click(() => {
+            $("input[name='fCoachTime[]']").prop("checked", true);
+            $("#spAllTime").prop("hidden", true);
+            $("#spCancelTime").prop("hidden", false);
+            ShowFilter();
+            GetCoach();
+        })
 
         //取消全選
-        //$("#spCancelSkill").click(() => {
-        //    $("input[name='fCoachSkill[]']").prop("checked", false);
-        //    $("#spAllSkill").prop("hidden", false);
-        //    $("#spCancelSkill").prop("hidden", true);
-        //    ShowFilter();
-        //    GetCoach();
-        //})
-        //$("#spCancelTime").click(() => {
-        //    $("input[name='fCoachTime[]']").prop("checked", false);
-        //    $("#spAllTime").prop("hidden", false);
-        //    $("#spCancelTime").prop("hidden", true);
-        //    ShowFilter();
-        //    GetCoach();
-        //})
+        $("#spCancelSkill").click(() => {
+            $("input[name='fCoachSkill[]']").prop("checked", false);
+            $("#spAllSkill").prop("hidden", false);
+            $("#spCancelSkill").prop("hidden", true);
+            ShowFilter();
+            GetCoach();
+        })
+       
 
         //清除條件
-        //$("#btnClear").click((evt) => {
-        //    evt.preventDefault();
-        //    $("#selCity").val("0");
-        //    $("input[type='checkbox']").prop("checked", false);
-        //    GetCoach();
-        //    $("#spFilter").empty();
-        //    $("#spSearch").prop("hidden", true);
-        //    $("#spAllSkill").prop("hidden", false);
-        //    $("#spCancelSkill").prop("hidden", true);
-        //    $("#spAllTime").prop("hidden", false);
-        //    $("#spCancelTime").prop("hidden", true);
-        //})
+        $("#btnClear").click((evt) => {
+            evt.preventDefault();
+            $("#selCity").val("0");
+            $("input[type='checkbox']").prop("checked", false);
+            GetCoach();
+            $("#spFilter").empty();
+            $("#spSearch").prop("hidden", true);
+            $("#spAllSkill").prop("hidden", false);
+            $("#spCancelSkill").prop("hidden", true);
+            $("#spAllTime").prop("hidden", false);
+            $("#spCancelTime").prop("hidden", true);
+        })
 
         //Ajax篩選後顯示教練
-        //function GetCoach() {
-        //    $.ajax({
-        //        url: '@Url.Content("~/Student/CoachList")',
-        //        type: 'post',
-        //        data: new FormData(document.frmFilter),
-        //        processData: false,
-        //        contentType: false,
-        //        success: function (data) {
-        //            $(".divCoachList").empty();
-        //            $("#spResultCount>b").text(`${data.length}`);
-        //            $.each(data, function (index, coach) {
-        //                $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
-        //                //左-col-3
-        //                $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
-        //                $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.image}`);
-        //                //右-col-9
-        //                $(`#div${index}`).append(`<div class="col-9 divCoachInfo" id=divInfo${index}></div>`);
-        //                $(`#divInfo${index}`).append(`<ul id=ul${index}></ul>`);
-        //                //介紹、btn
-        //                $(`#ul${index}`).append(`<li style="list-style:none" class="liCoachName row" id=liName${index}></li>`);
-        //                $(`#liName${index}`).append(`<h3 class="col-8"><b>${coach.intro}</b></h3>`);
-        //                $(`#liName${index}`).append(`<div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/${coach.fCoachId}">教練檔案</a></div>`);
+        function GetCoach() {
+            $.ajax({
+                url: '@Url.Content("~/Student/CoachList")',
+                type: 'post',
+                data: new FormData(document.frmFilter),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $(".divCoachList").empty();
+                    $("#spResultCount>b").text(`${data.length}`);
+                    $.each(data, function (index, coach) {
+                        $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
+                        //左-col-3
+                        $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
+                        $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.image}`);
+                        //右-col-9
+                        $(`#div${index}`).append(`<div class="col-9 divCoachInfo" id=divInfo${index}></div>`);
+                        $(`#divInfo${index}`).append(`<ul id=ul${index}></ul>`);
+                        //介紹、btn
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="liCoachName row" id=liName${index}></li>`);
+                        $(`#liName${index}`).append(`<h3 class="col-8"><b>${coach.intro}</b></h3>`);
+                        $(`#liName${index}`).append(`<div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/${coach.CoachId}">教練檔案</a></div>`);
                         
-                    //    $(".star").attr("src", "/img/coach/icon/star.png");
-                    //    $(`#liRate${index}`).append(`<span id="rateCount">(${coach.rateCount})</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`);
-                    //    $(`#liRate${index}`).append(`<span id="courseCount">${coach.fCourseCount} 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>`);
-                    //    //City
-                    //    $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liCity${index}></li>`);
-                    //    $(`#liCity${index}`).append(`<img class="imgIcon iconCity" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>${coach.cityName}</span>`);
-                    //    $(".iconCity").attr("src", "/img/Coach/icon/location.png");
-                    //    //Skill
-                    //    $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liSkill${index}><img class="imgIcon iconSkill" /><b>&nbsp;&nbsp;&nbsp;專長： </b></li>`);
-                    //    $(".iconSkill").attr("src", "/img/Coach/icon/skill.png");
-                    //    $(`#liSkill${index}`).append(`<span class="spSkill" id=spSkill${index}></span>`);
-                    //    $.get("@Url.Content("~/Student/GetSkills")", { "id": `${coach.fCoachId}` },
-                    //        function (skills) {
-                    //            $(`#spSkill${index}`).text(`${skills}`);
-                    //        })
-                    //    //Slogan
-                    //    $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);
-                    //})
-                //    GetPage();
-                //}
-            //});
+                     
+                         //Skill
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liSkill${index}><img class="imgIcon iconSkill" /><b>&nbsp;&nbsp;&nbsp;專長： </b></li>`);
+                        $(".iconSkill").attr("src", "/img/Coach/icon/skill.png");
+                        $(`#liSkill${index}`).append(`<span class="spSkill" id=spSkill${index}></span>`);
+                        $.get("@Url.Content("~/Student/GetSkills")", { "id": `${coach.CoachId}` },
+                            function (skills) {
+                                $(`#spSkill${index}`).text(`${skills}`);
+                            })
+                           })
+                    GetPage();
+                }
+            });
         }
 
         //GoTop btn
