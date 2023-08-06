@@ -85,11 +85,11 @@ namespace IHMS.Controllers
                         {
                             inModel.AvatarImage = "1.jpg";
                         }
-
+                        inModel.Permission = 3000;
                         db.Members.Add(inModel);
                         db.SaveChanges();
 
-                        return Redirect("http://localhost:5174/");
+                        return Redirect("https://localhost:7127/Login/Login");
                     }
                     
                 }
