@@ -12,6 +12,13 @@ using System.Text;
 using static IHMS.Models.Member;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
+using System.Net.Mail;
+using System.Net;
+using System.Security.Cryptography;
+using System.Web;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using Humanizer.Configuration;
 
 namespace IHMS.Controllers
 {
@@ -19,10 +26,12 @@ namespace IHMS.Controllers
     {
         private IWebHostEnvironment _enviro = null;
         private readonly IhmsContext _context;
-        public LoginController(IhmsContext context, IWebHostEnvironment p)
+        private readonly IConfiguration _configuration;
+        public LoginController(IhmsContext context, IWebHostEnvironment p , IConfiguration configuration)
         {
             _context = context;
             _enviro = p;
+            _configuration = configuration;
         }
 
         // GET: 註冊頁面
@@ -66,7 +75,7 @@ namespace IHMS.Controllers
                         }
                         else if (cust.Email == inModel.Email)
                         {
-                            TempData["ErrMsg"] = "此登入帳號已存在";                                                      
+                            TempData["ErrMsg"] = "此電子信箱已使用";                                                      
                         }
                     }
                     else
@@ -101,6 +110,13 @@ namespace IHMS.Controllers
         {
             return View();
         }
+
+        // GET: 忘記密碼頁面
+        public ActionResult ForgetPwd()
+        {
+            return View();
+        }        
+
         public IActionResult MemberEdit(CKeywordViewModel vm)
         {
             string keyword = vm.txtKeyword;
@@ -179,18 +195,18 @@ namespace IHMS.Controllers
 
                 if (member != null)
                 {
-                    // 將用戶信息轉為 JSON 格式
-                    var memberInfoJson = JsonConvert.SerializeObject(member);
+                    var response = new
+                    {
+                        MemberId = member.MemberId,
+                        Name = member.Name,
+                        Email = member.Email                        
+                    };
 
-                    // 使用 JavaScript 保存 localStorage 並轉跳
-                    string redirectScript = $@"
-                <script>
-                    var memberInfo = {memberInfoJson};
-                    localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
-                    window.location.href = 'http://localhost:5174/';
-                </script>";
+                    // 返回 JSON 响应
 
-                    return Content(redirectScript, "text/html");
+                    return RedirectToAction("Edit", "Login", new { id = member.MemberId });
+
+
                 }
                 else
                 {
