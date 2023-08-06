@@ -339,9 +339,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.CourseTotal)
                             </th>
-                            <th>
-                                剩餘
-                            </th>
+                            
                             <th class="thStatus">
                                 <select class="selStatus" id="selStatus">
                                     <option>@Html.DisplayNameFor(model => model.Status)</option>
@@ -363,7 +361,7 @@
                                         @count
                                     </td>
                                     <td>
-                                        Silvia Lin
+                                        @item.MemberName
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CourseName)
@@ -374,14 +372,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CourseTotal)
                                     </td>
-                                    @{
-                                        int total = (int)item.CourseTotal;
-                                        int done = db.Schedules.Where(r => r.CourseId == item.CourseId && r.StatusNumber == 61).Count();
-                                        int remain = total - done;
-                                        <td id="remain_@item.CourseId">
-                                            @remain
-                                        </td>
-                                    }
+                                 
                                     <td id="status_@item.CourseId" class="tdStatus">
                                         @Html.DisplayFor(modelItem => item.Status)
                                     </td>

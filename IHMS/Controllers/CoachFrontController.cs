@@ -325,7 +325,7 @@ namespace IHMS.Controllers
         {
             int userId = 11;
 
-            var coach = _context.Coaches.Where(c => c.StatusNumber == 2).FirstOrDefault(c => c.MemberId == userId);
+            var coach = _context.Coaches.Where(c => c.StatusNumber == 66).FirstOrDefault(c => c.MemberId == userId);
             if (coach == null)
                 return RedirectToAction("CreateResume");
 

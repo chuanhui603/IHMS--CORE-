@@ -47,12 +47,12 @@ namespace IHMS.ViewModel
             get { return Course.CoachContact.MemberId; }
             set { Course.CoachContact.MemberId = (int)value; }
         }
-       
-        //public string MemberPhone
-        //{
-        //    get { return Course.CoachContact.Member.Phone; }
-        //    set { Course.CoachContact.Member.Phone = value; }
-        //}
+
+        public string MemberName
+        {
+            get { return Course.CoachContact.Member.Name; }
+            set { Course.CoachContact.Member.Name = value; }
+        }
         [DisplayName("堂數")]
         public int? CourseTotal
         {
