@@ -205,10 +205,11 @@ namespace IHMS.Controllers.APIcontrollers
             //儲存schedule
             var CoachContactIdID = _context.CoachContacts.Where(cc=>cc.CoachId ==data.coachid).FirstOrDefault().CoachContactId;
             var CourseID = _context.Courses.Where(cc => cc.CoachContactId == CoachContactIdID).FirstOrDefault().CourseId;
+          
             Schedule sch = new Schedule
             {
                 CourseId = CourseID,
-                CourseTime = nowdate,
+                CourseTime ="202308081000",
                 StatusNumber = 60,
             };
             _context.Schedules.Add(sch);

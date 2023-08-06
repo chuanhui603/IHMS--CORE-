@@ -49,7 +49,6 @@ namespace IHMS.Controllers
                                     .Include(c => c.Member)
                                     .Include(c => c.City)
                                     .Include(c => c.CoachSkills).ThenInclude(cs => cs.Skill)
-                                    .Include(c => c.CoachRates).AsEnumerable()
                                     .Where(c => c.Visible == true);
             }
             ViewBag.Keyword = v.txtKeyword;
@@ -57,10 +56,10 @@ namespace IHMS.Controllers
             return View(coaches);
         }
         //Ajax多重篩選
-        public IActionResult MultiFilter(int? CityId, string[] Gender, int[] CoachSkill, int[] CoachTime)
+        public IActionResult MultiFilter(int? CityId, string[] Gender, int[] CoachSkill)
         {
             var datas = _context.Coaches
-                .Include(c => c.Member)
+                .Include(c => c.Member).ThenInclude(cg => cg.Gender)
                 .Include(c => c.City)
                 .Include(c => c.CoachSkills).ThenInclude(cs => cs.Skill)
                 .Include(c => c.CoachAvailableTimes)
@@ -68,8 +67,7 @@ namespace IHMS.Controllers
                 .Where(c => c.Visible == true &&
                         (CityId != null ? c.CityId == CityId : true) &&
                         (Gender.Length != 0 ? Gender.Contains(c.Member.Gender.ToString()) : true) &&
-                        (CoachSkill.Length != 0 ? c.CoachSkills.Select(cs => (int)cs.SkillId).ToArray<int>().Intersect<int>(CoachSkill).Count() > 0 : true) &&
-                        (CoachTime.Length != 0 ? c.CoachAvailableTimes.Select(at => (int)at.AvailableTimeId).ToArray<int>().Intersect<int>(CoachTime).Count() > 0 : true));
+                        (CoachSkill.Length != 0 ? c.CoachSkills.Select(cs => (int)cs.SkillId).ToArray<int>().Intersect<int>(CoachSkill).Count() > 0 : true));
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());
             return Json(coaches);
