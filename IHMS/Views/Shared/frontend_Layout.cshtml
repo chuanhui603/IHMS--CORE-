@@ -215,7 +215,7 @@
             const res = await fetch(`https://localhost:7127/api/PointRecordsDTO/sum/6`)
             const datas = await res.json()
             document.querySelector('#memberPoint').innerHTML = datas
-                    };
+         };
         window.addEventListener('load', doFirst);
     </script>
     @RenderSection("Scripts", required: false)

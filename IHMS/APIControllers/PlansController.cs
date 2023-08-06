@@ -57,7 +57,7 @@ namespace IHMS.APIControllers
                 Type = p.Type,
                 MemberId = p.MemberId,
                 Weight = p.Weight,
-                Gender =p.Gender,
+                Gender = p.Gender,
 
             }).FirstOrDefault();
 
@@ -105,18 +105,18 @@ namespace IHMS.APIControllers
             {
                 return NotFound();
             }
-            var res = _context.SportDetails.OrderBy(p => p.Isdone).OrderBy(p=>p.Registerdate).Where(p => p.SportId == sportid).Select(p => new SportDetailDTO
+            var res = _context.SportDetails.OrderBy(p => p.Registerdate).OrderBy(p => p.Isdone).Where(p => p.SportId == sportid).Select(p => new SportDetailDTO
             {
                 SportDetailId = p.SportDetailId,
                 SportId = p.SportId,
-                Sname=p.Sname,
+                Sname = p.Sname,
                 Sets = p.Sets,
                 Frequency = p.Frequency,
                 Isdone = p.Isdone,
                 Registerdate = p.Registerdate,
                 Time = p.Time,
-               Hour =p.Hour,
-               Min =p.Min,
+                Hour = p.Hour,
+                Min = p.Min,
                 Type = p.Type,
                 Calories = p.Calories,
             });
@@ -127,7 +127,7 @@ namespace IHMS.APIControllers
             }
             else
             {
-                return  Ok(res);
+                return Ok(res);
             }
 
         }
@@ -166,20 +166,20 @@ namespace IHMS.APIControllers
             {
                 return NotFound();
             }
-            var res = _context.SportDetails.OrderBy(p => p.Registerdate).Where(p => p.SportId == sportid && p.Sname.Contains($"{search}")).Select(p => new SportDetailDTO
+            var res = _context.SportDetails.OrderBy(p => p.Registerdate).OrderBy(p => p.Isdone).Where(p => p.SportId == sportid && p.Sname.Contains($"{search}")).Select(p => new SportDetailDTO
             {
-               Sname = p.Sname,
-               SportDetailId = p.SportDetailId,
-               SportId = p.SportId,
-               Frequency = p.Frequency,
-               Isdone = p.Isdone,
-               Registerdate  =p.Registerdate,
-               Time = p.Time,
-               Hour = p.Hour,
-               Min =p.Min,
-               Type = p.Type,
-               Sets = p.Sets,
-               Calories =p.Calories,
+                Sname = p.Sname,
+                SportDetailId = p.SportDetailId,
+                SportId = p.SportId,
+                Frequency = p.Frequency,
+                Isdone = p.Isdone,
+                Registerdate = p.Registerdate,
+                Time = p.Time,
+                Hour = p.Hour,
+                Min = p.Min,
+                Type = p.Type,
+                Sets = p.Sets,
+                Calories = p.Calories,
             });
 
             if (res == null)
@@ -212,12 +212,12 @@ namespace IHMS.APIControllers
                 Isdone = p.Isdone,
                 Registerdate = p.Registerdate,
                 Time = p.Time,
-                Hour =p.Hour,
-                Min =p.Min,
+                Hour = p.Hour,
+                Min = p.Min,
                 Type = p.Type,
-                Calories =p.Calories,
-                
-                
+                Calories = p.Calories,
+
+
             }).FirstOrDefault();
 
             if (res == null)
@@ -242,12 +242,12 @@ namespace IHMS.APIControllers
             }
             var res = _context.DietDetails.Where(p => p.DietId == dietid).Select(d => new DietDetailDTO
             {
-               DietDetailId = d.DietDetailId,
-               Dname = d.Dname,
-               Calories = d.Calories,
-               Registerdate =d.Registerdate,
-               Type = d.Type,    
-               Decription = d.Decription,
+                DietDetailId = d.DietDetailId,
+                Dname = d.Dname,
+                Calories = d.Calories,
+                Registerdate = d.Registerdate,
+                Type = d.Type,
+                Decription = d.Decription,
             });
 
             if (res == null)
@@ -298,8 +298,8 @@ namespace IHMS.APIControllers
                 SportId = p.SportId,
                 SportDetailId = p.SportDetailId,
                 Sname = p.Sname,
-               Hour = p.Hour,
-               Min =p.Min,
+                Hour = p.Hour,
+                Min = p.Min,
                 Time = p.Time,
                 Frequency = p.Frequency,
                 Registerdate = p.Registerdate,
@@ -366,7 +366,7 @@ namespace IHMS.APIControllers
                 Times = plan.Times,
                 Weight = plan.Weight,
                 Gender = plan.Gender,
-                
+
             }).FirstOrDefault();
             _context.Entry(res).State = EntityState.Modified;
 
@@ -410,7 +410,7 @@ namespace IHMS.APIControllers
                 Decription = dietDTO.Decription,
                 Calories = dietDTO.Calories,
                 Registerdate = Convert.ToDateTime(dietDTO.Registerdate),
-                
+
             };
 
             _context.Entry(diet).State = EntityState.Modified;
@@ -502,9 +502,9 @@ namespace IHMS.APIControllers
         [HttpPut]
         public async Task<IActionResult> PutSportChangeTrue(int detailid)
         {
-          
+
             //處理文字
-            var res = _context.SportDetails.Where(s=>s.SportDetailId == detailid).FirstOrDefault();
+            var res = _context.SportDetails.Where(s => s.SportDetailId == detailid).FirstOrDefault();
             res.Isdone = true;
             _context.Entry(res).State = EntityState.Modified;
             try
@@ -544,11 +544,11 @@ namespace IHMS.APIControllers
                 SportId = sportDTO.SportId,
                 Sname = sportDTO.Sname,
                 Frequency = sportDTO.Frequency,
-                Registerdate =DateTime.Now,
+                Registerdate = DateTime.Now,
                 Type = sportDTO.Type,
                 Time = sportDTO.Time,
-               Hour = sportDTO.Hour,
-               Min = sportDTO.Min,
+                Hour = sportDTO.Hour,
+                Min = sportDTO.Min,
                 Isdone = sportDTO.Isdone,
                 Calories = sportDTO.Calories,
                 Sets = sportDTO.Sets,
@@ -634,7 +634,7 @@ namespace IHMS.APIControllers
                 Type = dto.Type,
                 Sets = dto.Sets,
                 Calories = dto.Calories,
-                
+
             };
             _context.SportDetails.Add(sport);
             await _context.SaveChangesAsync();
@@ -764,9 +764,9 @@ namespace IHMS.APIControllers
         [Route("~/api/[controller]/sportdetail/delete/{detailId:int}")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSportDetail(int detailId)
-        {         
+        {
             var detail = await _context.SportDetails.FindAsync(detailId);
-        
+
             if (detail == null)
             {
                 return NotFound();
