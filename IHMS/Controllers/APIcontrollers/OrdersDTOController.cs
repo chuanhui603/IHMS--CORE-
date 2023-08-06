@@ -209,7 +209,7 @@ namespace IHMS.Controllers.APIcontrollers
             Schedule sch = new Schedule
             {
                 CourseId = CourseID,
-                CourseTime ="202308081000",
+                CourseTime ="2023-08-08 10:00",
                 StatusNumber = 60,
             };
             _context.Schedules.Add(sch);
