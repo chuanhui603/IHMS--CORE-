@@ -549,7 +549,7 @@ namespace IHMS.APIControllers
                 Time = sportDTO.Time,
                 Hour = sportDTO.Hour,
                 Min = sportDTO.Min,
-                Isdone = sportDTO.Isdone,
+                Isdone = false,
                 Calories = sportDTO.Calories,
                 Sets = sportDTO.Sets,
             };
