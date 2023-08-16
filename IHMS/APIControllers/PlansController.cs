@@ -758,9 +758,6 @@ namespace IHMS.APIControllers
                 }
             }
         }
-
-
-
         private DietDetail DietAdd(DietDetailDTO dto)
         {
             DietDetail diet = new()
