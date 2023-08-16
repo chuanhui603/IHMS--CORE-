@@ -12,6 +12,7 @@ using IHMS.DTO;
 using System.Numerics;
 using Newtonsoft.Json;
 using System.Composition;
+using Humanizer;
 
 namespace IHMS.APIControllers
 {
@@ -24,23 +25,19 @@ namespace IHMS.APIControllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         public PlansController(IhmsContext context, IWebHostEnvironment webHostEnvironment)
         {
-
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
 
         #region Get
 
-
-
-
         // GET: api/plans/member/{memberid}/{nums}
         //取得當前會員的計畫規劃
         [Route("~/api/[controller]/member/{memberid:int}")]
         [HttpGet]
-        public async Task<ActionResult<Plan>> GetPlan(int memberid)
+        public async Task<ActionResult<Plan>> GetPlan(int? memberid)
         {
-            if (_context.Plans == null)
+            if (memberid == null)
             {
                 return NotFound();
             }
@@ -58,7 +55,6 @@ namespace IHMS.APIControllers
                 MemberId = p.MemberId,
                 Weight = p.Weight,
                 Gender = p.Gender,
-
             }).FirstOrDefault();
 
             if (res == null)
@@ -77,21 +73,20 @@ namespace IHMS.APIControllers
         //取得運動更新的最新日期
         [Route("~/api/[controller]/sport/{planid:int}")]
         [HttpGet]
-        public async Task<ActionResult<DateTime>> GetSportDate(int planid)
+        public async Task<ActionResult<DateTime>> GetSportDate(int? planid)
         {
-            if (_context.Plans == null)
+            if (planid == null)
             {
                 return NotFound();
             }
             var res = _context.Sports.Where(p => p.PlanId == planid).OrderByDescending(s => s.Createdate).FirstOrDefault();
-            DateTime date = res.Createdate;
-
-            if (res == null)
+            if(res == null)
             {
                 return NotFound();
-            }
+            }             
             else
             {
+                DateTime date = res.Createdate;
                 return date;
             }
 
@@ -99,9 +94,9 @@ namespace IHMS.APIControllers
 
         [Route("~/api/[controller]/sportdetail/list/{sportid:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetSportDetailList(int sportid)
+        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetSportDetailList(int? sportid)
         {
-            if (_context.SportDetails == null)
+            if (sportid == null)
             {
                 return NotFound();
             }
@@ -120,7 +115,6 @@ namespace IHMS.APIControllers
                 Type = p.Type,
                 Calories = p.Calories,
             });
-
             if (res == null)
             {
                 return NotFound();
@@ -135,14 +129,13 @@ namespace IHMS.APIControllers
 
         [Route("~/api/[controller]/sportdetail/sum/{sportid:int}")]
         [HttpGet]
-        public async Task<ActionResult<int>> GetSportDetailSum(int sportid)
+        public async Task<ActionResult<int>> GetSportDetailSum(int? sportid)
         {
-            if (_context.SportDetails == null)
+            if (sportid == null)
             {
                 return NotFound();
             }
             var sum = _context.SportDetails.Where(s => s.SportId == sportid).Sum(sd => sd.Calories);
-
             if (sum == null)
             {
                 return NotFound();
@@ -160,12 +153,13 @@ namespace IHMS.APIControllers
         //// GET: api/plans/sportdetail/${sportid}/search/${search.value}
         [Route("~/api/[controller]/sportdetail/{sportid:int}/search/{search}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetSportDetailSearch(int sportid, string search)
+        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetSportDetailSearch(int? sportid, string search)
         {
-            if (_context.Plans == null)
+            if (sportid == null)
             {
                 return NotFound();
             }
+            //照日期以及是否完成為順序排列data
             var res = _context.SportDetails.OrderBy(p => p.Registerdate).OrderBy(p => p.Isdone).Where(p => p.SportId == sportid && p.Sname.Contains($"{search}")).Select(p => new SportDetailDTO
             {
                 Sname = p.Sname,
@@ -181,7 +175,6 @@ namespace IHMS.APIControllers
                 Sets = p.Sets,
                 Calories = p.Calories,
             });
-
             if (res == null)
             {
                 return NotFound();
@@ -193,12 +186,15 @@ namespace IHMS.APIControllers
 
         }
 
+
+
+
         //取得單筆sportdetail資料
         [Route("~/api/[controller]/sportdetail/{sportdetailid:int}")]
         [HttpGet]
-        public async Task<ActionResult<SportDetailDTO>> GetSportDetail(int sportdetailid)
+        public async Task<ActionResult<SportDetailDTO>> GetSportDetail(int? sportdetailid)
         {
-            if (_context.SportDetails == null)
+            if (sportdetailid == null)
             {
                 return NotFound();
             }
@@ -216,10 +212,7 @@ namespace IHMS.APIControllers
                 Min = p.Min,
                 Type = p.Type,
                 Calories = p.Calories,
-
-
             }).FirstOrDefault();
-
             if (res == null)
             {
                 return NotFound();
@@ -234,9 +227,9 @@ namespace IHMS.APIControllers
         //取得dietdetail資料
         [Route("~/api/[controller]/dietdetail/list/{dietid:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DietDetailDTO>>> GetDietDetailList(int dietid)
+        public async Task<ActionResult<IEnumerable<DietDetailDTO>>> GetDietDetailList(int? dietid)
         {
-            if (_context.DietDetails == null)
+            if (dietid == null)
             {
                 return NotFound();
             }
@@ -265,14 +258,13 @@ namespace IHMS.APIControllers
         //取得dietdetail資料
         [Route("~/api/[controller]/diet/sum/{dietid:int}")]
         [HttpGet]
-        public async Task<ActionResult<int>> GetDietSum(int dietid)
+        public async Task<ActionResult<int>> GetDietSum(int? dietid)
         {
-            if (_context.DietDetails == null)
+            if (dietid == null)
             {
                 return NotFound();
             }
-            var res = _context.DietDetails.Where(p => p.DietId == dietid).Sum(dd => dd.Calories);
-
+            int? res = _context.DietDetails.Where(p => p.DietId == dietid).Sum(dd => dd.Calories);
             if (res == null)
             {
                 return NotFound();
@@ -287,9 +279,9 @@ namespace IHMS.APIControllers
         // GET: api/Plans/Sport/{SportId}/Sportdetail
         [Route("~/api/[controller]/Sport/{SportId:int}/Sportdetail")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetSportDetails(int SportId)
+        public async Task<ActionResult<IEnumerable<SportDetailDTO>>> GetSportDetails(int? SportId)
         {
-            if (_context.Plans == null)
+            if (SportId == null)
             {
                 return NotFound();
             }
@@ -349,26 +341,15 @@ namespace IHMS.APIControllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("~/api/[controller]/edit")]
         [HttpPut]
-        public async Task<IActionResult> PutPlan(PlanDTO plan)
+        public async Task<IActionResult> PutPlan(PlanDTO planDTO)
         {
-
-            var res = _context.Plans.Where(p => p.PlanId == plan.PlanId).Select(p => new Plan
+            if (planDTO == null)
             {
-                PlanId = plan.PlanId,
-                BodyPercentage = plan.BodyPercentage,
-                Age = plan.Age,
-                Bmr = plan.Bmr,
-                Height = plan.Height,
-                MemberId = plan.MemberId,
-                RegisterDate = DateTime.Now,
-                Type = plan.Type,
-                Tdee = plan.Tdee,
-                Times = plan.Times,
-                Weight = plan.Weight,
-                Gender = plan.Gender,
+                return NotFound();
+            }
+            var plan = PlanAdd(planDTO);
 
-            }).FirstOrDefault();
-            _context.Entry(res).State = EntityState.Modified;
+            _context.Entry(plan).State = EntityState.Modified;
 
             try
             {
@@ -396,23 +377,12 @@ namespace IHMS.APIControllers
         [HttpPut]
         public async Task<IActionResult> PutDietDetail([FromForm] DietDetailDTO dietDTO, [FromForm] List<IFormFile> Img)
         {
-            if (dietDTO.DietDetailId == null)
+            if (dietDTO == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            //處理文字
-            DietDetail diet = new DietDetail
-            {
-                DietDetailId = dietDTO.DietDetailId,
-                DietId = dietDTO.DietId,
-                Dname = dietDTO.Dname,
-                Type = dietDTO.Type,
-                Decription = dietDTO.Decription,
-                Calories = dietDTO.Calories,
-                Registerdate = Convert.ToDateTime(dietDTO.Registerdate),
-
-            };
-
+            //更改Detail
+            var diet = DietAdd(dietDTO);
             _context.Entry(diet).State = EntityState.Modified;
 
             //建立圖片路徑
@@ -424,7 +394,7 @@ namespace IHMS.APIControllers
                 Directory.CreateDirectory(imageDirectory);
             }
             //處理圖片
-            if (Img != null && Img.Count > 0)
+            if (Img.Count > 0)
             {
                 foreach (var Image in Img)
                 {
@@ -434,6 +404,7 @@ namespace IHMS.APIControllers
                     {
                         foreach (var img in imgs)
                         {
+                            //移除儲存資料夾內重複圖片
                             string filepath = Path.Combine(imageDirectory, img.Img);
                             if (System.IO.File.Exists(filepath))
                             {
@@ -441,41 +412,40 @@ namespace IHMS.APIControllers
                             }
                             _context.DietImgs.Remove(img);
                         }
-                        //存取資料
+                        //設定亂數名稱存取資料
                         string fileName = $"{dietDTO.DietDetailId}_{Guid.NewGuid()}{Path.GetExtension(Image.FileName)}";
                         string filePath = Path.Combine(imageDirectory, fileName);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            Image.CopyTo(stream);
-                        }
-                        DietImg saveimg = new DietImg
-                        {
-                            DietDetailId = dietDTO.DietDetailId,
-                            Img = fileName,
-                        };
-                        _context.DietImgs.Add(saveimg);
+                        saveimg(Image, filePath, fileName, dietDTO);
+                        //using (var stream = new FileStream(filePath, FileMode.Create))
+                        //{
+                        //    Image.CopyTo(stream);
+                        //}
+                        //DietImg saveimg = new DietImg
+                        //{
+                        //    DietDetailId = dietDTO.DietDetailId,
+                        //    Img = fileName,
+                        //};
+                        //_context.DietImgs.Add(saveimg);
                     }
                     else
                     {
                         //存取資料
                         string fileName = $"{dietDTO.DietDetailId}_{Guid.NewGuid()}{Path.GetExtension(Image.FileName)}";
                         string filePath = Path.Combine(imageDirectory, fileName);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            Image.CopyTo(stream);
-                        }
-                        DietImg saveimg = new DietImg
-                        {
-                            DietDetailId = dietDTO.DietDetailId,
-                            Img = fileName,
-                        };
-                        _context.DietImgs.Add(saveimg);
+                        saveimg(Image, filePath, fileName, dietDTO);
+                        //using (var stream = new FileStream(filePath, FileMode.Create))
+                        //{
+                        //    Image.CopyTo(stream);
+                        //}
+                        //DietImg saveimg = new DietImg
+                        //{
+                        //    DietDetailId = dietDTO.DietDetailId,
+                        //    Img = fileName,
+                        //};
+                        //_context.DietImgs.Add(saveimg);
                     }
                 }
             }
-
-
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -495,25 +465,37 @@ namespace IHMS.APIControllers
             return NoContent();
         }
 
+
+
         //SportDetail
         // PUT: api/Plans/sportdetail/{sportdetailid}/edit
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("~/api/[controller]/sportdetail/complete/{detailid:int}")]
         [HttpPut]
-        public async Task<IActionResult> PutSportChangeTrue(int detailid)
+        public async Task<IActionResult> PutSportChangeTrue(int? detailid)
         {
-
+            if (detailid == null)
+            {
+                return NotFound();
+            }
             //處理文字
             var res = _context.SportDetails.Where(s => s.SportDetailId == detailid).FirstOrDefault();
-            res.Isdone = true;
-            _context.Entry(res).State = EntityState.Modified;
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                res.Isdone = true;
+                _context.Entry(res).State = EntityState.Modified;              
+            }
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlanExists(detailid))
+                if (!PlanExists(res.SportDetailId))
                 {
                     return NotFound();
                 }
@@ -522,7 +504,6 @@ namespace IHMS.APIControllers
                     throw;
                 }
             }
-
             return Ok();
         }
 
@@ -533,26 +514,12 @@ namespace IHMS.APIControllers
         [HttpPut]
         public async Task<IActionResult> PutSportDetail([FromForm] SportDetailDTO sportDTO)
         {
-            if (sportDTO.SportDetailId == null)
+            if (sportDTO == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             //處理文字
-            SportDetail sport = new SportDetail
-            {
-                SportDetailId = sportDTO.SportDetailId,
-                SportId = sportDTO.SportId,
-                Sname = sportDTO.Sname,
-                Frequency = sportDTO.Frequency,
-                Registerdate = DateTime.Now,
-                Type = sportDTO.Type,
-                Time = sportDTO.Time,
-                Hour = sportDTO.Hour,
-                Min = sportDTO.Min,
-                Isdone = false,
-                Calories = sportDTO.Calories,
-                Sets = sportDTO.Sets,
-            };
+            var sport = SportAdd(sportDTO);
             _context.Entry(sport).State = EntityState.Modified;
             try
             {
@@ -569,7 +536,6 @@ namespace IHMS.APIControllers
                     throw;
                 }
             }
-
             return Ok();
         }
 
@@ -586,27 +552,13 @@ namespace IHMS.APIControllers
         [HttpPost]
         public async Task<ActionResult<Plan>> PostPlan(PlanDTO dto)
         {
-
-            if (_context.Plans == null)
+            if (dto == null)
             {
-                return Problem("Entity set 'IhmsContext.Plans' is null.");
+                return NotFound();
             }
-            Plan plan = new Plan
-            {
-                Age = dto.Age,
-                MemberId = dto.MemberId,
-                Weight = dto.Weight,
-                BodyPercentage = dto.BodyPercentage,
-                Bmr = dto.Bmr,
-                RegisterDate = DateTime.Now,
-                Tdee = dto.Tdee,
-                Type = dto.Type,
-                Times = dto.Times,
-                Gender = dto.Gender,
-            };
+            var plan = PlanAdd(dto);
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
-
             return Ok(plan);
         }
 
@@ -616,31 +568,17 @@ namespace IHMS.APIControllers
         [HttpPost]
         public async Task<ActionResult<SportDetail>> PostSportDetail([FromForm] SportDetailDTO dto)
         {
-
-            if (_context.SportDetails == null)
+            if (dto == null)
             {
-                return Problem("Entity set 'IhmsContext.SportDetails' is null.");
+                return NotFound();
             }
-            SportDetail sport = new SportDetail
-            {
-                SportId = 1,
-                Frequency = dto.Frequency,
-                Isdone = false,
-                Sname = dto.Sname,
-                Registerdate = DateTime.Now,
-                Time = dto.Time,
-                Hour = dto.Hour,
-                Min = dto.Min,
-                Type = dto.Type,
-                Sets = dto.Sets,
-                Calories = dto.Calories,
-
-            };
+            SportDetail sport = SportAdd(dto);
             _context.SportDetails.Add(sport);
             await _context.SaveChangesAsync();
-
             return Ok(sport);
         }
+
+
         //DietDetail
         // PUT: api/Plans/diets/{dietsid}/edit
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -648,33 +586,16 @@ namespace IHMS.APIControllers
         [HttpPost]
         public async Task<IActionResult> PostDietDetail([FromForm] DietDetailDTO dietDTO, [FromForm] List<IFormFile> Img)
         {
+            if (dietDTO == null)
+            {
+                return NotFound();
+            }
             //處理資料
-            DietDetail diet = new DietDetail
-            {
-                DietId = dietDTO.DietId,
-                Dname = dietDTO.Dname,
-                Type = dietDTO.Type,
-                Decription = dietDTO.Decription,
-                Calories = dietDTO.Calories,
-                Registerdate = Convert.ToDateTime(dietDTO.Registerdate)
-            };
+            var diet = DietAdd(dietDTO);
+            _context.DietDetails.Add(diet);          
+            await _context.SaveChangesAsync();
 
-            _context.DietDetails.Add(diet);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlanExists(dietDTO.DietDetailId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //處理圖片
             int dietdetailid = _context.DietDetails.OrderByDescending(p => p.DietDetailId).FirstOrDefault().DietDetailId;
             //建立圖片路徑
             var webRootPath = _webHostEnvironment.WebRootPath;
@@ -683,9 +604,7 @@ namespace IHMS.APIControllers
             if (!Directory.Exists(imageDirectory))
             {
                 Directory.CreateDirectory(imageDirectory);
-            }
-            //處理圖片
-
+            }         
             if (Img != null && Img.Count > 0)
             {
                 foreach (var Image in Img)
@@ -694,16 +613,17 @@ namespace IHMS.APIControllers
                     //存取資料
                     string fileName = $"{dietdetailid}_{Guid.NewGuid()}{Path.GetExtension(Image.FileName)}";
                     string filePath = Path.Combine(imageDirectory, fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        Image.CopyTo(stream);
-                    }
-                    DietImg saveimg = new DietImg
-                    {
-                        DietDetailId = dietdetailid,
-                        Img = fileName,
-                    };
-                    _context.DietImgs.Add(saveimg);
+                    saveimg(Image, filePath, fileName, dietDTO);
+                    //using (var stream = new FileStream(filePath, FileMode.Create))
+                    //{
+                    //    Image.CopyTo(stream);
+                    //}
+                    //DietImg saveimg = new DietImg
+                    //{
+                    //    DietDetailId = dietdetailid,
+                    //    Img = fileName,
+                    //};
+                    //_context.DietImgs.Add(saveimg);
 
                 }
             }
@@ -734,39 +654,41 @@ namespace IHMS.APIControllers
         #region Delete
 
         // DELETE: api/Plans/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlan(int id)
-        {
-            DeletePlanDTO deleteitems = new DeletePlanDTO();
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeletePlan(int? id)
+        //{
+        //    DeletePlanDTO deleteitems = new DeletePlanDTO();
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var plan = await _context.Plans.FindAsync(id);
+        //    //移除plan的關聯資料
+        //    deleteitems.diet = _context.Diets.Where(d => d.PlanId == id);
+        //    deleteitems.sport = _context.Sports.Where(d => d.PlanId == id);
+        //    deleteitems.water = _context.Water.Where(d => d.PlanId == id);
+        //    deleteMethod(deleteitems);
 
-            if (_context.Plans == null)
-            {
-                return NotFound();
-            }
-            var plan = await _context.Plans.FindAsync(id);
-            //移除plan的關聯資料
-            deleteitems.diet = _context.Diets.Where(d => d.PlanId == id);
-            deleteitems.sport = _context.Sports.Where(d => d.PlanId == id);
-            deleteitems.water = _context.Water.Where(d => d.PlanId == id);
-            deleteMethod(deleteitems);
+        //    if (plan == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _context.Plans.Remove(plan);
+        //    await _context.SaveChangesAsync();
 
-            if (plan == null)
-            {
-                return NotFound();
-            }
-            _context.Plans.Remove(plan);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // DELETE: api/Plans/5
         [Route("~/api/[controller]/sportdetail/delete/{detailId:int}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSportDetail(int detailId)
+        public async Task<IActionResult> DeleteSportDetail(int? detailId)
         {
+            if (detailId == null)
+            {
+                return NotFound();
+            }
             var detail = await _context.SportDetails.FindAsync(detailId);
-
             if (detail == null)
             {
                 return NotFound();
@@ -782,6 +704,21 @@ namespace IHMS.APIControllers
 
 
         #region function
+        private void saveimg(IFormFile img, string filePath, string fileName, DietDetailDTO dietDTO)
+        {
+            //設定亂數名稱存取資料
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                img.CopyTo(stream);
+            }
+            DietImg saveimg = new()
+            {
+                DietDetailId = dietDTO.DietDetailId,
+                Img = fileName,
+            };
+            _context.DietImgs.Add(saveimg);
+        }
+
         public void deleteMethod(DeletePlanDTO delete)
         {
             for (int i = 0; i < delete.deleteDataSet.Length; i++)
@@ -789,7 +726,6 @@ namespace IHMS.APIControllers
                 switch (delete.deleteDataSet[i])
                 {
                     case "diet":
-
                         foreach (var diet in delete.diet)
                         {
                             var query = _context.DietDetails.Where(d => d.DietId == diet.DietId);
@@ -799,8 +735,6 @@ namespace IHMS.APIControllers
                             }
                             _context.Diets.Remove(diet);
                         }
-
-
                         break;
                     case "sport":
 
@@ -825,7 +759,62 @@ namespace IHMS.APIControllers
             }
         }
 
-        private bool PlanExists(int id)
+
+
+        private DietDetail DietAdd(DietDetailDTO dto)
+        {
+            DietDetail diet = new()
+            {
+                DietDetailId = dto.DietDetailId,
+                DietId = dto.DietId,
+                Dname = dto.Dname,
+                Type = dto.Type,
+                Decription = dto.Decription,
+                Calories = dto.Calories,
+                Registerdate = Convert.ToDateTime(dto.Registerdate)
+            };
+            return diet;
+        }
+
+        private Plan PlanAdd(PlanDTO plan)
+        {
+            Plan res = new()
+            {               
+                PlanId = plan.PlanId,
+                BodyPercentage = plan.BodyPercentage,
+                Age = plan.Age,
+                Bmr = plan.Bmr,
+                Height = plan.Height,
+                MemberId = plan.MemberId,
+                RegisterDate = DateTime.Now,
+                Type = plan.Type,
+                Tdee = plan.Tdee,
+                Times = plan.Times,
+                Weight = plan.Weight,
+                Gender = plan.Gender,
+            };
+            return res;
+        }
+        private SportDetail SportAdd(SportDetailDTO dto)
+        {
+            SportDetail sport = new()
+            {
+                SportDetailId = dto.SportDetailId,
+                SportId = dto.SportId,
+                Frequency = dto.Frequency,
+                Isdone = false,
+                Sname = dto.Sname,
+                Registerdate = DateTime.Now,
+                Time = dto.Time,
+                Hour = dto.Hour,
+                Min = dto.Min,
+                Type = dto.Type,
+                Sets = dto.Sets,
+                Calories = dto.Calories,
+            };
+            return sport;
+        }
+        private bool PlanExists(int? id)
         {
             return (_context.Plans?.Any(e => e.PlanId == id)).GetValueOrDefault();
         }
